@@ -1,0 +1,11 @@
+{
+  "rule": "mean of previous 5 years, same district + same crop",
+  "rule_ru": "среднее за предыдущие 5 лет по тому же району и той же культуре",
+  "window": 5,
+  "crops": [
+    "spring_wheat",
+    "barley"
+  ],
+  "target": "yield_c_ha",
+  "note": "Параметров нет: прогноз на год Y = mean(yield[Y-5..Y-1] | district, crop). Требуется полная 5-летняя история, иначе ошибка (без заглушек)."
+}

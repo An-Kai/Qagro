@@ -1,0 +1,92 @@
+# Akmola districts - centroids for MVP (WGS84)
+# Sources: OpenStreetMap / natural centroids, refined for demo
+districts:
+  - name_ru: "Зерендинский"
+    name_kz: "Зеренді"
+    name_en: "Zerenda"
+    lat: 53.05
+    lon: 69.15
+  - name_ru: "Бурабайский"
+    name_kz: "Бурабай"
+    name_en: "Burabay"
+    lat: 52.94
+    lon: 70.31
+  - name_ru: "Атбасарский"
+    name_kz: "Атбасар"
+    name_en: "Atbasar"
+    lat: 51.81
+    lon: 68.36
+  - name_ru: "Есильский"
+    name_kz: "Есіл"
+    name_en: "Esil"
+    lat: 51.95
+    lon: 66.40
+  - name_ru: "Жаксынский"
+    name_kz: "Жақсы"
+    name_en: "Zhaksy"
+    lat: 51.90
+    lon: 67.30
+  - name_ru: "Шортандинский"
+    name_kz: "Шортанды"
+    name_en: "Shortandy"
+    lat: 51.70
+    lon: 70.99
+  - name_ru: "Целиноградский"
+    name_kz: "Целиноград"
+    name_en: "Tselinograd"
+    lat: 51.18
+    lon: 71.03
+  - name_ru: "Сандыктауский"
+    name_kz: "Сандықтау"
+    name_en: "Sandyktau"
+    lat: 52.45
+    lon: 68.75
+  - name_ru: "Буландынский"
+    name_kz: "Бұланды"
+    name_en: "Bulandy"
+    lat: 52.63
+    lon: 70.42
+  - name_ru: "Кокшетау"
+    name_kz: "Көкшетау"
+    name_en: "Kokshetau"
+    lat: 53.29
+    lon: 69.39
+
+crops:
+  - id: spring_wheat
+    name_ru: "Пшеница яровая"
+    name_kz: "Жаздық бидай"
+    name_en: "Spring wheat"
+    base_temp: 5.0
+  - id: barley
+    name_ru: "Ячмень"
+    name_kz: "Арпа"
+    name_en: "Barley"
+    base_temp: 5.0
+  - id: oats
+    name_ru: "Овес"
+    name_kz: "Сұлы"
+    name_en: "Oats"
+    base_temp: 5.0
+  - id: sunflower
+    name_ru: "Подсолнечник"
+    name_kz: "Күнбағыс"
+    name_en: "Sunflower"
+    base_temp: 8.0
+  - id: rapeseed
+    name_ru: "Рапс"
+    name_kz: "Рапс"
+    name_en: "Rapeseed"
+    base_temp: 5.0
+  - id: flax
+    name_ru: "Лен масличный"
+    name_kz: "Зығыр"
+    name_en: "Flax"
+    base_temp: 5.0
+
+settings:
+  season_months: [5, 6, 7, 8]
+  baseline_window: 5
+  insurance_threshold: 0.8
+  subsidy_rate: 0.8
+  avg_price_kzt_per_t: 95000

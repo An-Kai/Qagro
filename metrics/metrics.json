@@ -1,0 +1,64 @@
+{
+  "spring_wheat": {
+    "baseline": {
+      "mae": 2.6824799999999995,
+      "rmse": 2.886497088167594,
+      "r2": -0.26433004988254094,
+      "n": 50
+    },
+    "lgbm": {
+      "mae": 1.4643313775432238,
+      "rmse": 1.718357072319977,
+      "r2": 0.5519308513326213,
+      "n": 50
+    },
+    "features_used": [
+      "tmean_mjja",
+      "precip_mjja",
+      "gdd5",
+      "heat30",
+      "dry_max",
+      "et0",
+      "p30_anom",
+      "lat",
+      "lon",
+      "yield_lag1"
+    ],
+    "holdout_years": [
+      2021,
+      2025
+    ],
+    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_spring_wheat.png"
+  },
+  "barley": {
+    "baseline": {
+      "mae": 2.7823599999999993,
+      "rmse": 3.0022062154355753,
+      "r2": -0.2574173998432914,
+      "n": 50
+    },
+    "lgbm": {
+      "mae": 1.522483993990359,
+      "rmse": 1.8144759718746637,
+      "r2": 0.5406953215454395,
+      "n": 50
+    },
+    "features_used": [
+      "tmean_mjja",
+      "precip_mjja",
+      "gdd5",
+      "heat30",
+      "dry_max",
+      "et0",
+      "p30_anom",
+      "lat",
+      "lon",
+      "yield_lag1"
+    ],
+    "holdout_years": [
+      2021,
+      2025
+    ],
+    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_barley.png"
+  }
+}

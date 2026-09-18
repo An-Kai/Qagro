@@ -1,0 +1,38 @@
+{
+  "crop": "barley",
+  "year": 2025,
+  "n_rows": 10,
+  "features": [
+    "tmean_mjja",
+    "precip_mjja",
+    "gdd5",
+    "heat30",
+    "dry_max",
+    "et0",
+    "p30_anom",
+    "lat",
+    "lon",
+    "yield_lag1"
+  ],
+  "top3": [
+    {
+      "feature": "heat30",
+      "mean_abs_shap": 0.5569480058724524,
+      "mean_shap": 0.5569480058724524,
+      "mean_value": 4.7
+    },
+    {
+      "feature": "et0",
+      "mean_abs_shap": 0.47721544582201814,
+      "mean_shap": 0.23652094447791647,
+      "mean_value": 480.96999999999997
+    },
+    {
+      "feature": "yield_lag1",
+      "mean_abs_shap": 0.23074676738934202,
+      "mean_shap": -0.2284388488431448,
+      "mean_value": 14.970000000000002
+    }
+  ],
+  "base_value": 12.845404537503816
+}

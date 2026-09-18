@@ -1,0 +1,38 @@
+{
+  "crop": "spring_wheat",
+  "year": 2025,
+  "n_rows": 10,
+  "features": [
+    "tmean_mjja",
+    "precip_mjja",
+    "gdd5",
+    "heat30",
+    "dry_max",
+    "et0",
+    "p30_anom",
+    "lat",
+    "lon",
+    "yield_lag1"
+  ],
+  "top3": [
+    {
+      "feature": "heat30",
+      "mean_abs_shap": 0.5605433049553834,
+      "mean_shap": 0.5605433049553834,
+      "mean_value": 4.7
+    },
+    {
+      "feature": "et0",
+      "mean_abs_shap": 0.41700105873579857,
+      "mean_shap": 0.18796033924020036,
+      "mean_value": 480.96999999999997
+    },
+    {
+      "feature": "precip_mjja",
+      "mean_abs_shap": 0.2146278238409741,
+      "mean_shap": 0.16045998009663948,
+      "mean_value": 222.35
+    }
+  ],
+  "base_value": 12.074558017907567
+}

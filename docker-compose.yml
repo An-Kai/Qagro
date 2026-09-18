@@ -1,0 +1,33 @@
+# Qagro: api + bot + streamlit
+services:
+  api:
+    build: .
+    command: ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data  # персист SQLite-кэша data/cache.db
+    restart: unless-stopped
+
+  bot:
+    build: .
+    command: ["python", "-m", "src.bot"]
+    depends_on:
+      - api
+    env_file:
+      - .env  # TELEGRAM_BOT_TOKEN=... (см. .env.example)
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+
+  streamlit:
+    build: .
+    command: ["streamlit", "run", "app/streamlit_app.py",
+              "--server.address", "0.0.0.0", "--server.port", "8501"]
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
