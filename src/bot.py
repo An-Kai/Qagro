@@ -17,6 +17,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import math
 import os
 import sqlite3
 import time
@@ -27,7 +28,10 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config" / "districts.yaml"
 CACHE_DB = ROOT / "data" / "cache.db"
 RISK_EXAMPLE = ROOT / "reports" / "risk_example.json"
+FIELDS_GEOJSON = ROOT / "data" / "fields" / "akmola_osm_fields.geojson"
+GRANARIES_JSON = ROOT / "data" / "fields" / "granaries.json"
 CACHE_TTL = 24 * 3600
+EARTH_R_KM = 6371.0088
 
 try:
     from dotenv import load_dotenv
@@ -173,10 +177,75 @@ def _light_from_ploss(p_loss: float) -> str:
     return "🟢"
 
 
+def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dp = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
+    return 2 * EARTH_R_KM * math.asin(math.sqrt(a))
+
+
+def nearest_district(lat: float, lon: float) -> dict:
+    """Ближайший район к (lat, lon) по центроидам districts.yaml (haversine)."""
+    best: dict | None = None
+    best_d = float("inf")
+    for d in _districts():
+        dist = haversine_km(lat, lon, float(d["lat"]), float(d["lon"]))
+        if dist < best_d:
+            best_d = dist
+            best = d
+    if best is None:
+        raise ValueError("Нет районов в config/districts.yaml.")
+    return {"district_en": best["name_en"], "district_ru": best.get("name_ru"),
+            "dist_km": round(best_d, 1),
+            "lat": best["lat"], "lon": best["lon"]}
+
+
+def fields_summary() -> dict:
+    """Число OSM полей: всего / OSM / demo. Без моков: нет файла — ошибка."""
+    if not FIELDS_GEOJSON.exists():
+        raise FileNotFoundError(
+            f"{FIELDS_GEOJSON} не найден. Запустите: python src/fields_osm.py")
+    fc = json.loads(FIELDS_GEOJSON.read_text(encoding="utf-8"))
+    feats = fc.get("features", [])
+    n_osm = sum(1 for f in feats if not (f.get("properties") or {}).get("demo"))
+    n_demo = len(feats) - n_osm
+    per: dict[str, int] = {}
+    for f in feats:
+        d = (f.get("properties") or {}).get("district_en", "?")
+        per[d] = per.get(d, 0) + 1
+    return {"total": len(feats), "osm": n_osm, "demo": n_demo, "per_district": per}
+
+
+def elevators_summary() -> dict:
+    """12 элеваторов: список + координаты (оценочные, Qoldau granaries-map)."""
+    if not GRANARIES_JSON.exists():
+        raise FileNotFoundError(f"{GRANARIES_JSON} не найден.")
+    data = json.loads(GRANARIES_JSON.read_text(encoding="utf-8"))
+    items = data.get("granaries", data) if isinstance(data, dict) else data
+    return {"total": len(items), "elevators": items}
+
+
+def nearest_elevator_for(lat: float, lon: float) -> dict:
+    items = elevators_summary()["elevators"]
+    best: dict | None = None
+    best_d = float("inf")
+    for g in items:
+        d = haversine_km(lat, lon, float(g["lat"]), float(g["lon"]))
+        if d < best_d:
+            best_d = d
+            best = g
+    assert best is not None
+    return {"name_ru": best.get("name_ru"), "name_en": best.get("name_en"),
+            "dist_km": round(best_d, 1), "estimated": bool(best.get("estimated", True))}
+
+
 def _predict(district_en: str, crop: str, weather: dict | None = None) -> dict:
-    if crop in ("spring_wheat", "barley"):
+    """v2: предпочитаем настоящий LGBM, если модель обучена; иначе APPROX."""
+    try:
         return predict_yield(district_en, crop, weather)
-    return predict_approx(district_en, crop, weather)
+    except FileNotFoundError:
+        return predict_approx(district_en, crop, weather)
 
 
 def compute_full(district_en: str, crop: str, lang: str = "ru",
@@ -191,7 +260,8 @@ def compute_full(district_en: str, crop: str, lang: str = "ru",
 def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
     pred, ins, rec, risk = full["pred"], full["ins"], full["rec"], full.get("risk") or {}
     approx = bool(pred.get("approx") or ins.get("approx"))
-    tag = " [APPROX]" if approx else ""
+    experimental = bool(pred.get("experimental") or ins.get("experimental"))
+    tag = " [APPROX]" if approx else (" [EXPERIMENTAL baseline]" if experimental else "")
     light = risk.get("seasonal_light")
     srisk = risk.get("seasonal_risk")
     if light is None:  # offline-fallback: светофор по p_loss, честно помечаем
@@ -209,16 +279,19 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
     ]
     if approx:
         lines.append("⚠️ APPROX: без обучающих данных (масштаб от пшеницы).")
+    if experimental:
+        lines.append("⚠️ EXPERIMENTAL baseline-5y: LGBM хуже бейзлайна на hold-out, интервал x1.5.")
     return "\n".join(lines)
 
 
 # ---------------------------------------------------------------- aiogram app (lazy: только в main)
 def create_dispatcher():
     from aiogram import Dispatcher, F
-    from aiogram.filters import CommandStart
+    from aiogram.filters import Command, CommandStart
     from aiogram.fsm.context import FSMContext
     from aiogram.fsm.state import State, StatesGroup
-    from aiogram.types import CallbackQuery, Message
+    from aiogram.types import (CallbackQuery, KeyboardButton, Message,
+                               ReplyKeyboardMarkup)
     from aiogram.utils.keyboard import InlineKeyboardBuilder
 
     class Form(StatesGroup):
@@ -227,6 +300,12 @@ def create_dispatcher():
         crop = State()
 
     dp = Dispatcher()
+
+    def _kb_location():
+        return ReplyKeyboardMarkup(
+            keyboard=[[KeyboardButton(text="📍 Share Location",
+                                      request_location=True)]],
+            resize_keyboard=True, one_time_keyboard=True)
 
     def _kb_langs():
         b = InlineKeyboardBuilder()
@@ -248,14 +327,38 @@ def create_dispatcher():
         names = {c["id"]: c.get(f"name_{lang}", c.get("name_en", c["id"]))
                  for c in _crops()}
         b = InlineKeyboardBuilder()
+        try:
+            try:
+                from src.approx_crops import is_approx
+            except ImportError:
+                from approx_crops import is_approx  # type: ignore
+        except Exception:
+            def is_approx(cid: str) -> bool:  # fallback v1
+                return cid not in ("spring_wheat", "barley")
+        try:
+            try:
+                from src.predict import is_experimental
+            except ImportError:
+                from predict import is_experimental  # type: ignore
+        except Exception:
+            def is_experimental(cid: str) -> bool:
+                return False
         for cid in CROP_IDS:
             label = names.get(cid, cid)
-            mark = " ~" if cid not in ("spring_wheat", "barley") else ""
+            try:
+                if is_approx(cid):
+                    mark = " ~"
+                elif is_experimental(cid):
+                    mark = " *"
+                else:
+                    mark = ""
+            except Exception:
+                mark = ""
             b.button(text=f"{label}{mark}", callback_data=f"crop:{cid}")
         b.adjust(2)
-        approx_note = {"ru": " (~ = APPROX-оценка)",
-                       "kz": " (~ = APPROX-баға)",
-                       "en": " (~ = APPROX estimate)"}[lang]
+        approx_note = {"ru": " (~ = APPROX, * = EXPERIMENTAL baseline)",
+                       "kz": " (~ = APPROX, * = EXPERIMENTAL)",
+                       "en": " (~ = APPROX, * = EXPERIMENTAL)"}[lang]
         b.button(text=f"ℹ️{approx_note}", callback_data="noop")
         b.adjust(2, 1)
         return b.as_markup()
@@ -271,7 +374,52 @@ def create_dispatcher():
     async def start(m: Message, state: FSMContext):
         await state.clear()
         await state.set_state(Form.lang)
+        await m.answer("📍 Send geolocation for nearest district (or pick manually):",
+                       reply_markup=_kb_location())
         await m.answer(T["choose_lang"]["ru"], reply_markup=_kb_langs())
+
+    @dp.message(Command("fields"))
+    async def on_fields(m: Message):
+        try:
+            s = await asyncio.to_thread(fields_summary)
+            per = ", ".join(f"{k}:{v}" for k, v in sorted(s["per_district"].items()))
+            await m.answer(f"🌾 Fields: total {s['total']} "
+                           f"(OSM {s['osm']}, demo {s['demo']})\n{per}")
+        except Exception as e:
+            await m.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
+
+    @dp.message(Command("elevators"))
+    async def on_elevators(m: Message):
+        try:
+            s = await asyncio.to_thread(elevators_summary)
+            names = "; ".join(
+                f"{g.get('name_en')} ({g.get('district_en')})"
+                for g in s["elevators"])
+            await m.answer(f"🏭 Elevators: {s['total']}\n{names}\n"
+                           f"(coords estimated, Qoldau granaries-map)")
+        except Exception as e:
+            await m.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
+
+    @dp.message(F.location)
+    async def on_location(m: Message, state: FSMContext):
+        try:
+            loc = m.location
+            hit = await asyncio.to_thread(
+                nearest_district, float(loc.latitude), float(loc.longitude))
+            elev = await asyncio.to_thread(
+                nearest_elevator_for, float(loc.latitude), float(loc.longitude))
+            data = await state.get_data()
+            lang = data.get("lang", "ru")
+            await state.update_data(district=hit["district_en"])
+            await state.set_state(Form.crop)
+            await m.answer(
+                f"📍 Nearest district: {hit['district_ru']} ({hit['district_en']}), "
+                f"~{hit['dist_km']} km\n"
+                f"🏭 Nearest elevator: {elev['name_en']} (~{elev['dist_km']} km)",
+                reply_markup=_kb_crops(lang))
+        except Exception as e:
+            log.exception("on_location failed")
+            await m.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
 
     @dp.callback_query(F.data.startswith("lang:"))
     async def on_lang(cb: CallbackQuery, state: FSMContext):

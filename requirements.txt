@@ -19,3 +19,8 @@ matplotlib==3.9.4
 plotly==5.24.1
 folium==0.17.0
 scipy==1.14.1
+# v2 NDVI (optional, модель работает без них): STAC-поиск сцен Sentinel-2
+pystac-client==0.8.6
+planetary-computer==1.0.0
+# rasterio — ТОЛЬКО для ручного расчёта NDVI из B04/B08 (пилот, опционально):
+# rasterio==1.4.3

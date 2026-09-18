@@ -1,0 +1,38 @@
+{
+  "crop": "sunflower",
+  "year": 2025,
+  "n_rows": 10,
+  "features": [
+    "tmean_mjja",
+    "precip_mjja",
+    "gdd5",
+    "heat30",
+    "dry_max",
+    "et0",
+    "p30_anom",
+    "lat",
+    "lon",
+    "yield_lag1"
+  ],
+  "top3": [
+    {
+      "feature": "yield_lag1",
+      "mean_abs_shap": 2.262739995730763,
+      "mean_shap": 2.262739995730763,
+      "mean_value": 14.571000000000002
+    },
+    {
+      "feature": "heat30",
+      "mean_abs_shap": 0.2762280118582635,
+      "mean_shap": 0.2525839957193627,
+      "mean_value": 4.7
+    },
+    {
+      "feature": "tmean_mjja",
+      "mean_abs_shap": 0.23123495783166095,
+      "mean_shap": 0.12464596599073641,
+      "mean_value": 18.125
+    }
+  ],
+  "base_value": 6.384075779789106
+}

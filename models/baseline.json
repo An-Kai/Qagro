@@ -4,8 +4,13 @@
   "window": 5,
   "crops": [
     "spring_wheat",
-    "barley"
+    "barley",
+    "oats",
+    "sunflower",
+    "rapeseed",
+    "flax"
   ],
+  "approx_crops": [],
   "target": "yield_c_ha",
   "note": "Параметров нет: прогноз на год Y = mean(yield[Y-5..Y-1] | district, crop). Требуется полная 5-летняя история, иначе ошибка (без заглушек)."
 }

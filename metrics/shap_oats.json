@@ -1,0 +1,38 @@
+{
+  "crop": "oats",
+  "year": 2025,
+  "n_rows": 10,
+  "features": [
+    "tmean_mjja",
+    "precip_mjja",
+    "gdd5",
+    "heat30",
+    "dry_max",
+    "et0",
+    "p30_anom",
+    "lat",
+    "lon",
+    "yield_lag1"
+  ],
+  "top3": [
+    {
+      "feature": "heat30",
+      "mean_abs_shap": 0.6952240767261182,
+      "mean_shap": 0.6952240767261182,
+      "mean_value": 4.7
+    },
+    {
+      "feature": "et0",
+      "mean_abs_shap": 0.5519474382467638,
+      "mean_shap": 0.23157981910079561,
+      "mean_value": 480.96999999999997
+    },
+    {
+      "feature": "gdd5",
+      "mean_abs_shap": 0.3197785246003916,
+      "mean_shap": 0.2778796530825571,
+      "mean_value": 1437.77
+    }
+  ],
+  "base_value": 12.594422362684986
+}

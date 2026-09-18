@@ -136,6 +136,40 @@ def districts() -> dict:
         return yaml.safe_load(f)
 
 
+@app.get("/fields")
+def fields(district_en: str | None = None) -> dict:
+    """Оцифрованные поля: data/fields/akmola_osm_fields.geojson.
+
+    Query ?district_en=Esil — фильтр по району. Без моков: если файла нет —
+    500 с честной ошибкой (сначала python src/fields_osm.py).
+    """
+    import json
+
+    p = ROOT / "data" / "fields" / "akmola_osm_fields.geojson"
+    if not p.exists():
+        raise HTTPException(status_code=500, detail=(
+            "akmola_osm_fields.geojson не найден. "
+            "Запустите: python src/fields_osm.py"))
+    fc = json.loads(p.read_text(encoding="utf-8"))
+    if district_en:
+        fc = dict(fc, features=[
+            f for f in fc.get("features", [])
+            if (f.get("properties") or {}).get("district_en") == district_en])
+    return fc
+
+
+@app.get("/granaries")
+def granaries() -> dict:
+    """12 элеваторов Акмолы (координаты оценочные, см. granaries.json)."""
+    import json
+
+    p = ROOT / "data" / "fields" / "granaries.json"
+    if not p.exists():
+        raise HTTPException(status_code=500,
+                            detail="granaries.json не найден")
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
 @app.post("/predict")
 def predict(req: PredictRequest) -> dict:
     try:

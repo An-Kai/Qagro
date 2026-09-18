@@ -185,10 +185,13 @@ else:
     st.write(f"{crop}: обученной модели нет (APPROX). "
              f"Метрики пшеницы: {metrics.get('spring_wheat', {}).get('lgbm', {})}")
 
-# ---- карта Folium ----
-st.subheader("Карта рисков (центроиды районов)")
+# ---- карта Folium: риски + поля OSM + элеваторы ----
+st.subheader("Карта: риски, поля и элеваторы")
 import folium
 import streamlit.components.v1 as components
+
+FIELDS_GEOJSON = ROOT / "data" / "fields" / "akmola_osm_fields.geojson"
+GRANARIES_JSON = ROOT / "data" / "fields" / "granaries.json"
 
 
 def _color(r):
@@ -199,6 +202,14 @@ def _color(r):
     if r <= 60:
         return "orange"
     return "red"
+
+
+def _field_style(feat):
+    demo = (feat.get("properties") or {}).get("demo", False)
+    if demo:
+        return {"color": "orange", "weight": 2, "fillOpacity": 0.15,
+                "dashArray": "5, 5"}
+    return {"color": "green", "weight": 2, "fillOpacity": 0.25}
 
 
 m = folium.Map(location=[52.3, 69.0], zoom_start=7)
@@ -212,7 +223,62 @@ for d in districts:
                f"{'кэш risk_example.json' if r is not None else 'риск офлайн'}"),
         tooltip=f"{d['name_ru']} — {r if r is not None else 'offline'}",
     ).add_to(m)
+
+# слой полей (OSM-реальные зелёные, demo-оранжевые пунктирные)
+if FIELDS_GEOJSON.exists():
+    fdata = json.loads(FIELDS_GEOJSON.read_text(encoding="utf-8"))
+    n_demo = sum(1 for f in fdata.get("features", [])
+                 if (f.get("properties") or {}).get("demo"))
+    n_real = len(fdata.get("features", [])) - n_demo
+    folium.GeoJson(
+        fdata,
+        name=f"Поля OSM (реальных {n_real}, demo {n_demo})",
+        style_function=_field_style,
+        tooltip=folium.GeoJsonTooltip(
+            fields=["district_en", "area_ha", "source"],
+            aliases=["Район", "Площадь, га", "Источник"]),
+        popup=folium.GeoJsonPopup(
+            fields=["district_en", "area_ha", "source"],
+            aliases=["Район", "Площадь, га", "Источник"]),
+    ).add_to(m)
+    st.caption(f"Поля: всего {len(fdata.get('features', []))} "
+               f"(реальных OSM: {n_real}, demo 1×2 км: {n_demo}). "
+               f"Демо — оранжевый пунктир, не выдаются за OSM.")
+else:
+    st.warning("⚠️ data/fields/akmola_osm_fields.geojson нет — "
+               "запустите: python src/fields_osm.py")
+
+# слой элеваторов
+if GRANARIES_JSON.exists():
+    gdata = json.loads(GRANARIES_JSON.read_text(encoding="utf-8"))
+    for g in gdata.get("granaries", []):
+        folium.Marker(
+            location=[g["lat"], g["lon"]],
+            icon=folium.Icon(color="blue", icon="warehouse",
+                             prefix="fa"),
+            popup=(f"🌾 {g.get('name_ru')} ({g.get('name_en')})<br>"
+                   f"район: {g.get('district_en')}<br>"
+                   f"координаты оценочные (Qoldau-карта, уточнить)"),
+            tooltip=f"🌾 {g.get('name_ru')}",
+        ).add_to(m)
+    st.caption("Элеваторы: 12 точек, координаты оценочные по "
+               "Qoldau granaries-map (подлежат уточнению).")
+
+folium.LayerControl().add_to(m)
 components.html(m._repr_html_(), height=520)
+
+# ближайший элеватор к выбранному району
+try:
+    try:
+        from src.logistics import nearest_elevator
+    except ImportError:
+        from logistics import nearest_elevator  # type: ignore
+    ne = nearest_elevator(district_en)
+    st.write(f"🚚 Ближайший элеватор к {district_en}: "
+             f"{ne['name_ru']} ({ne['name']}) — {ne['dist_km']} км. "
+             f"Координаты оценочные.")
+except Exception as e:
+    st.caption(f"Логистика недоступна: {e}")
 
 # ---- выгрузки ----
 st.subheader("Выгрузка")

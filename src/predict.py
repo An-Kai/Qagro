@@ -29,12 +29,53 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 PANEL = ROOT / "data" / "processed" / "akmola_panel.csv"
 MODELS = ROOT / "models"
+METRICS = ROOT / "metrics" / "metrics.json"
 
-CROPS = ("spring_wheat", "barley")
+# v2: 6 культур с LGBM (если обучены, см. src/train.py MIN_TRAIN_ROWS);
+# если модели нет — используйте src/approx_crops.predict_approx (APPROX fallback).
+CROPS = ("spring_wheat", "barley", "oats", "sunflower", "rapeseed", "flax")
 WEATHER_KEYS = ("tmean_mjja", "precip_mjja", "gdd5", "heat30",
                 "dry_max", "et0", "p30_anom")
 TARGET = "yield_c_ha"
 Z80 = 1.2816  # z для 80% интервала (10/90 перцентили) при нормальных остатках
+BASELINE_WINDOW = 5
+WIDE_FACTOR = 1.5  # experimental: интервал шире (residual*1.5)
+
+
+def _experimental_crops() -> set[str]:
+    """Культуры с below_baseline=true в metrics/metrics.json.
+
+    Для них LGBM хуже среднего-5-лет на hold-out 2021-2025
+    (sunflower/rapeseed/flax: структурный сдвиг 2024-2025),
+    поэтому прогноз = baseline mean5, интервал шире, флаг experimental:true.
+    Wheat/barley/oats остаются LGBM.
+    """
+    import json
+
+    try:
+        if not METRICS.exists():
+            return set()
+        data = json.loads(METRICS.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    return {c for c, m in data.items()
+            if isinstance(m, dict) and m.get("below_baseline") is True}
+
+
+def is_experimental(crop: str) -> bool:
+    return crop in _experimental_crops()
+
+
+def _baseline_mean5(df: pd.DataFrame, district_en: str, crop: str,
+                    window: int = BASELINE_WINDOW) -> tuple[float, list[int]]:
+    sub = df[(df["district_en"] == district_en) & (df["crop"] == crop)]
+    sub = sub.sort_values("year")
+    last = sub.tail(window)
+    if len(last) < window or last[TARGET].isna().any():
+        raise ValueError(
+            f"Бейзлайн: мало истории для {district_en}/{crop} "
+            f"({len(last)} < {window}) — заглушки запрещены.")
+    return round(float(last[TARGET].mean()), 2), [int(y) for y in last["year"].tolist()]
 
 
 def _load_bundle(crop: str) -> dict:
@@ -43,7 +84,9 @@ def _load_bundle(crop: str) -> dict:
     p = MODELS / f"lgbm_{crop}.pkl"
     if not p.exists():
         raise FileNotFoundError(
-            f"Модель {p} не найдена. Сначала: python src/train.py")
+            f"Модель {p} не найдена. Сначала: python src/train.py "
+            f"(если строк<40 — культура остаётся APPROX, используйте "
+            f"src/approx_crops.predict_approx).")
     with open(p, "rb") as f:
         return pickle.load(f)
 
@@ -118,6 +161,28 @@ def predict_yield(district_en: str, crop: str,
     yield_lag1 = float(lag[TARGET].iloc[0])
 
     bundle = _load_bundle(crop)
+    resid_std = float(bundle["residual_std"])
+
+    # --- experimental fallback: LGBM хуже бейзлайна на hold-out ---
+    if is_experimental(crop):
+        mean5, years = _baseline_mean5(df, district_en, crop, BASELINE_WINDOW)
+        wide = float(resid_std * WIDE_FACTOR)
+        lo10 = float(mean5 - Z80 * wide)
+        hi90 = float(mean5 + Z80 * wide)
+        return {"y_pred": round(mean5, 2), "lo10": round(lo10, 2),
+                "hi90": round(hi90, 2), "factors": [],
+                "experimental": True,
+                "method": "baseline-5y mean (experimental: LGBM below baseline on hold-out)",
+                "meta": {"district_en": district_en, "crop": crop, "year": 2026,
+                         "yield_lag1": round(yield_lag1, 2),
+                         "residual_std": round(wide, 3),
+                         "lgbm_residual_std": round(resid_std, 3),
+                         "wide_factor": WIDE_FACTOR,
+                         "baseline_mean5": round(mean5, 2),
+                         "baseline_years": years,
+                         "weather_source": weather_source,
+                         "weather": vals}}
+
     feats: list = bundle["features"]
     row: dict[str, float] = {**vals, "lat": float(geo["lat"]),
                              "lon": float(geo["lon"]), "yield_lag1": yield_lag1}
@@ -126,7 +191,6 @@ def predict_yield(district_en: str, crop: str,
         raise ValueError(f"Модели нужны фичи {absent}, которых нет во входе.")
     X = pd.DataFrame([{c: row[c] for c in feats}])[feats]
     y_pred = float(bundle["model"].predict(X.to_numpy())[0])
-    resid_std = float(bundle["residual_std"])
     lo10 = float(y_pred - Z80 * resid_std)
     hi90 = float(y_pred + Z80 * resid_std)
 
@@ -143,6 +207,7 @@ def predict_yield(district_en: str, crop: str,
 
     return {"y_pred": round(y_pred, 2), "lo10": round(lo10, 2),
             "hi90": round(hi90, 2), "factors": factors,
+            "experimental": False,
             "meta": {"district_en": district_en, "crop": crop, "year": 2026,
                      "yield_lag1": round(yield_lag1, 2),
                      "residual_std": round(resid_std, 3),

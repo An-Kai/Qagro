@@ -45,7 +45,10 @@ ROOT = Path(__file__).resolve().parents[1]
 PANEL = ROOT / "data" / "processed" / "akmola_panel.csv"
 MODELS = ROOT / "models"
 
-CROPS = ["spring_wheat", "barley"]
+# v2: 6 культур. Обучаем каждую, где достаточно строк (MIN_TRAIN_ROWS);
+# иначе — пропускаем и оставляем APPROX (см. src/approx_crops.py), без выдумок.
+CROPS = ["spring_wheat", "barley", "oats", "sunflower", "rapeseed", "flax"]
+MIN_TRAIN_ROWS = 40
 BASELINE_WINDOW = 5
 HOLDOUT_FROM = 2021  # hold-out 2021-2025 считает evaluate.py, сюда не заглядываем
 LOYO_YEARS = [2020, 2021, 2022, 2023, 2024, 2025]
@@ -55,7 +58,10 @@ CLIMATE_FEATURES = [
     "dry_max", "et0", "p30_anom",
 ]
 GEO_FEATURES = ["lat", "lon"]
-FEATURES = CLIMATE_FEATURES + GEO_FEATURES + ["yield_lag1"]
+BASE_FEATURES = CLIMATE_FEATURES + GEO_FEATURES + ["yield_lag1"]
+# v2: ndvi_max — optional (только если features_ndvi нашёл настоящие NDVI
+# без NaN; иначе молча пропускаем — модель работает без NDVI).
+OPTIONAL_NDVI = ["ndvi_max"]
 TARGET = "yield_c_ha"
 
 LGBM_PARAMS = dict(
@@ -71,6 +77,28 @@ LGBM_PARAMS = dict(
     verbose=-1,
     deterministic=True,
 )
+
+
+def _resolve_features(df: pd.DataFrame) -> tuple[list[str], bool]:
+    """Базовые фичи + optional ndvi_max (только если есть настоящие NDVI без NaN)."""
+    try:
+        try:
+            from src.features_ndvi import NDVI_COL, add_ndvi_features
+        except ImportError:
+            try:
+                from .features_ndvi import NDVI_COL, add_ndvi_features  # type: ignore
+            except ImportError:
+                from features_ndvi import NDVI_COL, add_ndvi_features  # type: ignore
+        _, has_ndvi = add_ndvi_features(df.drop(columns=["yield_lag1"], errors="ignore"))
+        if has_ndvi and NDVI_COL in df.columns:
+            return BASE_FEATURES + [NDVI_COL], True
+        # add_ndvi_features проверяет покрытие сама; если False — без NDVI
+        # (проверяем ещё раз наличие колонки, чтобы не сломать wheat/barley)
+        return list(BASE_FEATURES), False
+    except Exception as e:
+        print(f"[train] NDVI optional join пропущен ({type(e).__name__}: {e}) — "
+              f"обучаем на базовых фичах.")
+        return list(BASE_FEATURES), False
 
 
 def load_panel() -> pd.DataFrame:
@@ -90,6 +118,23 @@ def load_panel() -> pd.DataFrame:
     df = df.sort_values(["crop", "district_en", "year"]).reset_index(drop=True)
     # лаг урожайности строго внутри (район, культура) — без утечек между районами
     df["yield_lag1"] = df.groupby(["district_en", "crop"])[TARGET].shift(1)
+    # optional NDVI join (без NaN-заглушек; при отсутствии — пропускаем)
+    try:
+        try:
+            from src.features_ndvi import add_ndvi_features
+        except ImportError:
+            try:
+                from .features_ndvi import add_ndvi_features  # type: ignore
+            except ImportError:
+                from features_ndvi import add_ndvi_features  # type: ignore
+        df_joined, has_ndvi = add_ndvi_features(df)
+        if has_ndvi:
+            df = df_joined
+            print("[train] NDVI: ndvi_max найден и присоединён (optional).")
+        else:
+            print("[train] NDVI: нет настоящих NDVI — обучаем без ndvi_max.")
+    except Exception as e:
+        print(f"[train] NDVI join пропущен ({type(e).__name__}: {e}).")
     return df
 
 
@@ -102,12 +147,25 @@ def make_model() -> lgb.LGBMRegressor:
     return lgb.LGBMRegressor(**LGBM_PARAMS)
 
 
+# Backward-compat alias (wheat/barley без NDVI используют именно его)
+FEATURES = BASE_FEATURES
+
+
+def _active_features(df_crop: pd.DataFrame) -> list[str]:
+    """Активный набор фич: базовые + ndvi_max, если колонка реально есть без NaN."""
+    feats = list(BASE_FEATURES)
+    if "ndvi_max" in df_crop.columns and not df_crop["ndvi_max"].isna().any():
+        feats = feats + ["ndvi_max"]
+    return feats
+
+
 def cv_report(df_crop: pd.DataFrame, crop: str) -> tuple[np.ndarray, dict]:
     """TimeSeriesSplit(5) на train(<=2020) + expanding LOYO 2020-2025. Возвращает OOF-предсказания train."""
-    train = df_crop[df_crop["year"] < HOLDOUT_FROM].dropna(subset=["yield_lag1"]).reset_index(drop=True)
-    if len(train) < 50:
-        raise ValueError(f"[{crop}] мало train-строк для CV: {len(train)}")
-    X = train[FEATURES].to_numpy()
+    feats = _active_features(df_crop.dropna(subset=["yield_lag1"]))
+    train = df_crop[df_crop["year"] < HOLDOUT_FROM].dropna(subset=["yield_lag1", *feats]).reset_index(drop=True)
+    if len(train) < MIN_TRAIN_ROWS:
+        raise ValueError(f"[{crop}] мало train-строк для CV: {len(train)} < {MIN_TRAIN_ROWS}")
+    X = train[feats].to_numpy()
     y = train[TARGET].to_numpy()
 
     tss = TimeSeriesSplit(n_splits=5)
@@ -135,15 +193,15 @@ def cv_report(df_crop: pd.DataFrame, crop: str) -> tuple[np.ndarray, dict]:
     # Expanding-window LOYO: тест года Y обучается только на годах < Y
     print(f"[{crop}] leave-one-year-out (expanding, no leakage):")
     loyo_rows = []
-    full = df_crop.dropna(subset=["yield_lag1"]).reset_index(drop=True)
+    full = df_crop.dropna(subset=["yield_lag1", *feats]).reset_index(drop=True)
     for yr in LOYO_YEARS:
         tr = full[full["year"] < yr]
         te = full[full["year"] == yr]
         if tr.empty or te.empty:
             raise ValueError(f"[{crop}] LOYO год {yr}: пустой train ({len(tr)}) или test ({len(te)})")
         m = make_model()
-        m.fit(tr[FEATURES].to_numpy(), tr[TARGET].to_numpy())
-        p = m.predict(te[FEATURES].to_numpy())
+        m.fit(tr[feats].to_numpy(), tr[TARGET].to_numpy())
+        p = m.predict(te[feats].to_numpy())
         yt = te[TARGET].to_numpy()
         # бейзлайн на тот же год (честный, только прошлое)
         te_sorted = te.sort_values(["district_en", "year"])
@@ -168,9 +226,10 @@ def cv_report(df_crop: pd.DataFrame, crop: str) -> tuple[np.ndarray, dict]:
 
 
 def train_crop(df_crop: pd.DataFrame, crop: str) -> dict:
+    feats = _active_features(df_crop.dropna(subset=["yield_lag1"]))
     cv_report(df_crop, crop)
-    train = df_crop[(df_crop["year"] < HOLDOUT_FROM)].dropna(subset=["yield_lag1"])
-    X = train[FEATURES]
+    train = df_crop[(df_crop["year"] < HOLDOUT_FROM)].dropna(subset=["yield_lag1", *feats])
+    X = train[feats]
     y = train[TARGET]
     model = make_model()
     model.fit(X.to_numpy(), y.to_numpy())
@@ -185,7 +244,7 @@ def train_crop(df_crop: pd.DataFrame, crop: str) -> dict:
     resid_std = float(np.nanstd(ya - oof))
     bundle = {
         "model": model,
-        "features": FEATURES,
+        "features": feats,
         "target": TARGET,
         "crop": crop,
         "residual_std": resid_std,
@@ -197,7 +256,8 @@ def train_crop(df_crop: pd.DataFrame, crop: str) -> dict:
     out = MODELS / f"lgbm_{crop}.pkl"
     with open(out, "wb") as f:
         pickle.dump(bundle, f)
-    print(f"[{crop}] saved {out} (n_train={len(train)}, resid_std={resid_std:.3f})")
+    print(f"[{crop}] saved {out} (n_train={len(train)}, resid_std={resid_std:.3f}, "
+          f"features={feats})")
     return bundle
 
 
@@ -206,16 +266,25 @@ def main() -> None:
     df = load_panel()
     print(f"panel: {len(df)} rows, years {int(df.year.min())}-{int(df.year.max())}, "
           f"districts {df.district_en.nunique()}, crops {sorted(df.crop.unique())}")
+    trained: list[str] = []
+    approx_left: list[str] = []
     for crop in CROPS:
         df_crop = df[df["crop"] == crop].sort_values(["district_en", "year"]).reset_index(drop=True)
-        if df_crop.empty:
-            raise ValueError(f"Нет строк для культуры {crop} — мок не делаем, падаем.")
+        if len(df_crop) < MIN_TRAIN_ROWS:
+            print(f"[{crop}] строк {len(df_crop)} < {MIN_TRAIN_ROWS} — пропускаем, "
+                  f"остаётся APPROX (см. src/approx_crops.py).")
+            approx_left.append(crop)
+            continue
         train_crop(df_crop, crop)
+        trained.append(crop)
+    if approx_left:
+        print(f"APPROX без обучения (мало строк): {approx_left}")
     baseline_spec = {
         "rule": "mean of previous 5 years, same district + same crop",
         "rule_ru": "среднее за предыдущие 5 лет по тому же району и той же культуре",
         "window": BASELINE_WINDOW,
-        "crops": CROPS,
+        "crops": trained,
+        "approx_crops": approx_left,
         "target": TARGET,
         "note": "Параметров нет: прогноз на год Y = mean(yield[Y-5..Y-1] | district, crop). "
                 "Требуется полная 5-летняя история, иначе ошибка (без заглушек).",

@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "source": "qoldau granaries-map https://p-grain-receipt.qoldau.kz/ru/gr-info/granaries-map",
+    "source_note": "Карта на JS: публичного CSV/API координат нет, точки сняты ориентировочно по городам/узлам OSM. Координаты ОЦЕНОЧНЫЕ, подлежат уточнению по официальному реестру элеваторов/ХПП.",
+    "license_note": "Координаты — собственная оценка по открытым картам OSM (ODbL); перечень элеваторов — по карте Qoldau.",
+    "estimated": true
+  },
+  "granaries": [
+    {
+      "id": "kokshetau",
+      "name_ru": "Кокшетауский элеватор",
+      "name_en": "Kokshetau",
+      "lat": 53.287,
+      "lon": 69.375,
+      "district_en": "Kokshetau",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "atbasar",
+      "name_ru": "Атбасарский элеватор",
+      "name_en": "Atbasar",
+      "lat": 51.812,
+      "lon": 68.367,
+      "district_en": "Atbasar",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "makinsk",
+      "name_ru": "Макинский элеватор",
+      "name_en": "Makinsk",
+      "lat": 52.635,
+      "lon": 70.42,
+      "district_en": "Bulandy",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "esil",
+      "name_ru": "Есильский элеватор",
+      "name_en": "Esil",
+      "lat": 51.956,
+      "lon": 66.41,
+      "district_en": "Esil",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "derzhavinsk",
+      "name_ru": "Державинский элеватор",
+      "name_en": "Derzhavinsk",
+      "lat": 51.099,
+      "lon": 66.312,
+      "district_en": "Zhaksy",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "stepnogorsk",
+      "name_ru": "Степногорский элеватор",
+      "name_en": "Stepnogorsk",
+      "lat": 52.346,
+      "lon": 71.887,
+      "district_en": "Shortandy",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "shortandy",
+      "name_ru": "Шортандинский элеватор",
+      "name_en": "Shortandy",
+      "lat": 51.708,
+      "lon": 71.003,
+      "district_en": "Shortandy",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "akkol",
+      "name_ru": "Аккольский элеватор",
+      "name_en": "Akkol",
+      "lat": 52.006,
+      "lon": 70.94,
+      "district_en": "Shortandy",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "ereimentau",
+      "name_ru": "Ерейментауский элеватор",
+      "name_en": "Ereimentau",
+      "lat": 51.614,
+      "lon": 73.099,
+      "district_en": "Tselinograd",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "shchuchinsk",
+      "name_ru": "Щучинский элеватор",
+      "name_en": "Shchuchinsk",
+      "lat": 52.942,
+      "lon": 70.2,
+      "district_en": "Burabay",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "zerenda",
+      "name_ru": "Зерендинское ХПП",
+      "name_en": "Zerenda",
+      "lat": 53.054,
+      "lon": 69.163,
+      "district_en": "Zerenda",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    },
+    {
+      "id": "balkashino",
+      "name_ru": "Балкашинское ХПП",
+      "name_en": "Balkashino",
+      "lat": 52.515,
+      "lon": 68.758,
+      "district_en": "Sandyktau",
+      "estimated": true,
+      "source": "qoldau granaries-map"
+    }
+  ]
+}

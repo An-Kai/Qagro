@@ -193,7 +193,7 @@ def main() -> None:
         districts = load_districts()
         RAW.mkdir(parents=True, exist_ok=True)
         parts: list[pd.DataFrame] = []
-        for d in districts:
+        for i, d in enumerate(districts):
             ru, en, lat, lon = d["name_ru"], d["name_en"], d["lat"], d["lon"]
             log.info("Open-Meteo %s (%s, %.2f, %.2f) ...", ru, en, lat, lon)
             daily = fetch_daily(lat, lon, en)
@@ -212,6 +212,11 @@ def main() -> None:
                      if (agg.year == 2024).any() else -1,
                      int(agg.loc[agg.year == 2024, 'heat30_count'].iloc[0])
                      if (agg.year == 2024).any() else -1)
+            # v2: троттлинг против Open-Meteo 429 (minutely limit): пауза между
+            # районами, чтобы 20 тяжёлых запросов (daily+soil ×10) не укладывались
+            # в одну минуту. Без моков — только вежливая пауза.
+            if i < len(districts) - 1:
+                time.sleep(7)
         df = pd.concat(parts, ignore_index=True).sort_values(["district_en", "year"])
         if df.empty or df[["precip_515_831", "heat30_count", "gdd5"]].isna().any().any():
             raise ValueError("openmeteo_summary empty or NaN in key cols")

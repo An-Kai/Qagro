@@ -1,0 +1,38 @@
+{
+  "crop": "rapeseed",
+  "year": 2025,
+  "n_rows": 10,
+  "features": [
+    "tmean_mjja",
+    "precip_mjja",
+    "gdd5",
+    "heat30",
+    "dry_max",
+    "et0",
+    "p30_anom",
+    "lat",
+    "lon",
+    "yield_lag1"
+  ],
+  "top3": [
+    {
+      "feature": "yield_lag1",
+      "mean_abs_shap": 2.5522202088222747,
+      "mean_shap": 2.5522202088222747,
+      "mean_value": 19.162
+    },
+    {
+      "feature": "tmean_mjja",
+      "mean_abs_shap": 0.21724026504900648,
+      "mean_shap": -0.14607465910266906,
+      "mean_value": 18.125
+    },
+    {
+      "feature": "dry_max",
+      "mean_abs_shap": 0.15302724075986934,
+      "mean_shap": -0.15302724075986934,
+      "mean_value": 11.5
+    }
+  ],
+  "base_value": 8.146096381737648
+}

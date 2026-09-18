@@ -1,0 +1,436 @@
+[
+  {
+    "district": "Esil",
+    "date": "2024-08-12",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UUC_20240812T115053",
+    "status": "listed via requests (cloud=5.866782): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-08-12",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240812T063631_R120_T41UQT_20240812T115053",
+    "status": "listed via requests (cloud=5.95143): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-07-31",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240731T064629_R020_T41UQT_20240731T091612",
+    "status": "listed via requests (cloud=18.559279): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-18",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UUC_20240618T111713",
+    "status": "listed via requests (cloud=9.0164): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-18",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T41UQT_20240618T111720",
+    "status": "listed via requests (cloud=11.747792): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-13",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UUC_20240613T121317",
+    "status": "listed via requests (cloud=8.479484): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-13",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T41UQT_20240613T121316",
+    "status": "listed via requests (cloud=12.562108): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-03",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332",
+    "status": "listed via requests (cloud=4.339637): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-03",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
+    "status": "listed via requests (cloud=3.518136): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-01",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240601T064629_R020_T42UUC_20240601T102334",
+    "status": "listed via requests (cloud=2.01013): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2024-06-01",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240601T064629_R020_T41UQT_20240601T102620",
+    "status": "listed via requests (cloud=3.999672): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-29",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250829T064321_R120_T42UUC_20250829T092116",
+    "status": "listed via requests (cloud=0.011997): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-29",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250829T064321_R120_T41UQT_20250829T092116",
+    "status": "listed via requests (cloud=0.024592): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-27",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250827T063641_R120_T42UUC_20250827T101257",
+    "status": "listed via requests (cloud=0.13695): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-27",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250827T063641_R120_T41UQT_20250827T101257",
+    "status": "listed via requests (cloud=0.179054): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-25",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250825T064629_R020_T42UUC_20250825T090844",
+    "status": "listed via requests (cloud=13.746718): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-25",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250825T064629_R020_T41UQT_20250825T090844",
+    "status": "listed via requests (cloud=13.20599): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-10",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250810T064641_R020_T42UUC_20250810T102215",
+    "status": "listed via requests (cloud=17.46531): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-10",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250810T064641_R020_T41UQT_20250810T102215",
+    "status": "listed via requests (cloud=15.776064): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-09",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UUC_20250809T092714",
+    "status": "listed via requests (cloud=5.684152): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-08-09",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T41UQT_20250809T092714",
+    "status": "listed via requests (cloud=5.415161): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-07-21",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250721T064651_R020_T42UUC_20250721T100116",
+    "status": "listed via requests (cloud=9.594855): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-07-21",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250721T064651_R020_T41UQT_20250721T100116",
+    "status": "listed via requests (cloud=12.525304): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-07-20",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UUC_20250720T103615",
+    "status": "listed via requests (cloud=1e-05): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-07-20",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T41UQT_20250720T103615",
+    "status": "listed via requests (cloud=0.0): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-07-06",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250706T064629_R020_T42UUC_20250706T092816",
+    "status": "listed via requests (cloud=19.282901): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-06-16",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250616T064619_R020_T42UUC_20250616T090449",
+    "status": "listed via requests (cloud=0.028212): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-06-16",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250616T064619_R020_T41UQT_20250616T090449",
+    "status": "listed via requests (cloud=0.029395): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-06-08",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UUC_20250608T102014",
+    "status": "listed via requests (cloud=0.055016): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-06-08",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T41UQT_20250608T102014",
+    "status": "listed via requests (cloud=0.027548): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-06-06",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250606T064629_R020_T42UUC_20250606T090705",
+    "status": "listed via requests (cloud=11.151563): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Esil",
+    "date": "2025-06-06",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250606T064629_R020_T41UQT_20250606T090705",
+    "status": "listed via requests (cloud=10.085195): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-07-23",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UWD_20240723T124800",
+    "status": "listed via requests (cloud=10.256317): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-07-23",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UVD_20240723T124800",
+    "status": "listed via requests (cloud=3.603163): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-20",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240620T062631_R077_T42UVD_20240620T125055",
+    "status": "listed via requests (cloud=16.130312): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-18",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+    "status": "listed via requests (cloud=13.218546): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-18",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UVD_20240618T101653",
+    "status": "listed via requests (cloud=6.88678): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-13",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+    "status": "listed via requests (cloud=3.042777): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-13",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UVD_20240613T121314",
+    "status": "listed via requests (cloud=0.035945): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-03",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+    "status": "listed via requests (cloud=10.030427): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2024-06-03",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UVD_20240603T121604",
+    "status": "listed via requests (cloud=1.679981): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-29",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250829T062629_R077_T42UWD_20250829T083857",
+    "status": "listed via requests (cloud=17.51741): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-26",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250826T063321_R077_T42UVD_20250826T080215",
+    "status": "listed via requests (cloud=4.108594): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-24",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UWD_20250824T100321",
+    "status": "listed via requests (cloud=0.758717): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-24",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UVD_20250824T100321",
+    "status": "listed via requests (cloud=1.693989): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-22",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250822T063629_R120_T42UVD_20250822T085323",
+    "status": "listed via requests (cloud=14.614768): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-19",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UWD_20250819T083232",
+    "status": "listed via requests (cloud=12.253881): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-19",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UVD_20250819T083232",
+    "status": "listed via requests (cloud=6.228629): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-09",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UVD_20250809T092714",
+    "status": "listed via requests (cloud=16.870061): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-08-09",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250809T062629_R077_T42UVD_20250809T083435",
+    "status": "listed via requests (cloud=19.157377): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-28",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250728T063651_R120_T42UWD_20250728T102014",
+    "status": "listed via requests (cloud=3.625038): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-28",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250728T063651_R120_T42UVD_20250728T102014",
+    "status": "listed via requests (cloud=1.735293): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-20",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UWD_20250720T103615",
+    "status": "listed via requests (cloud=9.2e-05): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-20",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UVD_20250720T103615",
+    "status": "listed via requests (cloud=0.000182): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-20",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UWD_20250720T074607",
+    "status": "listed via requests (cloud=0.002183): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-20",
+    "ndvi_mean": null,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UVD_20250720T074607",
+    "status": "listed via requests (cloud=5e-05): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-07-17",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250717T063331_R077_T42UWD_20250717T091809",
+    "status": "listed via requests (cloud=11.010783): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-06-10",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250610T064321_R120_T42UWD_20250610T092820",
+    "status": "listed via requests (cloud=3.227781): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-06-10",
+    "ndvi_mean": null,
+    "scene_id": "S2A_MSIL2A_20250610T064321_R120_T42UVD_20250610T092820",
+    "status": "listed via requests (cloud=2.362859): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-06-08",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UWD_20250608T102014",
+    "status": "listed via requests (cloud=4.184321): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-06-08",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UVD_20250608T102014",
+    "status": "listed via requests (cloud=0.569786): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zerenda",
+    "date": "2025-06-05",
+    "ndvi_mean": null,
+    "scene_id": "S2C_MSIL2A_20250605T062651_R077_T42UWD_20250605T100315",
+    "status": "listed via requests (cloud=12.632954): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  }
+]

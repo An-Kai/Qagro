@@ -1,31 +1,35 @@
-"""approx_crops.py — честный fallback для культур без обучающих данных.
+"""approx_crops.py — честный fallback для культур без обучающих данных (v2).
 
-Панель akmola_panel.csv содержит ТОЛЬКО spring_wheat и barley, поэтому LGBM
-обучен только для них. Чтобы бот показывал 6 культур (как в
-config/districts.yaml), остальные 4 — строго rule-based линейным
-масштабированием от прогноза пшеницы, с пометкой APPROX везде:
+v1: панель содержала ТОЛЬКО spring_wheat и barley, поэтому LGBM был только
+для них, а oats/sunflower/rapeseed/flax — строго rule-based масштабированием
+от пшеницы с пометкой APPROX.
+
+v2: панель содержит 6 культур (см. src/fetch_stat.py). train.py обучает LGBM
+для каждой культуры, где строк >= 40. После обучения is_approx(crop) == False
+для обученных культур (модель существует) — API/бот/страховка автоматически
+переходят на LGBM. APPROX остаётся ТОЛЬКО как fallback, если модели нет:
 
   APPROX_YIELD_FACTOR — множитель урожайности (ц/га) от spring_wheat:
-    oats      x1.02  (овёс: биомасса чуть выше пшеницы на севере КЗ)
-    sunflower x0.85  (подсолнечник: масса семян, другая влажность)
-    rapeseed  x0.72  (рапс)
-    flax      x0.58  (лён масличный)
+    oats      x1.02
+    sunflower x0.85
+    rapeseed  x0.72
+    flax      x0.58
 
   APPROX_PRICE_KZT — ориентир цены тг/т (рынок Акмолы 2024-25, НЕ тариф):
     oats 70 000, sunflower 180 000, rapeseed 200 000, flax 220 000.
 
-НЕ обучать для них LGBM без данных — это было бы подлогом. Любой ответ
-по этим культурам обязан содержать flag "APPROX".
+Любой ответ по fallback-культуре обязан содержать flag "APPROX".
 """
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 APPROX_YIELD_FACTOR: dict[str, float] = {
-    "oats": 1.02,       # APPROX: linear scaling from spring_wheat
-    "sunflower": 0.85,  # APPROX: linear scaling from spring_wheat
-    "rapeseed": 0.72,   # APPROX: linear scaling from spring_wheat
-    "flax": 0.58,       # APPROX: linear scaling from spring_wheat
+    "oats": 1.02,       # APPROX fallback: linear scaling from spring_wheat
+    "sunflower": 0.85,  # APPROX fallback
+    "rapeseed": 0.72,   # APPROX fallback
+    "flax": 0.58,       # APPROX fallback
 }
 
 APPROX_PRICE_KZT: dict[str, int] = {
@@ -38,6 +42,13 @@ APPROX_PRICE_KZT: dict[str, int] = {
 LGBM_CROPS = ("spring_wheat", "barley")
 APPROX_CROPS = tuple(APPROX_YIELD_FACTOR.keys())
 ALL_CROPS = LGBM_CROPS + APPROX_CROPS  # 6 культур для бота
+
+_ROOT = Path(__file__).resolve().parents[1]
+_MODELS = _ROOT / "models"
+
+
+def _model_exists(crop: str) -> bool:
+    return (_MODELS / f"lgbm_{crop}.pkl").exists()
 
 
 def _wheat_predict(district_en: str, weather_2026_dict: dict[str, Any]) -> dict[str, Any]:
@@ -52,7 +63,12 @@ def _wheat_predict(district_en: str, weather_2026_dict: dict[str, Any]) -> dict[
 
 
 def is_approx(crop: str) -> bool:
-    return crop in APPROX_YIELD_FACTOR
+    """True — только если это fallback-культура И LGBM-модели для неё нет.
+
+    v2: после обучения lgbm_oats.pkl и др. is_approx('oats') == False,
+    и весь стек (API/бот/страховка) использует настоящий LGBM.
+    """
+    return crop in APPROX_YIELD_FACTOR and not _model_exists(crop)
 
 
 def predict_approx(district_en: str, crop: str,

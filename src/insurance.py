@@ -35,6 +35,8 @@ ROOT = Path(__file__).resolve().parents[1]
 PANEL = ROOT / "data" / "processed" / "akmola_panel.csv"
 MODELS = ROOT / "models"
 CONFIG = ROOT / "config" / "districts.yaml"
+METRICS = ROOT / "metrics" / "metrics.json"
+WIDE_FACTOR = 1.5
 
 TARGET = "yield_c_ha"
 WEATHER_KEYS = ("tmean_mjja", "precip_mjja", "gdd5", "heat30",
@@ -139,6 +141,24 @@ def _neutral_weather(df: pd.DataFrame, district_en: str) -> dict:
     return {k: round(float(win[k].mean()), 2) for k in WEATHER_KEYS}
 
 
+def _experimental_set() -> set[str]:
+    """Культуры с below_baseline=true в metrics/metrics.json."""
+    import json
+
+    try:
+        if not METRICS.exists():
+            return set()
+        data = json.loads(METRICS.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    return {c for c, m in data.items()
+            if isinstance(m, dict) and m.get("below_baseline") is True}
+
+
+def is_experimental(crop: str) -> bool:
+    return crop in _experimental_set()
+
+
 def _resid_std(crop: str) -> float:
     base = "spring_wheat" if is_approx(crop) else crop
     p = MODELS / f"lgbm_{base}.pkl"
@@ -149,6 +169,8 @@ def _resid_std(crop: str) -> float:
     std = float(bundle["residual_std"])
     if is_approx(crop):
         std = std * float(APPROX_YIELD_FACTOR[crop])
+    if is_experimental(crop):
+        std = std * WIDE_FACTOR
     return std
 
 
@@ -164,13 +186,24 @@ def insurance_quote(district_en: str, crop: str) -> dict:
 
     mean5, years = _mean5(df, district_en, crop, window)
     weather = _neutral_weather(df, district_en)
+    experimental = is_experimental(crop)
 
     if is_approx(crop):
         pred = _predict_approx(district_en, crop, weather)
         price = float(APPROX_PRICE_KZT[crop])
+        method = "APPROX linear scaling from spring_wheat"
+    elif experimental:
+        # Честный fallback: LGBM хуже бейзлайна -> y_pred = baseline mean5,
+        # интервал шире учтён в _resid_std (residual*1.5).
+        # predict_yield уже возвращает baseline для experimental культур.
+        pred = _predict_lgbm(district_en, crop, weather)
+        price = float(APPROX_PRICE_KZT.get(crop, st["price"]))
+        method = ("baseline-5y mean (experimental: LGBM below baseline "
+                  "on hold-out 2021-2025; interval x1.5)")
     else:
         pred = _predict_lgbm(district_en, crop, weather)
         price = st["price"]
+        method = "LGBM + baseline-5y + OOF residual_std"
     y_pred = float(pred["y_pred"])
     std = _resid_std(crop)
 
@@ -193,8 +226,8 @@ def insurance_quote(district_en: str, crop: str) -> dict:
         "district_en": district_en,
         "crop": crop,
         "approx": bool(is_approx(crop)),
-        "method": ("APPROX linear scaling from spring_wheat" if is_approx(crop)
-                   else "LGBM + baseline-5y + OOF residual_std"),
+        "experimental": bool(experimental),
+        "method": method,
         "mean5_c_ha": mean5,
         "mean5_years": years,
         "y_pred_c_ha": round(y_pred, 2),

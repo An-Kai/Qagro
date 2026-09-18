@@ -1,0 +1,38 @@
+{
+  "crop": "flax",
+  "year": 2025,
+  "n_rows": 10,
+  "features": [
+    "tmean_mjja",
+    "precip_mjja",
+    "gdd5",
+    "heat30",
+    "dry_max",
+    "et0",
+    "p30_anom",
+    "lat",
+    "lon",
+    "yield_lag1"
+  ],
+  "top3": [
+    {
+      "feature": "yield_lag1",
+      "mean_abs_shap": 0.6275283956683668,
+      "mean_shap": 0.6275283956683668,
+      "mean_value": 8.681000000000001
+    },
+    {
+      "feature": "tmean_mjja",
+      "mean_abs_shap": 0.17742377886521835,
+      "mean_shap": 0.022076502913850948,
+      "mean_value": 18.125
+    },
+    {
+      "feature": "gdd5",
+      "mean_abs_shap": 0.1661595173290038,
+      "mean_shap": 0.08838557560914502,
+      "mean_value": 1437.77
+    }
+  ],
+  "base_value": 5.5776586060165405
+}

@@ -77,7 +77,7 @@ def write_data_card(panel: pd.DataFrame) -> None:
   et0 — мм (FAO); p30_anom — % к норме 2005–2020.
 
 ## Источники (без выдуманных данных)
-1. **Урожайность — Бюро национальной статистики РК (stat.gov.kz)**:
+1. **Урожайность пшеница/ячмень — Бюро национальной статистики РК (stat.gov.kz)**:
    динамические таблицы Акмолинской области
    (`/ru/region/akmola/dynamic-tables/1485`, раздел зерновых) и публикация
    валового сбора 2024 (вес после доработки, 04.02.2025): зерновые 25 204.8 тыс.т,
@@ -91,17 +91,39 @@ def write_data_card(panel: pd.DataFrame) -> None:
 3. **FAOSTAT QCL + USDA FAS GAIN (валидация формы ряда 2005–2021)**:
    засухи 2010/2012/2019 (~1.01 т/га)/2021, рекорд 2011; USDA PSD barley
    10-yr avg 1.445 т/га. Портал: fao.org/faostat.
-4. **NASA POWER Monthly Point (реанализ MERRA-2)**: T2M/T2M_MAX/T2M_MIN/
+4. **v2 новые культуры — областные якоря (см. src/fetch_stat.py, колонка source)**:
+   oats — BNS via CEIC KZ.B019 (2016 16.0, 2017 13.3, 2011 max 18.0) + GAIN
+   KZ2023-0002 (2022 11.6) / KZ2024-0002 (2023 7.9) + Interfax/Минсельхоз
+   30.09.2024 (2024 15.8) + 2025 PRELIM 16.9;
+   sunflower — BNS via CEIC (2016 9.3, 2017 10.2) + OCL 2025 avg 7.9
+   + GAIN KZ2025-0010 + APK-Inform/BNS 2024 14.6 / 2025 13.9;
+   rapeseed — Helgi/FAOSTAT (2021 12.34, 2022 14.15) + OCL avg 12.2
+   + APK/BNS 2022 14.2 / 2023 13.3 / 2024 19.2 / 2025 19.5;
+   flax — OCL avg 6.6 + APK/BNS 2022 6.3 / 2023 5.0 / 2024 8.7 + 2025 PRELIM 8.3.
+   Форма 2005–2021 — засушливый профиль FAOSTAT (2010/2012/2021 низко, 2011 высоко).
+5. **NASA POWER Monthly Point (реанализ MERRA-2)**: T2M/T2M_MAX/T2M_MIN/
    PRECTOTCORR/RH2M/ALLSKY_SFC_SW_DWN/WS2M/GWETTOP, community=AG, 2005–2025.
    Сырые ответы: `data/raw/nasa_<EN>.json`; агрегаты: `data/raw/nasa_summary.csv`.
-5. **Open-Meteo Archive (ERA5)**: daily tmax/tmin/precip/ET0 FAO 2005-01-01–2025-08-31,
+6. **Open-Meteo Archive (ERA5)**: daily tmax/tmin/precip/ET0 FAO 2005-01-01–2025-08-31,
    hourly soil_moisture_3_9cm; timezone Asia/Almaty. Сырое: `data/raw/openmeteo_*_daily.json`;
    агрегаты: `data/raw/openmeteo_summary.csv`.
-6. **Координаты районов** — `config/districts.yaml` (центроиды WGS84).
+7. **Координаты районов** — `config/districts.yaml` (центроиды WGS84).
+8. **v2 NDVI Sentinel-2 (пилот, только список сцен, БЕЗ выдуманных чисел)**:
+   `data/ndvi/ndvi_timeseries.json` (Esil/Zerenda, июнь–август 2024–2025,
+   cloud<20%, collection sentinel-2-l2a, Planetary Computer STAC без ключа;
+   `python src/sentinel_ndvi.py`); все `ndvi_mean=None` (MISSING).
+   Ручной источник: Copernicus Browser https://browser.dataspace.copernicus.eu/
+   + Sentinel Hub https://www.sentinel-hub.com/. Модель работает без NDVI
+   (optional join `src/features_ndvi.py`: `ndvi_max` только при настоящих NDVI).
 
 ## Честные ограничения (прочитай перед моделированием)
-- **2025 yield — ПРЕДВАРИТЕЛЬНЫЙ** (уборка осени 2025, значение = областной якорь
-  15.8/16.8 ц/га × агрокоэф.; в модели лучше держать флагом или исключить из train).
+- **2025 yield — ПРЕДВАРИТЕЛЬНЫЙ** (пшеница/ячмень 15.8/16.8; oats 16.9; flax 8.3;
+  подсолнечник/рапс 2025 — офиц. БНС/APK-Inform: 13.9/19.5).
+  Район = областной якорь × агрокоэф.; в модели 2025 лучше держать флагом.
+- **Подсолнечник/рапс/лён 2024–2025 — структурный сдвиг** (гибриды, площади:
+  подсолнечник 1.5 т/га в 2024 vs 0.8 в 2014 — GAIN KZ2025-0010; рапс 19+ ц/га).
+  LGBM, обученный на <=2020, на hold-out 2021–2025 для этих культур ХУЖЕ бейзлайна
+  (см. metrics/metrics.json: below_baseline=true) — фиксируем честно, без подгонки.
 - **Районная урожайность = областной якорь × агрозональный коэффициент**
   (север 1.02–1.06, юг 0.92–0.98; среднее ~1.0). Районные длинные ряды БНС
   публично не разбиты — это задокументированный даунскейлинг, НЕ наблюдение.
@@ -115,7 +137,7 @@ def write_data_card(panel: pd.DataFrame) -> None:
   Климатология аномалии p30_anom — норма осадков 2005–2020 того же района.
 
 ## Покрытие и качество
-- Строк: **{n_rows}** (ожидалось 10 районов × 21 год × 2 культуры = 420).
+- Строк: **{n_rows}** (v2: 10 районов × 21 год × 6 культур = 1260; v1 было 420).
 - NaN в `yield_c_ha`: **{int(miss['yield_c_ha'])}** (требование: 0). Полные NaN по колонкам:
 
 | column | n_missing |
@@ -144,6 +166,7 @@ Get-ChildItem data/raw, data/processed
 - `data/raw/stat_yield.csv` (year,district,crop,yield_c_ha,source)
 - `data/raw/nasa_<EN>.json` ×10, `data/raw/nasa_summary.csv`
 - `data/raw/openmeteo_<EN>_daily.json` ×10, `data/raw/openmeteo_summary.csv`
+- `data/ndvi/ndvi_timeseries.json` (v2: список сцен Sentinel-2, ndvi_mean=MISSING)
 """
     CARD.write_text(card, encoding="utf-8")
     log.info("WROTE %s", CARD)
