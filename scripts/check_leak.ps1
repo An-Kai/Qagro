@@ -14,7 +14,7 @@ $ROOT = Split-Path -Parent $PSScriptRoot
 if (-not $ROOT -or $ROOT -eq "") { $ROOT = (Get-Location).Path }
 Set-Location -LiteralPath $ROOT
 
-$FRAG = "8816" + "408969"
+$FRAG = "AAH" + "27Pgz"
 $failed = $false
 
 Write-Host "=== 1/4 git ls-files | .env ==="
