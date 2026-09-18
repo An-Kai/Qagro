@@ -59,10 +59,17 @@ def build_report_pdf(
     risk: dict | None = None,
     rec: dict | None = None,
     district_ru: str | None = None,
+    calendar: dict | None = None,
+    alerts: list | None = None,
+    alerts_error: str | None = None,
+    elevator: dict | None = None,
 ) -> bytes:
     """Собрать PDF-отчёт. Все аргументы кроме district_en/crop опциональны.
 
-    Возвращает bytes PDF. Не ходит в сеть, только форматирует переданное.
+    C8: calendar/alerts/elevator опциональны; если не переданы — календарь
+    и элеватор подтягиваются best-effort офлайн (без сети), алерты только
+    из аргумента (онлайн их кладёт вызывающий: API/бот). Возвращает bytes.
+    Не ходит в сеть, только форматирует переданное.
     """
     from reportlab.lib import colors
     from reportlab.lib.pagesizes import A4
@@ -192,6 +199,73 @@ def build_report_pdf(
         ]))
     else:
         story.append(Paragraph("No recommendation data.", styles["Normal"]))
+    story.append(Spacer(1, 8))
+
+    # 5) C8: календарь + алерты + ближайший элеватор
+    story.append(Paragraph("5. Calendar, alerts & elevator (C8)", styles["Heading2"]))
+    cal = calendar
+    if cal is None:  # офлайн-фолбэк без сети
+        try:
+            try:
+                from src.calendar import sowing_calendar as _cal
+            except ImportError:
+                from calendar import sowing_calendar as _cal  # type: ignore
+            cal = _cal(crop, lang if lang in ("ru", "kz", "en") else "ru")
+        except Exception:
+            cal = None
+    if cal:
+        gdd = cal.get("gdd_norm") or []
+        story.append(_kv_table([
+            ("sowing window", cal.get("sowing_window")),
+            ("harvest window", cal.get("harvest_window")),
+            ("GDD norm", f"{gdd} (base {cal.get('gdd_base_temp')} °C)"
+             if gdd else str(cal.get("gdd_base_temp"))),
+            ("note", cal.get("note")),
+            ("source", cal.get("source", "agro-practice")),
+        ]))
+    else:
+        story.append(Paragraph("No calendar data.", styles["Normal"]))
+    story.append(Spacer(1, 4))
+    if alerts:
+        adata = [[Paragraph("<b>date</b>", styles["Normal"]),
+                  Paragraph("<b>type/level</b>", styles["Normal"]),
+                  Paragraph("<b>message</b>", styles["Normal"])]]
+        key = {"ru": "msg_ru", "kz": "msg_kz", "en": "msg_en"}.get(lang, "msg_ru")
+        for a in alerts[:10]:
+            adata.append([
+                Paragraph(_esc(str(a.get("date"))), styles["Normal"]),
+                Paragraph(_esc(f"{a.get('type')}/{a.get('level')}"), styles["Normal"]),
+                Paragraph(_esc(str(a.get(key) or a.get("msg_ru"))), styles["Normal"]),
+            ])
+        at = Table(adata, colWidths=(90, 100, 290))
+        at.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+                                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8e8e8"))]))
+        story.append(at)
+    else:
+        _a_err = alerts_error or (
+            "нет свежих алертов (прогноз Open-Meteo недоступен или угроз нет)")
+        story.append(Paragraph(
+            _esc("Alerts offline: " + str(_a_err) + " — проверьте /alerts при сети."),
+            styles["Normal"]))
+    story.append(Spacer(1, 4))
+    elev = elevator
+    if elev is None:  # офлайн-фолбэк без сети
+        try:
+            try:
+                from src.logistics import nearest_elevator as _ne
+            except ImportError:
+                from logistics import nearest_elevator as _ne  # type: ignore
+            elev = _ne(district_en)
+        except Exception:
+            elev = None
+    if elev:
+        story.append(_kv_table([
+            ("nearest elevator", f"{elev.get('name_ru')} ({elev.get('name')})"),
+            ("distance", f"{elev.get('dist_km')} km"),
+            ("coords note", "оценочные (Qoldau granaries-map, уточнить)"),
+        ]))
+    else:
+        story.append(Paragraph("No elevator data.", styles["Normal"]))
     story.append(Spacer(1, 10))
 
     story.append(Paragraph(

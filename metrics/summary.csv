@@ -1,0 +1,7 @@
+crop,baseline_mae,baseline_rmse,baseline_r2,lgbm_mae,lgbm_rmse,lgbm_r2,n,resid_mean,resid_std,below_baseline,status
+spring_wheat,2.6825,2.8865,-0.2643,1.4643,1.7184,0.5519,50,1.0237,1.3942,False,strong
+barley,2.7824,3.0022,-0.2574,1.5225,1.8145,0.5407,50,1.1169,1.4445,False,strong
+oats,3.589,4.0037,-0.3324,1.6494,1.9181,0.6942,50,0.0645,1.9365,False,strong
+sunflower,2.5236,3.6913,-0.3472,2.8001,3.852,-0.4671,50,2.7526,2.722,True,experimental
+rapeseed,3.6985,4.2603,-0.8547,5.2534,5.9205,-2.5819,50,5.2534,2.7578,True,experimental
+flax,1.2176,1.4395,-0.0511,1.6531,2.0193,-1.0684,50,1.5145,1.3493,True,experimental

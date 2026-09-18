@@ -128,8 +128,33 @@ def _search(bbox: list[float], dt: str) -> tuple[list[dict], str]:
     return items, "requests"
 
 
+def _load_real_ndvi() -> dict[str, dict]:
+    """Ранее полученные НАСТОЯЩИЕ ndvi_mean {scene_id: запись}.
+
+    C7: реальные NDVI берутся через PC TiTiler statistics (см. ndvi_timeseries.json).
+    Повторный запуск поиска сцен не должен затирать их в None — сохраняем.
+    Возвращает только записи с конечным числом ndvi_mean (не None).
+    """
+    try:
+        raw = json.loads(OUT_JSON.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    out: dict[str, dict] = {}
+    for r in raw:
+        if not isinstance(r, dict):
+            continue
+        sid = r.get("scene_id")
+        m = r.get("ndvi_mean")
+        if sid and isinstance(m, (int, float)) and -1.0 <= m <= 1.0:
+            out[sid] = r
+    return out
+
+
 def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    keep = _load_real_ndvi()
+    if keep:
+        print(f"[sentinel_ndvi] сохраняю {len(keep)} реальных ndvi_mean из {OUT_JSON}", flush=True)
     records: list[dict] = []
     n_listed = 0
     n_error = 0
@@ -153,6 +178,17 @@ def main() -> None:
                     })
                 for it in items:
                     n_listed += 1
+                    sid = it.get("scene_id")
+                    if sid in keep:
+                        # Не затираем настоящее значение, полученное через TiTiler (C7)
+                        records.append({
+                            "district": den,
+                            "date": it.get("date"),
+                            "ndvi_mean": keep[sid]["ndvi_mean"],
+                            "scene_id": sid,
+                            "status": keep[sid].get("status", "") + " | kept on rerun",
+                        })
+                        continue
                     records.append({
                         "district": den,
                         "date": it.get("date"),
@@ -173,9 +209,11 @@ def main() -> None:
                     "scene_id": None,
                     "status": msg + " | модель работает без NDVI (optional join)",
                 })
-    # страховка: ни одного выдуманного числа
+    # страховка: новые записи — только None; не-None допустим лишь
+    # из ранее сохранённых настоящих значений (keep), числа не выдумываем
     for r in records:
-        if r.get("ndvi_mean") is not None:
+        m = r.get("ndvi_mean")
+        if m is not None and r.get("scene_id") not in keep:
             raise RuntimeError("ndvi_mean должен быть None (MISSING) в v2 — числа не выдумываем")
     with open(OUT_JSON, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)

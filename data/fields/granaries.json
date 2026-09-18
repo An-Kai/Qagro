@@ -8,7 +8,7 @@
   "granaries": [
     {
       "id": "kokshetau",
-      "name_ru": "Кокшетауский элеватор",
+      "name_ru": "Кокшетау",
       "name_en": "Kokshetau",
       "lat": 53.287,
       "lon": 69.375,
@@ -18,7 +18,7 @@
     },
     {
       "id": "atbasar",
-      "name_ru": "Атбасарский элеватор",
+      "name_ru": "Атбасар",
       "name_en": "Atbasar",
       "lat": 51.812,
       "lon": 68.367,
@@ -28,7 +28,7 @@
     },
     {
       "id": "makinsk",
-      "name_ru": "Макинский элеватор",
+      "name_ru": "Макинск",
       "name_en": "Makinsk",
       "lat": 52.635,
       "lon": 70.42,
@@ -38,7 +38,7 @@
     },
     {
       "id": "esil",
-      "name_ru": "Есильский элеватор",
+      "name_ru": "Есиль",
       "name_en": "Esil",
       "lat": 51.956,
       "lon": 66.41,
@@ -48,7 +48,7 @@
     },
     {
       "id": "derzhavinsk",
-      "name_ru": "Державинский элеватор",
+      "name_ru": "Державинск",
       "name_en": "Derzhavinsk",
       "lat": 51.099,
       "lon": 66.312,
@@ -58,7 +58,7 @@
     },
     {
       "id": "stepnogorsk",
-      "name_ru": "Степногорский элеватор",
+      "name_ru": "Степногорск",
       "name_en": "Stepnogorsk",
       "lat": 52.346,
       "lon": 71.887,
@@ -68,7 +68,7 @@
     },
     {
       "id": "shortandy",
-      "name_ru": "Шортандинский элеватор",
+      "name_ru": "Шортанды",
       "name_en": "Shortandy",
       "lat": 51.708,
       "lon": 71.003,
@@ -78,7 +78,7 @@
     },
     {
       "id": "akkol",
-      "name_ru": "Аккольский элеватор",
+      "name_ru": "Акколь",
       "name_en": "Akkol",
       "lat": 52.006,
       "lon": 70.94,
@@ -88,7 +88,7 @@
     },
     {
       "id": "ereimentau",
-      "name_ru": "Ерейментауский элеватор",
+      "name_ru": "Ерейментау",
       "name_en": "Ereimentau",
       "lat": 51.614,
       "lon": 73.099,
@@ -98,7 +98,7 @@
     },
     {
       "id": "shchuchinsk",
-      "name_ru": "Щучинский элеватор",
+      "name_ru": "Щучинск",
       "name_en": "Shchuchinsk",
       "lat": 52.942,
       "lon": 70.2,
@@ -108,7 +108,7 @@
     },
     {
       "id": "zerenda",
-      "name_ru": "Зерендинское ХПП",
+      "name_ru": "Зеренда",
       "name_en": "Zerenda",
       "lat": 53.054,
       "lon": 69.163,
@@ -118,7 +118,7 @@
     },
     {
       "id": "balkashino",
-      "name_ru": "Балкашинское ХПП",
+      "name_ru": "Балкашино",
       "name_en": "Balkashino",
       "lat": 52.515,
       "lon": 68.758,

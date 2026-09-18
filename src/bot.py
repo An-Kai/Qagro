@@ -41,15 +41,19 @@ except ImportError:
     pass
 
 try:  # пакетный импорт
+    from src.alerts import check_alerts
     from src.approx_crops import ALL_CROPS
     from src.approx_crops import predict_approx
+    from src.calendar import sowing_calendar
     from src.insurance import insurance_quote
     from src.predict import predict_yield
     from src.recommend import recommend_sowing
     from src.report_pdf import build_report_pdf
 except ImportError:  # запуск из папки src/
+    from alerts import check_alerts  # type: ignore
     from approx_crops import ALL_CROPS  # type: ignore
     from approx_crops import predict_approx  # type: ignore
+    from calendar import sowing_calendar  # type: ignore
     from insurance import insurance_quote  # type: ignore
     from predict import predict_yield  # type: ignore
     from recommend import recommend_sowing  # type: ignore
@@ -80,13 +84,112 @@ T: dict[str, dict[str, str]] = {
     "choose_lang": {"ru": "Выберите язык / Тілді таңдаңыз / Choose language:",
                     "kz": "Тілді таңдаңыз / Выберите язык / Choose language:",
                     "en": "Choose language / Выберите язык / Тілді таңдаңыз:"},
-    "choose_district": {"ru": "Выберите район:", "kz": "Ауданды таңдаңыз:",
+    "choose_district": {"ru": "Выберите район:",
+                        "kz": "Ауданды таңдаңыз:",
                         "en": "Choose district:"},
-    "choose_crop": {"ru": "Выберите культуру:", "kz": "Дақылды таңдаңыз:",
+    "choose_crop": {"ru": "Выберите культуру:",
+                    "kz": "Дақылды таңдаңыз:",
                     "en": "Choose crop:"},
     "risk_offline": {"ru": "риск офлайн (светофор по p_loss)",
                      "kz": "тәуекел офлайн (p_loss бойынша бағдаршам)",
                      "en": "risk offline (p_loss-based light)"},
+    # C3: дружелюбные тексты без смены логики
+    "start_hello": {
+        "ru": "🌾 Привет! Я Qagro — подскажу прогноз урожая в Акмолинской области.\n"
+              "🌾 Сәлем! Мен Qagro — Ақмола облысы бойынша өнім болжамын беремін.\n"
+              "🌾 Hello! I'm Qagro — yield forecast for Akmola region.\n"
+              "Нажми /help для примеров 👇",
+        "kz": "🌾 Сәлем! Мен Qagro — Ақмола облысы бойынша өнім болжамын беремін.\n"
+              "🌾 Привет! Я Qagro — подскажу прогноз урожая в Акмолинской области.\n"
+              "🌾 Hello! I'm Qagro — yield forecast for Akmola region.\n"
+              "/help басыңыз 👇",
+        "en": "🌾 Hello! I'm Qagro — yield forecast for Akmola region.\n"
+              "🌾 Привет! Я Qagro — подскажу прогноз урожая в Акмолинской области.\n"
+              "🌾 Сәлем! Мен Qagro — Ақмола облысы бойынша өнім болжамын беремін.\n"
+              "Tap /help for examples 👇",
+    },
+    "err_no_district": {"ru": "Не нашел район, выбери кнопкой 👇",
+                        "kz": "Аудан табылмады, батырмамен таңдаңыз 👇",
+                        "en": "District not found, please choose with a button 👇"},
+    "err_generic": {"ru": "😔 Что-то пошло не так. Попробуй ещё раз или нажми 🔄 Новый прогноз.",
+                    "kz": "😔 Бірдеңе дұрыс болмады. Қайталап көріңіз немесе 🔄 Жаңа болжам басыңыз.",
+                    "en": "😔 Something went wrong. Try again or tap 🔄 New forecast."},
+    "err_offline": {"ru": "📡 Погода офлайн — показываю сохранённый прогноз. Риск примерный.",
+                    "kz": "📡 Ауа райы офлайн — сақталған болжамды көрсетемін. Тәуекел шамамен.",
+                    "en": "📡 Weather offline — showing saved forecast. Risk is approximate."},
+    "exp_note": {"ru": "* — экспериментальный прогноз (мало данных), ориентируйся на среднее.",
+                 "kz": "* — эксперименттік болжам (дерек аз), орташа мәнге қараңыз.",
+                 "en": "* — experimental forecast (little data), rely on the average."},
+    "btn_new": {"ru": "🔄 Новый прогноз", "kz": "🔄 Жаңа болжам",
+                "en": "🔄 New forecast"},
+    "btn_pdf": {"ru": "📄 PDF отчет", "kz": "📄 PDF есеп",
+                "en": "📄 PDF report"},
+    # C8: алерты (только факты Open-Meteo, без подписок)
+    "btn_alerts": {"ru": "⚠️ Алерты", "kz": "⚠️ Дабылдар",
+                   "en": "⚠️ Alerts"},
+    "alerts_none": {"ru": "✅ Угроз на 7 дней нет (заморозки/жара/ливни/суховей не найдены).",
+                    "kz": "✅ 7 күнге қауіп жоқ (үсік/ыстық/нөсер/қуаң жел табылмады).",
+                    "en": "✅ No threats for 7 days (no frost/heat/downpour/dry wind)."},
+    "alerts_need": {"ru": "Сначала выбери район кнопкой 👇, потом /alerts.",
+                    "kz": "Алдымен ауданды батырмамен таңдаңыз 👇, сосын /alerts.",
+                    "en": "Choose district with a button 👇 first, then /alerts."},
+}
+
+HELP_TEXT: dict[str, str] = {
+    "ru": ("🌾 Как получить прогноз:\n"
+           "1. /start → выбери язык\n"
+           "2. Выбери район кнопкой 👇 (10 районов Акмолы)\n"
+           "3. Выбери культуру (пшеница, ячмень, овёс, подсолнечник*, рапс*, лён*)\n"
+           "4. Получи прогноз + риск 🟢🟡🔴 + кнопки 📄 PDF отчет / 🔄 Новый прогноз\n"
+           "\nПримеры:\n"
+           "• Есильский → Пшеница яровая\n"
+           "• Отправь 📍 геолокацию — сам найду ближайший район\n"
+           "• /about — о команде и источниках\n"
+           "\n* — экспериментальный прогноз (мало данных), ориентируйся на среднее.\n"
+           "~ — оценка от пшеницы (мало данных)."),
+    "kz": ("🌾 Болжамды қалай алуға болады:\n"
+           "1. /start → тілді таңдаңыз\n"
+           "2. Ауданды батырмамен таңдаңыз 👇 (Ақмоланың 10 ауданы)\n"
+           "3. Дақылды таңдаңыз (бидай, арпа, сұлы, күнбағыс*, рапс*, зығыр*)\n"
+           "4. Болжам + тәуекел 🟢🟡🔴 + 📄 PDF есеп / 🔄 Жаңа болжам батырмаларын алыңыз\n"
+           "\nМысалдар:\n"
+           "• Есіл → Жаздық бидай\n"
+           "• 📍 Геолокация жіберіңіз — жақын ауданды өзім табамын\n"
+           "• /about — команда мен дереккөздер туралы\n"
+           "\n* — эксперименттік болжам (дерек аз), орташа мәнге қараңыз.\n"
+           "~ — бидайдан есептелген бағалау."),
+    "en": ("🌾 How to get a forecast:\n"
+           "1. /start → choose language\n"
+           "2. Choose district with a button 👇 (10 Akmola districts)\n"
+           "3. Choose crop (wheat, barley, oats, sunflower*, rapeseed*, flax*)\n"
+           "4. Get forecast + risk 🟢🟡🔴 + 📄 PDF report / 🔄 New forecast buttons\n"
+           "\nExamples:\n"
+           "• Esil → Spring wheat\n"
+           "• Send 📍 location — I'll find the nearest district\n"
+           "• /about — team & sources\n"
+           "\n* — experimental forecast (little data), rely on the average.\n"
+           "~ — wheat-based estimate (little data)."),
+}
+
+ABOUT_TEXT: dict[str, str] = {
+    "ru": ("🌾 Qagro — помощник фермера Акмолинской области (прогноз-2026).\n"
+           "\nКоманда: Kairbek Ansar (данные / ML / API) и Samat Ablayhan, капитан (бот / веб).\n"
+           "\nИсточники: Бюро нацстатистики РК, NASA POWER, Open-Meteo (ERA5), "
+           "FAOSTAT, OpenStreetMap, Qoldau (элеваторы).\n"
+           "\n⚠️ Дисклеймер: это decision support, не гарантия урожая и не страховой тариф. "
+           "Проверяй с агрономом."),
+    "kz": ("🌾 Qagro — Ақмола облысы фермерінің көмекшісі (2026 болжам).\n"
+           "\nКоманда: Kairbek Ansar (деректер / ML / API) және Samat Ablayhan, капитан (бот / веб).\n"
+           "\nДереккөздер: ҚР Ұлттық статистика бюросы, NASA POWER, Open-Meteo (ERA5), "
+           "FAOSTAT, OpenStreetMap, Qoldau (элеваторлар).\n"
+           "\n⚠️ Дисклеймер: бұл decision support — өнім кепілдігі де, сақтандыру тарифі де емес. "
+           "Агрономмен тексеріңіз."),
+    "en": ("🌾 Qagro — farmer assistant for Akmola region (2026 forecast).\n"
+           "\nTeam: Kairbek Ansar (data / ML / API) & Samat Ablayhan, captain (bot / web).\n"
+           "\nSources: Bureau of National Statistics (KZ), NASA POWER, Open-Meteo (ERA5), "
+           "FAOSTAT, OpenStreetMap, Qoldau (elevators).\n"
+           "\n⚠️ Disclaimer: decision support only, not a yield guarantee nor an insurance tariff. "
+           "Check with your agronomist."),
 }
 
 # ---------------------------------------------------------------- cache (SQLite)
@@ -281,7 +384,20 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
         lines.append("⚠️ APPROX: без обучающих данных (масштаб от пшеницы).")
     if experimental:
         lines.append("⚠️ EXPERIMENTAL baseline-5y: LGBM хуже бейзлайна на hold-out, интервал x1.5.")
+        # C3: понятная фермеру подпись experimental
+        lines.append(T["exp_note"].get(lang, T["exp_note"]["ru"]))
+    if risk.get("error"):
+        # C3: API offline — дружелюбно, без технического жаргона
+        lines.append(T["err_offline"].get(lang, T["err_offline"]["ru"]))
     return "\n".join(lines)
+
+
+def format_alerts(alerts: list, lang: str) -> str:
+    """C8: текст алертов на языке lang (только факты, без спама)."""
+    key = {"ru": "msg_ru", "kz": "msg_kz", "en": "msg_en"}.get(lang, "msg_ru")
+    if not alerts:
+        return T["alerts_none"].get(lang, T["alerts_none"]["ru"])
+    return "\n".join(str(a.get(key) or a.get("msg_ru")) for a in alerts[:10])
 
 
 # ---------------------------------------------------------------- aiogram app (lazy: только в main)
@@ -356,40 +472,72 @@ def create_dispatcher():
                 mark = ""
             b.button(text=f"{label}{mark}", callback_data=f"crop:{cid}")
         b.adjust(2)
-        approx_note = {"ru": " (~ = APPROX, * = EXPERIMENTAL baseline)",
-                       "kz": " (~ = APPROX, * = EXPERIMENTAL)",
-                       "en": " (~ = APPROX, * = EXPERIMENTAL)"}[lang]
-        b.button(text=f"ℹ️{approx_note}", callback_data="noop")
+        # C3: короткая подсказка про * и ~ (полная — в /help и в ответе)
+        approx_note = {"ru": "ℹ️ * — мало данных, ~ — от пшеницы",
+                       "kz": "ℹ️ * — дерек аз, ~ — бидайдан",
+                       "en": "ℹ️ * — little data, ~ — from wheat"}[lang]
+        b.button(text=f"{approx_note}", callback_data="noop")
         b.adjust(2, 1)
         return b.as_markup()
 
     def _kb_pdf(district_en: str, crop: str, lang: str):
+        # C3: две кнопки — PDF отчет + Новый прогноз; C8: + Алерты
         b = InlineKeyboardBuilder()
-        b.button(text={"ru": "📄 PDF-отчёт", "kz": "📄 PDF-есеп",
-                       "en": "📄 PDF report"}[lang],
+        b.button(text=T["btn_pdf"].get(lang, T["btn_pdf"]["ru"]),
                  callback_data=f"pdf:{district_en}:{crop}:{lang}")
+        b.button(text=T["btn_alerts"].get(lang, T["btn_alerts"]["ru"]),
+                 callback_data=f"alerts:{district_en}:{lang}")
+        b.button(text=T["btn_new"].get(lang, T["btn_new"]["ru"]),
+                 callback_data="new")
+        b.adjust(1)
         return b.as_markup()
 
     @dp.message(CommandStart())
     async def start(m: Message, state: FSMContext):
         await state.clear()
         await state.set_state(Form.lang)
-        await m.answer("📍 Send geolocation for nearest district (or pick manually):",
+        # C3: приветствие сразу на 3 языках + подсказка /help
+        await m.answer(T["start_hello"]["ru"])
+        await m.answer("📍 Отправь геолокацию — найду район сам / "
+                       "Геолокация жіберіңіз — ауданды өзім табамын / "
+                       "Send geolocation — I'll find the district:",
                        reply_markup=_kb_location())
         await m.answer(T["choose_lang"]["ru"], reply_markup=_kb_langs())
 
+    @dp.message(Command("help"))
+    async def on_help(m: Message, state: FSMContext):
+        # C3: новая команда, только тексты (язык из FSM, по умолчанию ru)
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in HELP_TEXT:
+            lang = "ru"
+        await m.answer(HELP_TEXT[lang])
+
+    @dp.message(Command("about"))
+    async def on_about(m: Message, state: FSMContext):
+        # C3: новая команда, только тексты
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ABOUT_TEXT:
+            lang = "ru"
+        await m.answer(ABOUT_TEXT[lang])
+
     @dp.message(Command("fields"))
-    async def on_fields(m: Message):
+    async def on_fields(m: Message, state: FSMContext):
         try:
             s = await asyncio.to_thread(fields_summary)
             per = ", ".join(f"{k}:{v}" for k, v in sorted(s["per_district"].items()))
             await m.answer(f"🌾 Fields: total {s['total']} "
                            f"(OSM {s['osm']}, demo {s['demo']})\n{per}")
         except Exception as e:
-            await m.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
+            data = await state.get_data()
+            lang = data.get("lang", "ru")
+            if lang not in ("ru", "kz", "en"):
+                lang = "ru"
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
 
     @dp.message(Command("elevators"))
-    async def on_elevators(m: Message):
+    async def on_elevators(m: Message, state: FSMContext):
         try:
             s = await asyncio.to_thread(elevators_summary)
             names = "; ".join(
@@ -398,7 +546,29 @@ def create_dispatcher():
             await m.answer(f"🏭 Elevators: {s['total']}\n{names}\n"
                            f"(coords estimated, Qoldau granaries-map)")
         except Exception as e:
-            await m.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
+            data = await state.get_data()
+            lang = data.get("lang", "ru")
+            if lang not in ("ru", "kz", "en"):
+                lang = "ru"
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
+
+    @dp.message(Command("alerts"))
+    async def on_alerts(m: Message, state: FSMContext):
+        # C8: алерты по последнему району из FSM (без подписок/БД).
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        district = data.get("district")
+        if not district:
+            await m.answer(T["alerts_need"][lang],
+                           reply_markup=_kb_districts())
+            return
+        try:
+            items = await asyncio.to_thread(check_alerts, district)
+            await m.answer(f"⚠️ {district} (7d):\n{format_alerts(items, lang)}")
+        except Exception as e:
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
 
     @dp.message(F.location)
     async def on_location(m: Message, state: FSMContext):
@@ -419,7 +589,11 @@ def create_dispatcher():
                 reply_markup=_kb_crops(lang))
         except Exception as e:
             log.exception("on_location failed")
-            await m.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
+            data = await state.get_data()
+            lang = data.get("lang", "ru")
+            if lang not in ("ru", "kz", "en"):
+                lang = "ru"
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
 
     @dp.callback_query(F.data.startswith("lang:"))
     async def on_lang(cb: CallbackQuery, state: FSMContext):
@@ -453,7 +627,8 @@ def create_dispatcher():
         district = data.get("district")
         crop = cb.data.split(":", 1)[1]
         if not district:
-            await cb.message.answer(T["choose_district"][lang],
+            # C3: дружелюбно — район не выбран
+            await cb.message.answer(f"{T['err_no_district'][lang]}",
                                     reply_markup=_kb_districts())
             await cb.answer()
             return
@@ -468,7 +643,37 @@ def create_dispatcher():
             await cb.message.answer(text, reply_markup=_kb_pdf(district, crop, lang))
         except Exception as e:
             log.exception("on_crop failed")
-            await cb.message.answer(f"⚠️ Ошибка: {type(e).__name__}: {e}")
+            await cb.message.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
+        await cb.answer()
+
+    @dp.callback_query(F.data.startswith("alerts:"))
+    async def on_alerts_cb(cb: CallbackQuery):
+        # C8: кнопка ⚠️ Алерты из ответа прогноза.
+        try:
+            _, district, lang = cb.data.split(":")
+        except ValueError:
+            await cb.answer("bad callback")
+            return
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        try:
+            items = await asyncio.to_thread(check_alerts, district)
+            await cb.message.answer(f"⚠️ {district} (7d):\n{format_alerts(items, lang)}")
+        except Exception as e:
+            log.exception("on_alerts_cb failed")
+            await cb.message.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
+        await cb.answer()
+
+    @dp.callback_query(F.data == "new")
+    async def on_new(cb: CallbackQuery, state: FSMContext):
+        # C3: кнопка 🔄 Новый прогноз — возврат к выбору района (логика не меняется)
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        await state.set_state(Form.district)
+        await cb.message.answer(T["choose_district"][lang],
+                                reply_markup=_kb_districts())
         await cb.answer()
 
     @dp.callback_query(F.data.startswith("pdf:"))
@@ -478,21 +683,53 @@ def create_dispatcher():
         except ValueError:
             await cb.answer("bad callback")
             return
-        full = cache_get(f"full:{district}:{crop}:{lang}") or \
-            await asyncio.to_thread(compute_full, district, crop, lang,
-                                    _risk_cached(district))
-        cfg = _load_cfg()
-        ru = next((d.get("name_ru") for d in cfg.get("districts", [])
-                   if d.get("name_en") == district), None)
-        pdf = await asyncio.to_thread(
-            build_report_pdf, district, crop, lang,
-            full.get("pred"), full.get("ins"), full.get("risk"),
-            full.get("rec"), ru)
-        from aiogram.types import BufferedInputFile
+        try:
+            full = cache_get(f"full:{district}:{crop}:{lang}") or \
+                await asyncio.to_thread(compute_full, district, crop, lang,
+                                        _risk_cached(district))
+            cfg = _load_cfg()
+            ru = next((d.get("name_ru") for d in cfg.get("districts", [])
+                       if d.get("name_en") == district), None)
+            # C8 best-effort: календарь/элеватор офлайн, алерты с таймаутом.
+            try:
+                cal = sowing_calendar(crop, lang)
+            except Exception:
+                cal = None
+            try:
+                items = await asyncio.wait_for(
+                    asyncio.to_thread(check_alerts, district), timeout=8.0)
+                a_err = None
+            except Exception as e:
+                items, a_err = None, f"{type(e).__name__}: {e}"
+            try:
+                cfg_d = next(d for d in _districts() if d["name_en"] == district)
+                elev = nearest_elevator_for(float(cfg_d["lat"]), float(cfg_d["lon"]))
+            except Exception:
+                elev = None
+            pdf = await asyncio.to_thread(
+                build_report_pdf, district, crop, lang,
+                full.get("pred"), full.get("ins"), full.get("risk"),
+                full.get("rec"), ru, cal, items, a_err, elev)
+            from aiogram.types import BufferedInputFile
 
-        await cb.message.answer_document(
-            BufferedInputFile(pdf, filename=f"qagro_{district}_{crop}.pdf"))
+            await cb.message.answer_document(
+                BufferedInputFile(pdf, filename=f"qagro_{district}_{crop}.pdf"))
+        except Exception as e:
+            log.exception("on_pdf failed")
+            if lang not in ("ru", "kz", "en"):
+                lang = "ru"
+            await cb.message.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
         await cb.answer()
+
+    @dp.message()
+    async def on_unknown(m: Message, state: FSMContext):
+        # C3: fallback для неизвестного текста/района — дружелюбно, без ломки логики
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        await m.answer(f"{T['err_no_district'][lang]}",
+                       reply_markup=_kb_districts())
 
     return dp
 

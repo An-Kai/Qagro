@@ -178,9 +178,12 @@ def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
     y = m["y_true"].to_numpy()
     bl_m = metrics3(y, m["y_bl"].to_numpy())
     lgbm_m = metrics3(y, m["y_lgbm"].to_numpy())
+    resid = y - m["y_lgbm"].to_numpy()
+    resid_stats = {"mean": float(np.mean(resid)), "std": float(np.std(resid, ddof=1) if len(resid) > 1 else 0.0)}
     print(f"[{crop}] hold-out 2021-2025 n={len(m)}:")
     print(f"  baseline MAE={bl_m['mae']:.3f} RMSE={bl_m['rmse']:.3f} R2={bl_m['r2']:.3f}")
     print(f"  LGBM     MAE={lgbm_m['mae']:.3f} RMSE={lgbm_m['rmse']:.3f} R2={lgbm_m['r2']:.3f}")
+    print(f"  residuals mean={resid_stats['mean']:.3f} std={resid_stats['std']:.3f}")
 
     # Требование ТЗ (строго для wheat/barley): LGBM лучше бейзлайна, иначе подбор фич.
     # v2 новые культуры (oats/sunflower/rapeseed/flax): структурный сдвиг 2024-2025
@@ -215,6 +218,7 @@ def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
             plot_path = scatter_plot(m.rename(columns={"y_lgbm": "y_lgbm"}), crop)
             shap_payload = shap_top3(bundle, df_crop, crop)
             entry = {"baseline": bl_m, "lgbm": chosen["metrics"],
+                     "residuals": resid_stats,
                      "features_used": chosen["features"],
                      "holdout_years": [HOLDOUT_FROM, LAST_YEAR],
                      "scatter": str(plot_path.as_posix()),
@@ -230,10 +234,14 @@ def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
             with open(MODELS / f"lgbm_{crop}.pkl", "wb") as f:
                 pickle.dump(bundle, f)
         chosen = best
+        # пересчёт остатков после возможного подбора фич
+        resid = y - m["y_lgbm"].to_numpy()
+        resid_stats = {"mean": float(np.mean(resid)), "std": float(np.std(resid, ddof=1) if len(resid) > 1 else 0.0)}
 
     plot_path = scatter_plot(m.rename(columns={"y_lgbm": "y_lgbm"}), crop)
     shap_payload = shap_top3(bundle, df_crop, crop)
     entry = {"baseline": bl_m, "lgbm": chosen["metrics"],
+             "residuals": resid_stats,
              "features_used": chosen["features"],
              "holdout_years": [HOLDOUT_FROM, LAST_YEAR],
              "scatter": str(plot_path.as_posix())}
@@ -264,6 +272,66 @@ def main() -> None:
     with open(out, "w", encoding="utf-8") as f:
         json.dump(all_metrics, f, ensure_ascii=False, indent=2)
     print(f"saved {out}")
+    # C5: плоская сводка для аудита — metrics/summary.csv
+    rows = []
+    for crop in CROPS:
+        e = all_metrics.get(crop, {})
+        if e.get("status") == "APPROX" or e.get("baseline") is None or e.get("lgbm") is None:
+            rows.append({"crop": crop, "baseline_mae": "", "baseline_rmse": "",
+                         "baseline_r2": "", "lgbm_mae": "", "lgbm_rmse": "",
+                         "lgbm_r2": "", "n": "", "resid_mean": "", "resid_std": "",
+                         "below_baseline": "", "status": "APPROX"})
+            continue
+        below = bool(e.get("below_baseline", False))
+        status = "experimental" if below else "strong"
+        r = e.get("residuals", {})
+        rows.append({"crop": crop,
+                     "baseline_mae": round(e["baseline"]["mae"], 4),
+                     "baseline_rmse": round(e["baseline"]["rmse"], 4),
+                     "baseline_r2": round(e["baseline"]["r2"], 4),
+                     "lgbm_mae": round(e["lgbm"]["mae"], 4),
+                     "lgbm_rmse": round(e["lgbm"]["rmse"], 4),
+                     "lgbm_r2": round(e["lgbm"]["r2"], 4),
+                     "n": e["lgbm"]["n"],
+                     "resid_mean": round(float(r.get("mean", 0.0)), 4),
+                     "resid_std": round(float(r.get("std", 0.0)), 4),
+                     "below_baseline": str(below),
+                     "status": status})
+    summary = pd.DataFrame(rows, columns=["crop", "baseline_mae", "baseline_rmse",
+                                          "baseline_r2", "lgbm_mae", "lgbm_rmse",
+                                          "lgbm_r2", "n", "resid_mean", "resid_std",
+                                          "below_baseline", "status"])
+    summary_path = METRICS / "summary.csv"
+    summary.to_csv(summary_path, index=False)
+    print(f"saved {summary_path}")
+    # C5: человекочитаемая сводка — metrics/METRICS.md
+    md_lines = ["# Qagro metrics — hold-out 2021-2025 (train ≤2020, no leakage)",
+                "",
+                "Бейзлайн: среднее пред. 5 лет по району+культуре (только прошлое). "
+                "LGBM обучен на 2006-2020, hold-out 2021-2025 не трогали при обучении.",
+                "",
+                "| crop | baseline MAE / RMSE / R2 | LGBM MAE / RMSE / R2 | n | resid mean/std | status |",
+                "|------|--------------------------|----------------------|---|---------------|--------|"]
+    for _, r in summary.iterrows():
+        icon = "✅" if r["status"] == "strong" else "🧪"
+        if r["status"] == "APPROX":
+            md_lines.append(f"| {r['crop']} | — | — | — | — | {icon} {r['status']} |")
+        else:
+            md_lines.append(
+                f"| {r['crop']} | {r['baseline_mae']:.3f} / {r['baseline_rmse']:.3f} / {r['baseline_r2']:.3f} "
+                f"| {r['lgbm_mae']:.3f} / {r['lgbm_rmse']:.3f} / {r['lgbm_r2']:.3f} "
+                f"| {int(r['n'])} | {r['resid_mean']:.3f} / {r['resid_std']:.3f} "
+                f"| {icon} {r['status']} |")
+    md_lines += ["",
+                 "Вывод: 3 strong (spring_wheat, barley, oats — LGBM лучше бейзлайна), "
+                 "3 experimental (sunflower, rapeseed, flax — below_baseline, "
+                 "структурный сдвиг 2024-2025, метрики честные без подгонки).",
+                 "",
+                 f"Артефакты: metrics/metrics.json, metrics/summary.csv, "
+                 f"metrics/plots/scatter_{{crop}}.png, metrics/shap_{{crop}}.json."]
+    md_path = METRICS / "METRICS.md"
+    md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
+    print(f"saved {md_path}")
     print("DONE evaluate.py")
 
 

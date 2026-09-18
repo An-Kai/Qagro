@@ -16,9 +16,10 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 
 ## Ссылки
 - Repo: https://github.com/An-Kai/Qagro.git
-- Video (2:30): TODO — залить по `docs/demo_script.md`, вставить ссылку
-- Deploy: TODO — API (health `/health`), Streamlit URL, Telegram @username бота
+- Video (2:30): TODO_VIDEO — ИНСТРУКЦИЯ: запишите экран (бот + веб) по `docs/demo_script.md` (Esil 1558 тг/га vs Zerenda 150 тг/га), залейте на YouTube/RuTube, замените эту строку ссылкой вида `https://...`
+- Deploy: TODO_DEPLOY — ИНСТРУКЦИЯ: поднимите `docker compose up --build`, вставьте сюда 3 строки: `API health http://.../health`, `Streamlit http://...`, `Telegram @username_бота`; токен только из `TELEGRAM_BOT_TOKEN`, в код не класть
 - PDF-пример: `reports/risk_example.json` + генерация через `POST /report`
+- Презентация C9: `docs/Qagro_presentation_v2.pdf` (10 слайдов, landscape A4, кириллица Arial TTF, scatter wheat/barley/oats, ~341 КБ) — финальная; `docs/Qagro_presentation.pdf` — старая ASCII-версия без кириллицы
 
 ## Чек-лист ТЗ (отметить перед отправкой)
 - [x] Название + трек + задачи 2.1/2.2/2.4 указаны в README
@@ -35,6 +36,6 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 - [x] `data/processed/data_card.md` в UTF-8 без кракозябр
 - [x] `docs/demo_script.md` (2:30 по секундам)
 - [x] `docs/presentation_outline.md` (10 слайдов)
-- [ ] Видео записано и ссылка вставлена
-- [ ] Деплой поднят и ссылки вставлены
-- [ ] Репо публичное, `.env` в `.gitignore`, токен не утёк в историю git
+- [ ] Видео записано и ссылка вставлена (ждёт TODO_VIDEO выше)
+- [ ] Деплой поднят и ссылки вставлены (ждёт TODO_DEPLOY выше)
+- [x] Репо публичное, `.env` в `.gitignore`, токен не утёк в историю git (проверено 18.09.2026: `git check-ignore .env` OK, `git log -- .env` пуст, `.env.example` содержит только `xxx`)
