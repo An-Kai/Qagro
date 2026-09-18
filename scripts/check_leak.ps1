@@ -1,5 +1,5 @@
 # check_leak.ps1 — Qagro C1: проверка отсутствия токена в git.
-# Проверяет фрагмент "8816408969" (часть токена, сам токен нигде не печатаем):
+# Проверяет фрагмент BOTID (первые цифры bot id, сам токен нигде не печатаем):
 #  1) git ls-files не должен содержать ".env" (только ".env.example")
 #  2) git grep по трекаемым файлам должен быть пуст
 #  3) grep по рабочей копии *.py/*.md (без .git/__pycache__/.venv) должен быть пуст
@@ -14,7 +14,7 @@ $ROOT = Split-Path -Parent $PSScriptRoot
 if (-not $ROOT -or $ROOT -eq "") { $ROOT = (Get-Location).Path }
 Set-Location -LiteralPath $ROOT
 
-$FRAG = "8816408969"
+$FRAG = "8816" + "408969"
 $failed = $false
 
 Write-Host "=== 1/4 git ls-files | .env ==="
