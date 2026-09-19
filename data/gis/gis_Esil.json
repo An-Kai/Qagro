@@ -4,7 +4,8 @@
     "2024-06-03",
     "2024-06-13",
     "2024-06-18",
-    "2024-07-12",
+    "2024-07-23",
+    "2024-07-31",
     "2024-08-12"
   ],
   "method": "OSM-поля (bbox<=0.02deg) + Sentinel-2 L2A NDVI=(B08-B04)/(B08+B04) через PC STAC (scene reuse) + PC TiTiler POST /item/statistics; пороги — эвристики агро-практики, не ГОСТ",
@@ -54,10 +55,16 @@
           "note": "real via PC TiTiler (2 сцена(ы))"
         },
         {
-          "date": "2024-07-12",
+          "date": "2024-07-23",
           "ndvi_mean": null,
           "scene_id": null,
-          "note": "no scene: в ndvi_timeseries.json нет сцены Esil на 2024-07-12 — число не выдумываем"
+          "note": "no scene: в ndvi_timeseries.json нет сцены Esil на 2024-07-23 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-31",
+          "ndvi_mean": 0.3155,
+          "scene_id": "S2B_MSIL2A_20240731T064629_R020_T41UQT_20240731T091612",
+          "note": "real via PC TiTiler (1 сцена(ы))"
         },
         {
           "date": "2024-08-12",
@@ -70,9 +77,11 @@
         "ndvi_max": 0.3311,
         "ndvi_min": 0.2747,
         "amplitude": 0.0564,
-        "dead_share": 0.25,
+        "dead_share": 0.2,
         "status": "likely_fallow",
         "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "status_kz": "Егістік өңделмеген болуы мүмкін (NDVI тегіс және төмен)",
+        "status_en": "Possibly not cultivated (flat low NDVI)",
         "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
       }
     },
@@ -91,9 +100,9 @@
       "series": [
         {
           "date": "2024-06-03",
-          "ndvi_mean": 0.3209,
-          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332+S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
-          "note": "real via PC TiTiler (2 сцена(ы))"
+          "ndvi_mean": 0.3208,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332",
+          "note": "real via PC TiTiler (1 сцена(ы))"
         },
         {
           "date": "2024-06-13",
@@ -108,10 +117,16 @@
           "note": "real via PC TiTiler (2 сцена(ы))"
         },
         {
-          "date": "2024-07-12",
+          "date": "2024-07-23",
           "ndvi_mean": null,
           "scene_id": null,
-          "note": "no scene: в ndvi_timeseries.json нет сцены Esil на 2024-07-12 — число не выдумываем"
+          "note": "no scene: в ndvi_timeseries.json нет сцены Esil на 2024-07-23 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-31",
+          "ndvi_mean": 0.2313,
+          "scene_id": "S2B_MSIL2A_20240731T064629_R020_T41UQT_20240731T091612",
+          "note": "real via PC TiTiler (1 сцена(ы))"
         },
         {
           "date": "2024-08-12",
@@ -121,12 +136,14 @@
         }
       ],
       "classification": {
-        "ndvi_max": 0.3209,
+        "ndvi_max": 0.3208,
         "ndvi_min": 0.2084,
-        "amplitude": 0.1125,
-        "dead_share": 0.5,
+        "amplitude": 0.1124,
+        "dead_share": 0.6,
         "status": "likely_fallow",
         "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "status_kz": "Егістік өңделмеген болуы мүмкін (NDVI тегіс және төмен)",
+        "status_en": "Possibly not cultivated (flat low NDVI)",
         "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
       }
     }

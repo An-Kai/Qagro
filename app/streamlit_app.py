@@ -726,15 +726,26 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                         "Rising green — crops grow; flat low — check the field.")}[lang]
         st.subheader("🛰 " + gis_h[0])
         st.caption(gis_h[1] + " Copernicus Browser / Sentinel Hub / LandsatLook — для ручной проверки.")
+        skey = {"ru": "status_ru", "kz": "status_kz", "en": "status_en"}[lang]
         try:
-            from src.gis_monitor import run_district as _gis_run
-            with st.spinner("🛰 Sentinel-2..."):
-                g = _gis_run(district_en, max_fields=4)
+            # C5-2: сначала свежий файл (<7 дней), иначе живой запрос (медленно).
+            import time as _t
+            _gis_file = ROOT / "data" / "gis" / f"gis_{district_en}.json"
+            g = None
+            if _gis_file.exists() and (_t.time() - _gis_file.stat().st_mtime < 7 * 86400):
+                try:
+                    g = json.loads(_gis_file.read_text(encoding="utf-8"))
+                except Exception:
+                    g = None
+            if not g or not g.get("fields"):
+                from src.gis_monitor import run_district as _gis_run
+                with st.spinner("🛰 Sentinel-2..."):
+                    g = _gis_run(district_en, max_fields=4)
             for fl in g.get("fields", []):
                 c = fl.get("classification") or {}
                 st.write(f"**{fl.get('field_id')}** ({fl.get('area_ha')} га): "
-                         f"{c.get('status_ru', c.get('status'))} — NDVI max {c.get('ndvi_max')}, "
-                         f"погибших дат {round(float(c.get('dead_share', 0)) * 100)}%.")
+                         f"{c.get(skey, c.get('status_ru', c.get('status')))} — NDVI max {c.get('ndvi_max')}, "
+                         f"погибших дат {round(float(c.get('dead_share') or 0) * 100)}%.")
                 series = [(p.get("date"), p.get("ndvi_mean")) for p in fl.get("series", [])
                           if p.get("ndvi_mean") is not None]
                 if series:

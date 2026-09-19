@@ -163,8 +163,9 @@ HELP_TEXT: dict[str, str] = {
            "\nМысалдар:\n"
            "• Есіл → Жаздық бидай\n"
            "• 📍 Геолокация жіберіңіз — жақын ауданды өзім табамын\n"
-           "• /about — команда мен дереккөздер туралы\n"
-           "• /spray — бүрку терезесі (жел/жаңбыр, 48с)\n"
+            "• /about — команда мен дереккөздер туралы\n"
+            "• /gis — серіктен егістіктер (NDVI, тыңайған жер)\n"
+            "• /spray — бүрку терезесі (жел/жаңбыр, 48с)\n"
            "• /guide — дақыл аурулары мен зиянкестері\n"
            "• /fields — менің егістіктерім OSM, /elevators — элеваторлар\n"
            "• /alerts — 7 күндік қауіптер (үсік/ыстық/нөсер)\n"
@@ -178,8 +179,9 @@ HELP_TEXT: dict[str, str] = {
            "\nExamples:\n"
            "• Esil → Spring wheat\n"
            "• Send 📍 location — I'll find the nearest district\n"
-           "• /about — team & sources\n"
-           "• /spray — spray window (wind/rain, 48h)\n"
+            "• /about — team & sources\n"
+            "• /gis — satellite fields (NDVI, fallow)\n"
+            "• /spray — spray window (wind/rain, 48h)\n"
            "• /guide — crop diseases & pests\n"
            "• /fields — my OSM fields, /elevators — elevators\n"
            "• /alerts — 7-day threats (frost/heat/downpour)\n"
@@ -920,8 +922,13 @@ def create_dispatcher():
                                            if (f.get("classification") or {}).get("ndvi_max") is not None else 9))
             def _nm(fl):
                 c = fl.get("classification") or {}
-                return (fl.get("field_id"), fl.get("area_ha"),
-                        c.get("status_ru", c.get("status")), c.get("ndvi_max"))
+                if lang == "kz":
+                    s = c.get("status_kz", c.get("status_ru", c.get("status")))
+                elif lang == "en":
+                    s = c.get("status_en", c.get("status"))
+                else:
+                    s = c.get("status_ru", c.get("status"))
+                return (fl.get("field_id"), fl.get("area_ha"), s, c.get("ndvi_max"))
             if lang == "kz":
                 head = f"🛰 {district}: {g.get('checked', 0)} егістік тексерілді."
                 worst = [f"• {i} ({a} га): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:3])]

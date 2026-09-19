@@ -17,7 +17,7 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 ## Ключевые числа v3 (источник правды)
 - Панель `akmola_panel_v3.csv`: 1260 строк (10×21×6), 23 колонки, 0 NaN
 - Поля `akmola_osm_fields.geojson`: 115 полигонов (109 OSM real ODbL + 6 demo-fallback)
-- NDVI Sentinel-2 `ndvi_timeseries.json`: 5 real (Esil 3 + Zerenda 2, июнь 2024) из 62 сцен
+- NDVI Sentinel-2 `ndvi_timeseries.json`: 22 real (Esil+Zerenda, June+July, июнь 2024) из 62 сцен
 - Метрики hold-out 2021–2025: пшеница 2.68/−0.26 → 1.18/0.68; ячмень 2.78/−0.26 → 1.25/0.67; овёс 3.59/−0.33 → 1.26/0.78; 5/6 strong, рапс experimental (3.79/−1.06, below_baseline)
 - Демо-якоря: Esil/пшеница 🟡 35.0, payout 1558 тг/га; Zerenda 🟢 28.5, 150 тг/га
 - Платформа v4: `src/myfields.py` + `src/journal.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py` + `src/platform_api.py` (`/myfields`, `/journal`, `/spray`, `/fertilizer`)

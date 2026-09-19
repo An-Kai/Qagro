@@ -75,7 +75,7 @@ TITILER_ITEM_STATS = "https://planetarycomputer.microsoft.com/api/data/v1/item/s
 COLLECTION = "sentinel-2-l2a"
 EXPRESSION = "(B08-B04)/(B08+B04)"
 
-DEFAULT_DATES = ["2024-06-03", "2024-06-13", "2024-06-18", "2024-07-12", "2024-08-12"]
+DEFAULT_DATES = ["2024-06-03", "2024-06-13", "2024-06-18", "2024-07-23", "2024-07-31", "2024-08-12"]
 MAX_FIELDS_HARD = 6
 TIMEOUT_S = 25
 MAX_DEG = 0.02  # сжатие bbox для скорости
@@ -90,6 +90,20 @@ STATUS_RU = {
     "sparse": "Изреженные посевы / возможна гибель (низкий максимум NDVI)",
     "likely_fallow": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
     "no_data": "Нет данных NDVI (все запросы неуспешны)",
+}
+
+STATUS_KZ = {
+    "cultivated": "Егістік өңделеді, жасыл масса бар",
+    "sparse": "Сирек егін / жойылуы мүмкін (NDVI төмен)",
+    "likely_fallow": "Егістік өңделмеген болуы мүмкін (NDVI тегіс және төмен)",
+    "no_data": "NDVI дерегі жоқ",
+}
+
+STATUS_EN = {
+    "cultivated": "Field is cultivated, green biomass present",
+    "sparse": "Sparse stand / possible loss (low NDVI peak)",
+    "likely_fallow": "Possibly not cultivated (flat low NDVI)",
+    "no_data": "No NDVI data",
 }
 
 
@@ -273,6 +287,8 @@ def classify_field(series: list[dict]) -> dict:
         return {"ndvi_max": None, "ndvi_min": None, "amplitude": None,
                 "dead_share": None, "status": "no_data",
                 "status_ru": STATUS_RU["no_data"],
+                "status_kz": STATUS_KZ["no_data"],
+                "status_en": STATUS_EN["no_data"],
                 "thresholds_note": "пороги — эвристики агро-практики, не ГОСТ"}
     ndvi_max = round(max(vals), 4)
     ndvi_min = round(min(vals), 4)
@@ -287,6 +303,7 @@ def classify_field(series: list[dict]) -> dict:
     return {"ndvi_max": ndvi_max, "ndvi_min": ndvi_min,
             "amplitude": amplitude, "dead_share": dead_share,
             "status": status, "status_ru": STATUS_RU[status],
+            "status_kz": STATUS_KZ[status], "status_en": STATUS_EN[status],
             "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"}
 
 

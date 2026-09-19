@@ -2,7 +2,7 @@
 
 Источник правды: `metrics/metrics.json` (hold-out 2021–2025, n=50), `metrics/METRICS.md`,
 `data/processed/akmola_panel_v3.csv` (1260×23), `data/fields/akmola_osm_fields.geojson` (115),
-`data/ndvi/ndvi_timeseries.json` (5 real), `src/platform_api.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py`.
+`data/ndvi/ndvi_timeseries.json` (22 real: June+July 2024-2025), `src/platform_api.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py`.
 PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирается в этом цикле (заморожен, отдельный цикл шрифтов).
 
 ## Слайд 1. Проблема
@@ -29,7 +29,7 @@ PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирает�
 - Панель v3 `akmola_panel_v3.csv`: **1260 строк** (10 районов × 21 год × 6 культур), **23 колонки**, 0 NaN; БНС-якоря + NASA POWER + Open-Meteo ERA5.
 - Фичи MJJA: tmean/precip/GDD5/heat30/dry_max/ET0/p30_anom + lat/lon/yield_lag1 + v3 (dtr/vpd_proxy/spei_proxy/year_trend/yield_roll3) + ndvi_max/ndvi_flag (optional join).
 - Поля: **115 полигонов** (`akmola_osm_fields.geojson`): **109 OSM real** (ODbL, Overpass `landuse=farmland`) + 6 demo-fallback `demo:true` (Esil 3, Kokshetau 3, Zhaksy 4 OSM).
-- NDVI Sentinel-2: **5 NDVI real** (Esil 3 + Zerenda 2, июнь 2024, PC TiTiler per-pixel B08/B04, 0.21–0.30) из 62 сцен списка; остальное `ndvi_mean=None` (MISSING, без выдумок).
+- NDVI Sentinel-2: **22 NDVI real (June+July)** (Esil 3 + Zerenda 2, июнь 2024, PC TiTiler per-pixel B08/B04, 0.21–0.30) из 62 сцен списка; остальное `ndvi_mean=None` (MISSING, без выдумок).
 - Честно: район = даунскейлинг области на центроиды `config/districts.yaml`.
 - Картинка: схема панели + таблица первых строк из `data/processed/data_card.md` + мини-карта полей.
 
