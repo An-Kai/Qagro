@@ -1,0 +1,120 @@
+{
+  "district": "Esil",
+  "total_fields": 3,
+  "checked": 2,
+  "cultivated": 0,
+  "sparse": 0,
+  "likely_fallow": 2,
+  "no_data": 0,
+  "avg_ndvi_max": 0.326,
+  "fields": [
+    {
+      "field_id": "Esil_Esil_demo_1",
+      "area_ha": 199.71,
+      "demo": true,
+      "source": "demo-fallback",
+      "bbox_used": [
+        66.34628,
+        51.90958,
+        66.36628,
+        51.91856
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.3105,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332+S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.3146,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UUC_20240613T121317+S2A_MSIL2A_20240613T063631_R120_T41UQT_20240613T121316",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.3311,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UUC_20240618T111713+S2B_MSIL2A_20240618T063629_R120_T41UQT_20240618T111720",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Esil на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": 0.2747,
+          "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UUC_20240812T115053+S2A_MSIL2A_20240812T063631_R120_T41UQT_20240812T115053",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.3311,
+        "ndvi_min": 0.2747,
+        "amplitude": 0.0564,
+        "dead_share": 0.25,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Esil_Esil_demo_2",
+      "area_ha": 199.47,
+      "demo": true,
+      "source": "demo-fallback",
+      "bbox_used": [
+        66.41915,
+        51.96347,
+        66.43915,
+        51.97246
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.3209,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332+S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.2873,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UUC_20240613T121317+S2A_MSIL2A_20240613T063631_R120_T41UQT_20240613T121316",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.3087,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UUC_20240618T111713+S2B_MSIL2A_20240618T063629_R120_T41UQT_20240618T111720",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Esil на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": 0.2084,
+          "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UUC_20240812T115053+S2A_MSIL2A_20240812T063631_R120_T41UQT_20240812T115053",
+          "note": "real via PC TiTiler (2 сцена(ы))"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.3209,
+        "ndvi_min": 0.2084,
+        "amplitude": 0.1125,
+        "dead_share": 0.5,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    }
+  ]
+}

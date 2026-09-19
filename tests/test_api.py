@@ -219,6 +219,14 @@ def t_intervals():
     assert "spring_wheat" in crops, crops.keys() if isinstance(crops, dict) else crops
 
 
+def t_gis():
+    r = client.get("/gis", params={"district_en": "Esil", "max_fields": 2})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert j.get("checked", 0) >= 1, j
+    assert "fields" in j, j
+
+
 if __name__ == "__main__":
     check("health 200 + counts", t_health)
     check("predict Esil wheat 200", t_predict_wheat)
@@ -237,4 +245,5 @@ if __name__ == "__main__":
     check("alerts Esil 200", t_alerts)
     check("soil 200 + rows", t_soil)
     check("intervals 200 + crops", t_intervals)
+    check("gis Esil 200 + fields", t_gis)
     print(f"\nOK: {len(passed)}/{len(passed)} passed")

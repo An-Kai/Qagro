@@ -1,0 +1,350 @@
+{
+  "district": "Zerenda",
+  "dates": [
+    "2024-06-03",
+    "2024-06-13",
+    "2024-06-18",
+    "2024-07-12",
+    "2024-08-12"
+  ],
+  "method": "OSM-поля (bbox<=0.02deg) + Sentinel-2 L2A NDVI=(B08-B04)/(B08+B04) через PC STAC (scene reuse) + PC TiTiler POST /item/statistics; пороги — эвристики агро-практики, не ГОСТ",
+  "sources": {
+    "fields": "OSM via Overpass (ODbL) + Geofabrik backup; demo:true — не OSM",
+    "sentinel2_stac": "https://planetarycomputer.microsoft.com/api/stac/v1",
+    "sentinel2_titiler": "https://planetarycomputer.microsoft.com/api/data/v1/item/statistics",
+    "copernicus_browser": "https://browser.dataspace.copernicus.eu/",
+    "sentinel_hub": "https://www.sentinel-hub.com/",
+    "landsat_look": "https://landsatlook.usgs.gov/",
+    "usgs_earthexplorer": "https://earthexplorer.usgs.gov/",
+    "earthmap": "https://www.earthmap.org/"
+  },
+  "limits": "bbox-приближение вместо попиксельной маски поля; облака отфильтрованы на уровне сцен (cloud<20% в STAC); нет сцены на дату -> None без выдумок",
+  "total_fields": 15,
+  "checked": 6,
+  "fields": [
+    {
+      "field_id": "Zerenda_306642700",
+      "area_ha": 21.1,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        69.16933,
+        52.92047,
+        69.1846,
+        52.92655
+      ],
+      "bbox_squeezed_to_0_02": false,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.2216,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.1687,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.2337,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.2337,
+        "ndvi_min": 0.1687,
+        "amplitude": 0.065,
+        "dead_share": 1.0,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Zerenda_306644428",
+      "area_ha": 159.79,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        69.16434,
+        52.92293,
+        69.18434,
+        52.93845
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.1814,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.1507,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.2327,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.2327,
+        "ndvi_min": 0.1507,
+        "amplitude": 0.082,
+        "dead_share": 1.0,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Zerenda_306644701",
+      "area_ha": 101.4,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        69.161,
+        52.93478,
+        69.181,
+        52.94397
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.1075,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.1886,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.2917,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.2917,
+        "ndvi_min": 0.1075,
+        "amplitude": 0.1842,
+        "dead_share": 1.0,
+        "status": "sparse",
+        "status_ru": "Изреженные посевы / возможна гибель (низкий максимум NDVI)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Zerenda_306645017",
+      "area_ha": 345.04,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        69.17837,
+        52.89989,
+        69.19837,
+        52.91989
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.1258,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.1173,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.1304,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.1304,
+        "ndvi_min": 0.1173,
+        "amplitude": 0.0131,
+        "dead_share": 1.0,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Zerenda_317579244",
+      "area_ha": 95.5,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        69.15906,
+        52.94387,
+        69.17906,
+        52.95048
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.1883,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.091,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.0999,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.1883,
+        "ndvi_min": 0.091,
+        "amplitude": 0.0973,
+        "dead_share": 1.0,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Zerenda_317579245",
+      "area_ha": 270.21,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        69.17475,
+        53.00617,
+        69.19475,
+        53.02491
+      ],
+      "bbox_squeezed_to_0_02": true,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": 0.1287,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": 0.1588,
+          "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": 0.2347,
+          "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
+          "note": "real via PC TiTiler (1 сцена(ы))"
+        },
+        {
+          "date": "2024-07-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-07-12 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Zerenda на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": 0.2347,
+        "ndvi_min": 0.1287,
+        "amplitude": 0.106,
+        "dead_share": 1.0,
+        "status": "likely_fallow",
+        "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",
+        "thresholds_note": "пороги amplitude<0.15 / max<0.35 — эвристики агро-практики, не ГОСТ"
+      }
+    }
+  ]
+}

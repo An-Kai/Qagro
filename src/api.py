@@ -502,3 +502,27 @@ def api_intervals() -> dict:
             "Запустите: python src/intervals.py"))
     data = json.loads(p.read_text(encoding="utf-8"))
     return {"crops": data, "counts": {"crops": len(data)}}
+
+
+@app.get("/gis")
+def api_gis(district_en: str = "Esil", max_fields: int = 6) -> dict:
+    """Трек 1: NDVI-мониторинг полей (1.1), залежи (1.3), гибель (1.4).
+
+    Читает готовые data/gis/gis_{district}.json; если нет — считает
+    наживую через src.gis_monitor.run_district (до 6 полей, ~1-2 мин).
+    Границы/площади (1.2) — из OSM-полигонов с area_ha.
+    """
+    import json
+
+    try:
+        from src.gis_monitor import run_district
+    except ImportError:
+        from gis_monitor import run_district  # type: ignore
+    if max_fields < 1 or max_fields > 6:
+        raise HTTPException(status_code=422, detail="max_fields 1..6")
+    try:
+        return run_district(district_en, max_fields=max_fields)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=502, detail=f"GIS offline: {e}")

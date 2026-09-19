@@ -147,7 +147,8 @@ HELP_TEXT: dict[str, str] = {
            "\nПримеры:\n"
            "• Есильский → Пшеница яровая\n"
            "• Отправь 📍 геолокацию — сам найду ближайший район\n"
-           "• /about — о команде и источниках\n"
+            "• /about — о команде и источниках\n"
+            "• /gis — поля со спутника (NDVI, залежи)\n"
            "• /spray — окно опрыскивания (ветер/дождь, 48ч)\n"
            "• /guide — болезни и вредители культуры\n"
            "• /fields — мои поля OSM, /elevators — элеваторы\n"
@@ -894,6 +895,46 @@ def create_dispatcher():
             txt = "\n\n".join(f"🔬 {it.get(nk)}: {'; '.join(it.get(sk, [])[:2])}. → {it.get(ak)}"
                               for it in items)
             await m.answer(txt or T["err_generic"][lang])
+        except Exception as e:
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
+
+    @dp.message(Command("gis"))
+    async def on_gis(m: Message, state: FSMContext):
+        # Трек 1: топ проблемных полей района простым языком.
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        district = data.get("district")
+        if not district:
+            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts())
+            return
+        try:
+            try:
+                from src.gis_monitor import run_district
+            except ImportError:
+                from gis_monitor import run_district  # type: ignore
+            g = await asyncio.to_thread(run_district, district, 4)
+            fields = sorted(g.get("fields", []),
+                            key=lambda f: ((f.get("classification") or {}).get("ndvi_max")
+                                           if (f.get("classification") or {}).get("ndvi_max") is not None else 9))
+            def _nm(fl):
+                c = fl.get("classification") or {}
+                return (fl.get("field_id"), fl.get("area_ha"),
+                        c.get("status_ru", c.get("status")), c.get("ndvi_max"))
+            if lang == "kz":
+                head = f"🛰 {district}: {g.get('checked', 0)} егістік тексерілді."
+                worst = [f"• {i} ({a} га): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:3])]
+                tail = "Толығырақ — қосымшада «Карталар»."
+            elif lang == "en":
+                head = f"🛰 {district}: {g.get('checked', 0)} fields checked."
+                worst = [f"• {i} ({a} ha): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:3])]
+                tail = "More — in the app Maps tab."
+            else:
+                head = f"🛰 {district}: проверено полей — {g.get('checked', 0)}."
+                worst = [f"• {i} ({a} га): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:3])]
+                tail = "Подробнее — во вкладке «Карты» приложения."
+            await m.answer("\n".join([head, "", *worst, "", tail]))
         except Exception as e:
             await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
 

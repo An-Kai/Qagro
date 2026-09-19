@@ -603,9 +603,11 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
 
     # ---------- Карты ----------
     st.header(T["maps"])
-    tab_risk, tab_fields = st.tabs(
+    tab_risk, tab_fields, tab_gis = st.tabs(
         ["🟢🟡🔴 " + T["risk_tab"],
-         "🌾 " + T["fields_tab"]])
+         "🌾 " + T["fields_tab"],
+         "🛰 " + ({"ru": "Со спутника", "kz": "Серіктен",
+                    "en": "Satellite"}[lang])])
     with tab_risk:
         rows = []
         for d in districts:
@@ -712,6 +714,41 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
         if _elev:
             _ename = _elev.get(f"name_{lang}", _elev.get("name_ru"))
             st.write(f"🚚 {_ename} — {_elev.get('dist_km')} {T['km']}.")
+
+    with tab_gis:
+        # Трек 1: NDVI-мониторинг (1.1), залежи (1.3), гибель (1.4). Границы (1.2) — OSM.
+        gis_h = {"ru": ("Мониторинг всходов со спутника (Sentinel-2)",
+                        "Зелёный ход — посевы растут; ровный низкий — проверьте поле. "
+                        "Пороги эвристические, не ГОСТ."),
+                 "kz": ("Серіктен өскін мониторингі (Sentinel-2)",
+                        "Жасыл өсу — егін өсуде; тегіс төмен — егістікті тексеріңіз."),
+                 "en": ("Satellite emergence monitoring (Sentinel-2)",
+                        "Rising green — crops grow; flat low — check the field.")}[lang]
+        st.subheader("🛰 " + gis_h[0])
+        st.caption(gis_h[1] + " Copernicus Browser / Sentinel Hub / LandsatLook — для ручной проверки.")
+        try:
+            from src.gis_monitor import run_district as _gis_run
+            with st.spinner("🛰 Sentinel-2..."):
+                g = _gis_run(district_en, max_fields=4)
+            for fl in g.get("fields", []):
+                c = fl.get("classification") or {}
+                st.write(f"**{fl.get('field_id')}** ({fl.get('area_ha')} га): "
+                         f"{c.get('status_ru', c.get('status'))} — NDVI max {c.get('ndvi_max')}, "
+                         f"погибших дат {round(float(c.get('dead_share', 0)) * 100)}%.")
+                series = [(p.get("date"), p.get("ndvi_mean")) for p in fl.get("series", [])
+                          if p.get("ndvi_mean") is not None]
+                if series:
+                    fig2 = go.Figure()
+                    fig2.add_trace(go.Scatter(x=[s[0] for s in series],
+                                              y=[s[1] for s in series],
+                                              mode="lines+markers", name="NDVI"))
+                    fig2.update_layout(xaxis_title="date", yaxis_title="NDVI",
+                                       height=220, margin=dict(l=10, r=10, t=10, b=10))
+                    st.plotly_chart(fig2, use_container_width=True)
+            st.caption(f"Проверено {g.get('checked', 0)} из {g.get('total_fields', 0)}. "
+                       "Границы и площади — OSM (экспорт GeoJSON во вкладке прогноза).")
+        except Exception as e:
+            st.warning(f"🛰 GIS offline: {e}")
 
     # ---------- Агроном / хозяйство / календарь / о проекте ----------
     tab_agro, tab_farm, tab_plus, tab_cal, tab_about = st.tabs(
