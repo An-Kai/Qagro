@@ -360,36 +360,121 @@ def compute_full(district_en: str, crop: str, lang: str = "ru",
     return {"pred": pred, "ins": ins, "rec": rec, "risk": risk or {}}
 
 
+def _crop_name(crop: str, lang: str) -> str:
+    """Локализованное название культуры из districts.yaml (без tech-id)."""
+    try:
+        for c in _crops():
+            if c.get("id") == crop:
+                return str(c.get(f"name_{lang}") or c.get("name_ru") or crop)
+    except Exception:
+        pass
+    return crop
+
+
+def _district_name(district_en: str, lang: str) -> str:
+    """Локализованное название района (без tech-id)."""
+    try:
+        for d in _districts():
+            if d.get("name_en") == district_en:
+                return str(d.get(f"name_{lang}") or d.get("name_ru") or district_en)
+    except Exception:
+        pass
+    return district_en
+
+
+def _risk_word(light: str | None, lang: str) -> str:
+    m = {"ru": {"🔴": "Высокий", "🟡": "Средний", "🟢": "Низкий"},
+         "kz": {"🔴": "Жоғары", "🟡": "Орташа", "🟢": "Төмен"},
+         "en": {"🔴": "High", "🟡": "Medium", "🟢": "Low"}}
+    return m.get(lang, m["ru"]).get(light or "", "")
+
+
+def _ploss_word(p_loss: float, lang: str) -> str:
+    if p_loss > 0.4:
+        return {"ru": "высокий", "kz": "жоғары", "en": "high"}[lang]
+    if p_loss > 0.2:
+        return {"ru": "средний", "kz": "орташа", "en": "medium"}[lang]
+    return {"ru": "низкий", "kz": "төмен", "en": "low"}[lang]
+
+
 def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
+    """Ответ простым языком для фермера на его языке (без жаргона).
+
+    Структура: заголовок -> урожай -> риск -> страховка -> что делать.
+    Никаких SHAP/residual/P_loss=0.23 в сыром виде, только слова и 1 цифра.
+    """
+    if lang not in ("ru", "kz", "en"):
+        lang = "ru"
     pred, ins, rec, risk = full["pred"], full["ins"], full["rec"], full.get("risk") or {}
-    approx = bool(pred.get("approx") or ins.get("approx"))
     experimental = bool(pred.get("experimental") or ins.get("experimental"))
-    tag = " [APPROX]" if approx else (" [EXPERIMENTAL baseline]" if experimental else "")
+    dname, cname = _district_name(district_en, lang), _crop_name(crop, lang)
+
+    y = round(float(pred["y_pred"]), 1)
+    lo, hi = round(float(pred["lo10"]), 1), round(float(pred["hi90"]), 1)
+    mean5 = round(float(ins.get("mean5_c_ha") or y), 1)
+
     light = risk.get("seasonal_light")
-    srisk = risk.get("seasonal_risk")
-    if light is None:  # offline-fallback: светофор по p_loss, честно помечаем
+    if light is None:  # офлайн: светофор по p_loss, честно помечаем ниже
         light = _light_from_ploss(float(ins["p_loss"]))
-        srisk = f"~{round(float(ins['p_loss']) * 100, 1)} ({T['risk_offline'][lang]})"
-    head = {"ru": f"🌾 {district_en} / {crop}{tag} (2026)",
-            "kz": f"🌾 {district_en} / {crop}{tag} (2026)",
-            "en": f"🌾 {district_en} / {crop}{tag} (2026)"}[lang]
-    lines = [
-        head,
-        f"📈 {pred['y_pred']} ц/га (80%: {pred['lo10']}–{pred['hi90']})",
-        f"{light} риск: {srisk}",
-        f"🛡 P_loss={ins['p_loss']}, payout≈{ins['expected_payout_ha']} ₸/га",
-        f"🌱 {rec['window']}: {rec['message']}",
-    ]
-    if approx:
-        lines.append("⚠️ APPROX: без обучающих данных (масштаб от пшеницы).")
-    if experimental:
-        lines.append("⚠️ EXPERIMENTAL baseline-5y: LGBM хуже бейзлайна на hold-out, интервал x1.5.")
-        # C3: понятная фермеру подпись experimental
-        lines.append(T["exp_note"].get(lang, T["exp_note"]["ru"]))
-    if risk.get("error"):
-        # C3: API offline — дружелюбно, без технического жаргона
-        lines.append(T["err_offline"].get(lang, T["err_offline"]["ru"]))
-    return "\n".join(lines)
+        offline = True
+    else:
+        offline = bool(risk.get("error") or risk.get("cached"))
+
+    p_loss = float(ins["p_loss"])
+    payout = int(round(float(ins.get("expected_payout_ha") or 0)))
+
+    if lang == "kz":
+        lines = [
+            f"🌾 {dname} — {cname}, 2026",
+            "",
+            f"📈 Өнім: шамамен {y} ц/га (әдетте {lo}–{hi}).",
+            f"Соңғы 5 жылда орташа: {mean5} ц/га.",
+            f"{'⚠️ Бұл әзірше тәжірибелік болжам — орташа мәнге сүйеніңіз.' if experimental else ''}",
+            "",
+            f"{light} Қауіпсіздік: {_risk_word(light, lang).lower()}." if light else "",
+            f"{'📡 Интернет нашар — ескі дерекпен есептедім.' if offline else ''}",
+            "",
+            f"🛡 Сақтандыру: 80% өнім жинай алмау қаупі — {_ploss_word(p_loss, lang)} "
+            f"({round(p_loss * 100)}/100).",
+            f"Осындай жағдайда төлем шамамен {payout} теңге/га. Бұл бағдар, тариф емес.",
+            "",
+            f"🌱 Себу: {rec['window']}. {rec['message']}",
+        ]
+    elif lang == "en":
+        lines = [
+            f"🌾 {dname} — {cname}, 2026",
+            "",
+            f"📈 Yield: about {y} c/ha (usually {lo}–{hi}).",
+            f"5-year average: {mean5} c/ha.",
+            f"{'⚠️ Experimental forecast — rely on the average.' if experimental else ''}",
+            "",
+            f"{light} Drought risk: {_risk_word(light, lang).lower()}." if light else "",
+            f"{'📡 Weak internet — used saved data.' if offline else ''}",
+            "",
+            f"🛡 Insurance: risk of falling below 80% of average — {_ploss_word(p_loss, lang)} "
+            f"({round(p_loss * 100)} in 100 years).",
+            f"If it happens, payout ≈ {payout} tenge/ha. Estimate, not a tariff.",
+            "",
+            f"🌱 Sowing: {rec['window']}. {rec['message']}",
+        ]
+    else:
+        lines = [
+            f"🌾 {dname} — {cname}, 2026",
+            "",
+            f"📈 Урожай: ждите около {y} ц/га (обычно бывает {lo}–{hi}).",
+            f"Среднее за 5 лет: {mean5} ц/га.",
+            f"{'⚠️ Пока это пробный прогноз — ориентируйтесь на среднее.' if experimental else ''}",
+            "",
+            f"{light} Риск засухи: {_risk_word(light, lang).lower()}." if light else "",
+            f"{'📡 Интернет слабый — посчитал по сохранённым данным.' if offline else ''}",
+            "",
+            f"🛡 Страховка: риск не добрать 80% среднего — {_ploss_word(p_loss, lang)} "
+            f"({round(p_loss * 100)} лет из 100).",
+            f"Если случится — выплата примерно {payout} тенге/га. Это ориентир, не тариф.",
+            "",
+            f"🌱 Сев: {rec['window']}. {rec['message']}",
+        ]
+    return "\n".join([ln for ln in lines if ln != ""]).strip()
 
 
 def format_alerts(alerts: list, lang: str) -> str:

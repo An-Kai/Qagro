@@ -50,6 +50,48 @@ def _register_font() -> str:
     return "Helvetica"
 
 
+PDF_TXT: dict[str, dict[str, str]] = {
+    "ru": {"summary": "Коротко для фермера", "yield": "1. Прогноз урожая 2026 (ц/га)",
+           "ins": "2. Страховка (ориентир, НЕ тариф)", "risk": "3. Риск засухи по декадам",
+           "rec": "4. Когда сеять", "cal": "5. Календарь, алерты и элеватор",
+           "no_data": "Нет данных.", "disc": "Это подсказка, а не гарантия. Проверьте с агрономом."},
+    "kz": {"summary": "Фермерге қысқаша", "yield": "1. 2026 өнім болжамы (ц/га)",
+           "ins": "2. Сақтандыру (бағдар, тариф ЕМЕС)", "risk": "3. Декадалар бойынша құрғақшылық қаупі",
+           "rec": "4. Қашан себу керек", "cal": "5. Күнтізбе, дабылдар және элеватор",
+           "no_data": "Дерек жоқ.", "disc": "Бұл кеңес, кепілдік емес. Агрономмен тексеріңіз."},
+    "en": {"summary": "Short version for the farmer", "yield": "1. 2026 yield forecast (c/ha)",
+           "ins": "2. Insurance (estimate, NOT a tariff)", "risk": "3. Decade drought risk",
+           "rec": "4. When to sow", "cal": "5. Calendar, alerts & elevator",
+           "no_data": "No data.", "disc": "Advice only, not a guarantee. Check with your agronomist."},
+}
+
+
+def _farmer_summary(lang: str, pred: dict | None, ins: dict | None,
+                    risk: dict | None, rec: dict | None) -> str:
+    """2-3 предложения простым языком: урожай, риск, выплата, сев."""
+    if lang not in PDF_TXT:
+        lang = "ru"
+    if not pred or not ins:
+        return PDF_TXT[lang]["no_data"]
+    y, lo, hi = pred.get("y_pred"), pred.get("lo10"), pred.get("hi90")
+    light = (risk or {}).get("seasonal_light") or ""
+    p = round(float(ins.get("p_loss", 0)) * 100)
+    pay = ins.get("expected_payout_ha")
+    win = (rec or {}).get("window", "")
+    msg = (rec or {}).get("message", "")
+    if lang == "kz":
+        return (f"Күтілетін өнім: {y} ц/га (әдетте {lo}–{hi}). "
+                f"Құрғақшылық қаупі {light}. 80%-ға жетпеу қаупі {p}/100, "
+                f"төлем шамамен {pay} теңге/га (тариф емес). Себу: {win}. {msg}")
+    if lang == "en":
+        return (f"Expected yield: {y} c/ha (usually {lo}–{hi}). "
+                f"Drought risk {light}. Below-80% risk {p}/100, "
+                f"payout ≈ {pay} tenge/ha (not a tariff). Sowing: {win}. {msg}")
+    return (f"Ждите около {y} ц/га (обычно {lo}–{hi}). "
+            f"Риск засухи {light}. Недобор 80% — {p} лет из 100, "
+            f"выплата примерно {pay} тенге/га (не тариф). Сев: {win}. {msg}")
+
+
 def build_report_pdf(
     district_en: str,
     crop: str,
@@ -89,6 +131,13 @@ def build_report_pdf(
     title = f"Qagro — {district_ru or district_en} / {crop} (2026)"
     story.append(Paragraph(_esc(title), styles["Title"]))
     story.append(Spacer(1, 8))
+    L = PDF_TXT.get(lang, PDF_TXT["ru"])
+    story.append(Paragraph(_esc(L["summary"]), styles["Heading2"]))
+    story.append(Paragraph(_esc(_farmer_summary(lang, pred, ins, risk, rec)),
+                           styles["Normal"]))
+    story.append(Spacer(1, 4))
+    story.append(Paragraph(_esc(L["disc"]), styles["Normal"]))
+    story.append(Spacer(1, 8))
     approx = bool((pred or {}).get("approx") or (ins or {}).get("approx"))
     if approx:
         story.append(Paragraph(
@@ -108,7 +157,7 @@ def build_report_pdf(
         return t
 
     # 1) Прогноз
-    story.append(Paragraph("1. Yield forecast 2026 (LGBM, ц/га)", styles["Heading2"]))
+    story.append(Paragraph(_esc(L["yield"]), styles["Heading2"]))
     if pred:
         story.append(_kv_table([
             ("y_pred", pred.get("y_pred")),
@@ -137,7 +186,7 @@ def build_report_pdf(
     story.append(Spacer(1, 8))
 
     # 2) Страховка
-    story.append(Paragraph("2. Index insurance (decision support, NOT a tariff)", styles["Heading2"]))
+    story.append(Paragraph(_esc(L["ins"]), styles["Heading2"]))
     if ins:
         story.append(_kv_table([
             ("mean5 (ц/га)", f"{ins.get('mean5_c_ha')} {ins.get('mean5_years')}"),
@@ -155,7 +204,7 @@ def build_report_pdf(
     story.append(Spacer(1, 8))
 
     # 3) Риски
-    story.append(Paragraph("3. Decade drought/heat risk (Open-Meteo)", styles["Heading2"]))
+    story.append(Paragraph(_esc(L["risk"]), styles["Heading2"]))
     if risk and risk.get("seasonal_risk") is not None:
         story.append(_kv_table([
             ("seasonal risk", f"{risk.get('seasonal_risk')} {risk.get('seasonal_light', '')}"),
@@ -188,7 +237,7 @@ def build_report_pdf(
     story.append(Spacer(1, 8))
 
     # 4) Рекомендация
-    story.append(Paragraph("4. Sowing recommendation", styles["Heading2"]))
+    story.append(Paragraph(_esc(L["rec"]), styles["Heading2"]))
     if rec:
         story.append(_kv_table([
             ("window", rec.get("window")),
@@ -202,7 +251,7 @@ def build_report_pdf(
     story.append(Spacer(1, 8))
 
     # 5) C8: календарь + алерты + ближайший элеватор
-    story.append(Paragraph("5. Calendar, alerts & elevator (C8)", styles["Heading2"]))
+    story.append(Paragraph(_esc(L["cal"]), styles["Heading2"]))
     cal = calendar
     if cal is None:  # офлайн-фолбэк без сети
         try:

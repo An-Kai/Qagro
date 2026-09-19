@@ -22,12 +22,27 @@ Python 3.12, FastAPI + Uvicorn, aiogram 3.x, Streamlit, pandas / numpy / scikit-
 LightGBM, SHAP, Open-Meteo API + NASA POWER (MERRA-2), PyYAML, ReportLab (PDF),
 Matplotlib / Plotly / Folium, Docker + docker-compose, SQLite-кэш (`data/cache.db`, TTL 24 ч).
 
-## Быстрый старт (Windows PowerShell)
+## Быстрый старт (Windows cmd / PowerShell)
+
+> Важно: команды `streamlit` и `uvicorn` напрямую могут не найтись (не в PATH).
+> Всегда запускайте через `python -m ...` или двойным кликом по `.bat`.
+
+```bat
+cd Qagro
+run_web.bat   :: веб-дашборд (python -m streamlit run app\streamlit_app.py)
+run_api.bat   :: API на :8000 (python -m uvicorn src.api:app)
+run_bot.bat   :: Telegram-бот (нужен .env с токеном, python -m src.bot)
+```
+
+Вручную:
 
 ```powershell
-cd "C:\Users\ansar\Documents\Default Project\Qagro"
-python -m venv .venv; .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+cd Qagro
+python -m pip install -r requirements.txt
+python -m streamlit run app/streamlit_app.py   # веб
+python -m uvicorn src.api:app --host 127.0.0.1 --port 8000  # API
+Copy-Item .env.example .env  # один раз, вписать токен
+python -m src.bot  # бот
 ```
 
 Проверка без сети и без бота:
@@ -42,7 +57,7 @@ python src/evaluate.py
 ### API
 
 ```powershell
-uvicorn src.api:app --host 127.0.0.1 --port 8000
+python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
 # GET  http://127.0.0.1:8000/health
 # POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"spring_wheat"}
 # POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"oats"}  # APPROX
