@@ -483,8 +483,13 @@ def main() -> None:
         if _elev:
             st.write(f"🚚 {_elev.get('name_ru')} — {_elev.get('dist_km')} км.")
 
-    # ---------- Агроном / календарь / о проекте ----------
-    tab_agro, tab_cal, tab_about = st.tabs([T["agro"], T["cal"], T["about"]])
+    # ---------- Агроном / хозяйство / календарь / о проекте ----------
+    farm_label = {"ru": "🚜 Моё хозяйство", "kz": "🚜 Менің шаруашылығым",
+                  "en": "🚜 My farm"}[lang]
+    plus_label = {"ru": "🔬 Справочник и деньги", "kz": "🔬 Анықтама және ақша",
+                  "en": "🔬 Guide & money"}[lang]
+    tab_agro, tab_farm, tab_plus, tab_cal, tab_about = st.tabs(
+        [T["agro"], farm_label, plus_label, T["cal"], T["about"]])
     with tab_agro:
         hist = panel[(panel["district_en"] == district_en) & (panel["crop"] == crop)].sort_values("year")
         fig = go.Figure()
@@ -504,6 +509,82 @@ def main() -> None:
         slice_df.to_csv(buf, index=False)
         st.download_button(T["csv"], buf.getvalue(),
                            file_name=f"qagro_{district_en}_{crop}.csv", mime="text/csv")
+    with tab_farm:
+        # v4: мои поля + журнал + окно опрыскивания (SQLite локально, spray живой).
+        try:
+            from src.myfields import add_field, delete_field, list_fields
+            from src.journal import add_note, list_notes, PROBLEM_TYPES
+            from src.spray import check_spray_window
+            _farm_ok = True
+        except ImportError:
+            try:
+                from myfields import add_field, delete_field, list_fields  # type: ignore
+                from journal import add_note, list_notes, PROBLEM_TYPES  # type: ignore
+                from spray import check_spray_window  # type: ignore
+                _farm_ok = True
+            except ImportError as e:
+                st.warning(str(e))
+                _farm_ok = False
+        if _farm_ok:
+            fields = list_fields()
+            st.write(f"🌾 {len(fields)} " +
+                     ({"ru": "моих полей", "kz": "менің егістігім", "en": "my fields"}[lang]))
+            with st.form("add_field"):
+                fn = st.text_input("Название / Атауы / Name", "Поле 1")
+                farea = st.number_input("га / ha", 10.0, 2000.0, 100.0)
+                if st.form_submit_button("➕"):
+                    try:
+                        dc = next(d for d in districts if d["name_en"] == district_en)
+                        add_field(fn, float(dc["lat"]), float(dc["lon"]),
+                                  float(farea), crop)
+                        st.success("OK")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(str(e))
+            for f in fields:
+                c1, c2 = st.columns([4, 1])
+                c1.write(f"#{f['id']} {f['name']} — {f['area_ha']} га, {f['crop']}")
+                if c2.button("✖", key=f"del_{f['id']}"):
+                    delete_field(int(f["id"]))
+                    st.rerun()
+            with st.form("add_note"):
+                if fields:
+                    fid = st.selectbox("Поле", [f["id"] for f in fields])
+                    ptype = st.selectbox("Проблема", ["weeds", "pests", "disease",
+                                                      "lodging", "drought", "other"])
+                    txt = st.text_input("Заметка", "")
+                    if st.form_submit_button("📝"):
+                        try:
+                            add_note(int(fid), ptype, txt)
+                            st.success("OK")
+                        except Exception as e:
+                            st.error(str(e))
+            try:
+                sp = check_spray_window(district_en)
+                key = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
+                st.info(f"🧴 {sp.get(key)}")
+            except Exception as e:
+                st.caption(f"Spray offline: {e}")
+    with tab_plus:
+        # v4: справочник + NPK + экономика.
+        try:
+            from src.guide_data import lookup as _lookup
+            from src.fertilizer import calc_npk as _npk
+            from src.economics import profit_ha as _profit
+            items = _lookup(crop)[:4]
+            nk, sk, ak = {"ru": ("name_ru", "signs_ru", "action_ru"),
+                          "kz": ("name_kz", "signs_kz", "action_kz"),
+                          "en": ("name_en", "signs_en", "action_en")}[lang]
+            for it in items:
+                st.write(f"🔬 **{it.get(nk)}**: {'; '.join(it.get(sk, [])[:2])}. → {it.get(ak)}")
+            goal = st.slider("🎯 Цель ц/га / Мақсат / Goal", 5.0, 30.0, 15.0)
+            npk = _npk(crop, float(goal), "medium")
+            st.write(f"🧪 NPK: N {npk['N_kg_ha']} · P {npk['P_kg_ha']} · K {npk['K_kg_ha']} кг/га")
+            pr = _profit(float(pred["y_pred"]), float(wheat_price))
+            st.write(f"💰 ~{int(pr['profit_kzt_ha'])} ₸/га "
+                     f"({int(pr['revenue_kzt_ha'])} − {int(pr['cost_kzt_ha'])})")
+        except Exception as e:
+            st.warning(str(e))
     with tab_cal:
         try:
             cal = sowing_calendar(crop, lang)

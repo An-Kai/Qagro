@@ -1,0 +1,151 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      67.3,
+      51.9
+    ]
+  },
+  "properties": {
+    "layers": [
+      {
+        "name": "nitrogen",
+        "unit_measure": {
+          "d_factor": 100,
+          "mapped_units": "cg/kg",
+          "target_units": "g/kg",
+          "uncertainty_unit": ""
+        },
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "label": "0-5cm",
+            "values": {
+              "mean": 437
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "label": "5-15cm",
+            "values": {
+              "mean": 292
+            }
+          }
+        ]
+      },
+      {
+        "name": "phh2o",
+        "unit_measure": {
+          "d_factor": 10,
+          "mapped_units": "pH*10",
+          "target_units": "-",
+          "uncertainty_unit": ""
+        },
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "label": "0-5cm",
+            "values": {
+              "mean": 71
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "label": "5-15cm",
+            "values": {
+              "mean": 72
+            }
+          }
+        ]
+      },
+      {
+        "name": "soc",
+        "unit_measure": {
+          "d_factor": 10,
+          "mapped_units": "dg/kg",
+          "target_units": "g/kg",
+          "uncertainty_unit": ""
+        },
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "label": "0-5cm",
+            "values": {
+              "mean": 907
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "label": "5-15cm",
+            "values": {
+              "mean": 553
+            }
+          }
+        ]
+      },
+      {
+        "name": "clay",
+        "unit_measure": {
+          "d_factor": 10,
+          "mapped_units": "g/kg",
+          "target_units": "%",
+          "uncertainty_unit": ""
+        },
+        "depths": [
+          {
+            "range": {
+              "top_depth": 0,
+              "bottom_depth": 5,
+              "unit_depth": "cm"
+            },
+            "label": "0-5cm",
+            "values": {
+              "mean": 232
+            }
+          },
+          {
+            "range": {
+              "top_depth": 5,
+              "bottom_depth": 15,
+              "unit_depth": "cm"
+            },
+            "label": "5-15cm",
+            "values": {
+              "mean": 249
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "_qagro": {
+    "mode": "per-property-fallback",
+    "canonical_url": "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=67.3&lat=51.9&property=nitrogen,phh2o,soc,clay&depth=0-5cm,5-15cm&value=mean",
+    "errors": []
+  }
+}

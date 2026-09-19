@@ -404,3 +404,46 @@ if __name__ == "__main__":  # python -m src.api
     import uvicorn
 
     uvicorn.run("src.api:app", host="127.0.0.1", port=8000)
+
+
+# ---- v4 platform: мои поля / журнал / опрыскивание / справочник / NPK / экономика ----
+try:
+    from src.platform_api import router as _platform_router
+except ImportError:
+    try:
+        from platform_api import router as _platform_router  # type: ignore
+    except ImportError:
+        _platform_router = None
+if _platform_router is not None:
+    app.include_router(_platform_router)
+
+
+@app.get("/guide")
+def api_guide(crop: str = "spring_wheat", lang: str = "ru"):
+    try:
+        from src.guide_data import lookup
+    except ImportError:
+        from guide_data import lookup  # type: ignore
+    if lang not in ("ru", "kz", "en"):
+        lang = "ru"
+    return {"crop": crop, "lang": lang, "items": lookup(crop)}
+
+
+@app.get("/fertilizer")
+def api_fertilizer(crop: str = "spring_wheat", yield_goal: float = 15.0,
+                   soil: str = "medium", lang: str = "ru"):
+    try:
+        from src.fertilizer import calc_npk
+    except ImportError:
+        from fertilizer import calc_npk  # type: ignore
+    return calc_npk(crop, float(yield_goal), soil)
+
+
+@app.get("/economy")
+def api_economy(yield_c_ha: float = 12.0, price_kzt_t: float = 95000.0,
+                cost_kzt_ha: float = 65000.0, lang: str = "ru"):
+    try:
+        from src.economics import profit_ha
+    except ImportError:
+        from economics import profit_ha  # type: ignore
+    return profit_ha(float(yield_c_ha), float(price_kzt_t), float(cost_kzt_ha))

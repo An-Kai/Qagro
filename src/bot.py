@@ -722,6 +722,7 @@ def create_dispatcher():
             risk = await _risk_bounded(district, 2026, timeout=3.5)
             full = {**full_local, "risk": risk}
             cache_set(f"full:{district}:{crop}:{lang}", full)
+            await state.update_data(crop=crop)
             text = format_answer(district, crop, lang, full)
             dt = time.time() - t0
             text += f"\n⏱ {dt:.1f}s"
@@ -805,6 +806,52 @@ def create_dispatcher():
                 lang = "ru"
             await cb.message.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
         await cb.answer()
+
+    @dp.message(Command("spray"))
+    async def on_spray(m: Message, state: FSMContext):
+        # v4: окно опрыскивания по последнему району (живой Open-Meteo).
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        district = data.get("district")
+        if not district:
+            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts())
+            return
+        try:
+            try:
+                from src.spray import check_spray_window
+            except ImportError:
+                from spray import check_spray_window  # type: ignore
+            r = await asyncio.to_thread(check_spray_window, district)
+            key = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
+            await m.answer(f"🧴 {district}: {r.get(key)}\n"
+                           f"good {r.get('good_hours', '?')}/{r.get('total_hours', 48)}h")
+        except Exception as e:
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
+
+    @dp.message(Command("guide"))
+    async def on_guide(m: Message, state: FSMContext):
+        # v4: справочник болезней/вредителей по последней культуре.
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        crop = data.get("crop", "spring_wheat")
+        try:
+            try:
+                from src.guide_data import lookup
+            except ImportError:
+                from guide_data import lookup  # type: ignore
+            items = lookup(crop)[:4]
+            nk, sk, ak = {"ru": ("name_ru", "signs_ru", "action_ru"),
+                          "kz": ("name_kz", "signs_kz", "action_kz"),
+                          "en": ("name_en", "signs_en", "action_en")}[lang]
+            txt = "\n\n".join(f"🔬 {it.get(nk)}: {'; '.join(it.get(sk, [])[:2])}. → {it.get(ak)}"
+                              for it in items)
+            await m.answer(txt or T["err_generic"][lang])
+        except Exception as e:
+            await m.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
 
     @dp.message()
     async def on_unknown(m: Message, state: FSMContext):
