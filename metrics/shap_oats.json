@@ -7,32 +7,34 @@
     "precip_mjja",
     "gdd5",
     "heat30",
-    "dry_max",
     "et0",
     "p30_anom",
-    "lat",
-    "lon",
-    "yield_lag1"
+    "dtr",
+    "vpd_proxy",
+    "spei_proxy",
+    "year_trend"
   ],
   "top3": [
     {
+      "feature": "dtr",
+      "mean_abs_shap": 0.7702373303638953,
+      "mean_shap": 0.6705113029608115,
+      "mean_value": 25.733999999999998
+    },
+    {
       "feature": "heat30",
-      "mean_abs_shap": 0.6952240767261182,
-      "mean_shap": 0.6952240767261182,
+      "mean_abs_shap": 0.30945858041237995,
+      "mean_shap": 0.30945858041237995,
       "mean_value": 4.7
     },
     {
-      "feature": "et0",
-      "mean_abs_shap": 0.5519474382467638,
-      "mean_shap": 0.23157981910079561,
-      "mean_value": 480.96999999999997
-    },
-    {
-      "feature": "gdd5",
-      "mean_abs_shap": 0.3197785246003916,
-      "mean_shap": 0.2778796530825571,
-      "mean_value": 1437.77
+      "feature": "year_trend",
+      "mean_abs_shap": 0.27589240068327536,
+      "mean_shap": -0.27589240068327536,
+      "mean_value": 20.0
     }
   ],
-  "base_value": 12.594422362684986
+  "model": "blend_lgbm_ridge_70_30",
+  "note": "SHAP по LGBM-компоненту бленда (Ridge линеен, без SHAP).",
+  "base_value": 12.5754759966933
 }

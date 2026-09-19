@@ -1,5 +1,10 @@
 {
   "spring_wheat": {
+    "model": "blend_lgbm_ridge_70_30",
+    "blend_weights": {
+      "lgbm": 0.7,
+      "ridge": 0.3
+    },
     "baseline": {
       "mae": 2.6824799999999995,
       "rmse": 2.886497088167594,
@@ -7,26 +12,26 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 1.4643313775432238,
-      "rmse": 1.718357072319977,
-      "r2": 0.5519308513326213,
+      "mae": 1.1799407036896188,
+      "rmse": 1.457846715844853,
+      "r2": 0.6774909259788986,
       "n": 50
     },
     "residuals": {
-      "mean": 1.0236813011887458,
-      "std": 1.3941670110435993
+      "mean": 0.4799979746742132,
+      "std": 1.390536158233717
     },
     "features_used": [
       "tmean_mjja",
       "precip_mjja",
       "gdd5",
       "heat30",
-      "dry_max",
       "et0",
       "p30_anom",
-      "lat",
-      "lon",
-      "yield_lag1"
+      "dtr",
+      "vpd_proxy",
+      "spei_proxy",
+      "year_trend"
     ],
     "holdout_years": [
       2021,
@@ -35,6 +40,11 @@
     "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_spring_wheat.png"
   },
   "barley": {
+    "model": "blend_lgbm_ridge_70_30",
+    "blend_weights": {
+      "lgbm": 0.7,
+      "ridge": 0.3
+    },
     "baseline": {
       "mae": 2.7823599999999993,
       "rmse": 3.0022062154355753,
@@ -42,26 +52,26 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 1.522483993990359,
-      "rmse": 1.8144759718746637,
-      "r2": 0.5406953215454395,
+      "mae": 1.2487980568306734,
+      "rmse": 1.528964919230249,
+      "r2": 0.6738679590679317,
       "n": 50
     },
     "residuals": {
-      "mean": 1.1168968776841706,
-      "std": 1.4445055707784782
+      "mean": 0.4953472627130008,
+      "std": 1.4611865508158783
     },
     "features_used": [
       "tmean_mjja",
       "precip_mjja",
       "gdd5",
       "heat30",
-      "dry_max",
       "et0",
       "p30_anom",
-      "lat",
-      "lon",
-      "yield_lag1"
+      "dtr",
+      "vpd_proxy",
+      "spei_proxy",
+      "year_trend"
     ],
     "holdout_years": [
       2021,
@@ -70,6 +80,11 @@
     "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_barley.png"
   },
   "oats": {
+    "model": "blend_lgbm_ridge_70_30",
+    "blend_weights": {
+      "lgbm": 0.7,
+      "ridge": 0.3
+    },
     "baseline": {
       "mae": 3.58904,
       "rmse": 4.0036874003848,
@@ -77,26 +92,26 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 1.6494029910777324,
-      "rmse": 1.9180996769371699,
-      "r2": 0.6941848013909424,
+      "mae": 1.2605875182283537,
+      "rmse": 1.6391257460291737,
+      "r2": 0.7766729830991262,
       "n": 50
     },
     "residuals": {
-      "mean": 0.06446295707711025,
-      "std": 1.9364787361978122
+      "mean": 0.11078443859303114,
+      "std": 1.6519808825119684
     },
     "features_used": [
       "tmean_mjja",
       "precip_mjja",
       "gdd5",
       "heat30",
-      "dry_max",
       "et0",
       "p30_anom",
-      "lat",
-      "lon",
-      "yield_lag1"
+      "dtr",
+      "vpd_proxy",
+      "spei_proxy",
+      "year_trend"
     ],
     "holdout_years": [
       2021,
@@ -105,6 +120,11 @@
     "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_oats.png"
   },
   "sunflower": {
+    "model": "blend_lgbm_ridge_70_30",
+    "blend_weights": {
+      "lgbm": 0.7,
+      "ridge": 0.3
+    },
     "baseline": {
       "mae": 2.52364,
       "rmse": 3.691283321556339,
@@ -112,36 +132,39 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 2.8000529048156775,
-      "rmse": 3.8519939827378296,
-      "r2": -0.4670754869615572,
+      "mae": 2.1480991798407563,
+      "rmse": 3.205143531526491,
+      "r2": -0.015725196696103172,
       "n": 50
     },
     "residuals": {
-      "mean": 2.7526202088318126,
-      "std": 2.721970255235515
+      "mean": 1.9686225858074733,
+      "std": 2.5550011326996973
     },
     "features_used": [
       "tmean_mjja",
-      "precip_mjja",
       "gdd5",
       "heat30",
-      "dry_max",
       "et0",
-      "p30_anom",
-      "lat",
-      "lon",
-      "yield_lag1"
+      "yield_lag1",
+      "dtr",
+      "vpd_proxy",
+      "spei_proxy",
+      "year_trend",
+      "yield_roll3"
     ],
     "holdout_years": [
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_sunflower.png",
-    "below_baseline": true,
-    "note": "LGBM worse than 5y-mean baseline on 2021-2025 hold-out (sunflower 2024-2025 structural break: hybrids/area; см. fetch_stat.py [SUNFLOWER]). Metrics are honest, no tuning."
+    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_sunflower.png"
   },
   "rapeseed": {
+    "model": "blend_lgbm_ridge_70_30",
+    "blend_weights": {
+      "lgbm": 0.7,
+      "ridge": 0.3
+    },
     "baseline": {
       "mae": 3.6985200000000003,
       "rmse": 4.260326682309703,
@@ -149,26 +172,26 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 5.253434893814219,
-      "rmse": 5.920472170834669,
-      "r2": -2.581879592695238,
+      "mae": 3.785587286277983,
+      "rmse": 4.488746105207582,
+      "r2": -1.058962216945777,
       "n": 50
     },
     "residuals": {
-      "mean": 5.253434893814219,
-      "std": 2.75781127021511
+      "mean": 3.785587286277983,
+      "std": 2.4365772444874003
     },
     "features_used": [
       "tmean_mjja",
-      "precip_mjja",
       "gdd5",
       "heat30",
-      "dry_max",
       "et0",
-      "p30_anom",
-      "lat",
-      "lon",
-      "yield_lag1"
+      "yield_lag1",
+      "dtr",
+      "vpd_proxy",
+      "spei_proxy",
+      "year_trend",
+      "yield_roll3"
     ],
     "holdout_years": [
       2021,
@@ -176,9 +199,14 @@
     ],
     "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_rapeseed.png",
     "below_baseline": true,
-    "note": "LGBM worse than 5y-mean baseline on 2021-2025 hold-out (sunflower 2024-2025 structural break: hybrids/area; см. fetch_stat.py [SUNFLOWER]). Metrics are honest, no tuning."
+    "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; см. fetch_stat.py / data_card). Metrics are honest, no tuning."
   },
   "flax": {
+    "model": "blend_lgbm_ridge_70_30",
+    "blend_weights": {
+      "lgbm": 0.7,
+      "ridge": 0.3
+    },
     "baseline": {
       "mae": 1.2176,
       "rmse": 1.4394755155958714,
@@ -186,33 +214,31 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 1.6531381844153168,
-      "rmse": 2.0193370909446626,
-      "r2": -1.0684319009433296,
+      "mae": 1.1494883464421704,
+      "rmse": 1.3357284175815771,
+      "r2": 0.09497638046240242,
       "n": 50
     },
     "residuals": {
-      "mean": 1.514473061423881,
-      "std": 1.3492604297283926
+      "mean": -0.45155523665777436,
+      "std": 1.2698498520361574
     },
     "features_used": [
       "tmean_mjja",
       "precip_mjja",
       "gdd5",
       "heat30",
-      "dry_max",
       "et0",
-      "p30_anom",
-      "lat",
-      "lon",
-      "yield_lag1"
+      "dtr",
+      "vpd_proxy",
+      "spei_proxy",
+      "year_trend",
+      "yield_roll3"
     ],
     "holdout_years": [
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_flax.png",
-    "below_baseline": true,
-    "note": "LGBM worse than 5y-mean baseline on 2021-2025 hold-out (sunflower 2024-2025 structural break: hybrids/area; см. fetch_stat.py [SUNFLOWER]). Metrics are honest, no tuning."
+    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_flax.png"
   }
 }

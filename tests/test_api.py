@@ -63,6 +63,13 @@ def t_predict_wheat():
 
 
 def t_predict_sunflower_experimental():
+    # Статус experimental читаем из metrics/metrics.json (below_baseline):
+    # v3-бленд может честно перевести культуру в strong — тест сверяется
+    # с фактом, а не захардкоженным ожиданием.
+    import json
+    mj = ROOT / "metrics" / "metrics.json"
+    below = bool(json.loads(mj.read_text(encoding="utf-8"))
+                 .get("sunflower", {}).get("below_baseline", False))
     r = client.post("/predict", json={
         "district_en": "Esil", "crop": "sunflower",
         "lang": "ru", "include_risk": False,
@@ -72,9 +79,10 @@ def t_predict_sunflower_experimental():
     exp_top = j.get("experimental")
     exp_pred = (j.get("pred") or {}).get("experimental")
     exp_ins = (j.get("insurance") or {}).get("experimental")
-    assert True in (exp_top, exp_pred, exp_ins), (
-        f"sunflower должен быть experimental: top={exp_top} "
-        f"pred={exp_pred} ins={exp_ins}"
+    got = True in (exp_top, exp_pred, exp_ins)
+    assert got == below, (
+        f"sunflower experimental={got} не совпадает с metrics below_baseline={below}: "
+        f"top={exp_top} pred={exp_pred} ins={exp_ins}"
     )
 
 

@@ -7,32 +7,34 @@
     "precip_mjja",
     "gdd5",
     "heat30",
-    "dry_max",
     "et0",
     "p30_anom",
-    "lat",
-    "lon",
-    "yield_lag1"
+    "dtr",
+    "vpd_proxy",
+    "spei_proxy",
+    "year_trend"
   ],
   "top3": [
     {
-      "feature": "heat30",
-      "mean_abs_shap": 0.5569480058724524,
-      "mean_shap": 0.5569480058724524,
-      "mean_value": 4.7
+      "feature": "dtr",
+      "mean_abs_shap": 0.5558112799687938,
+      "mean_shap": 0.438097474300957,
+      "mean_value": 25.733999999999998
     },
     {
-      "feature": "et0",
-      "mean_abs_shap": 0.47721544582201814,
-      "mean_shap": 0.23652094447791647,
-      "mean_value": 480.96999999999997
+      "feature": "vpd_proxy",
+      "mean_abs_shap": 0.22736063594673328,
+      "mean_shap": 0.22736063594673328,
+      "mean_value": 0.7276
     },
     {
-      "feature": "yield_lag1",
-      "mean_abs_shap": 0.23074676738934202,
-      "mean_shap": -0.2284388488431448,
-      "mean_value": 14.970000000000002
+      "feature": "year_trend",
+      "mean_abs_shap": 0.2171855629180718,
+      "mean_shap": -0.21292501411417758,
+      "mean_value": 20.0
     }
   ],
-  "base_value": 12.845404537503816
+  "model": "blend_lgbm_ridge_70_30",
+  "note": "SHAP по LGBM-компоненту бленда (Ridge линеен, без SHAP).",
+  "base_value": 12.844933730653548
 }

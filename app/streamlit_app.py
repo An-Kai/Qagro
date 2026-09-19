@@ -1,16 +1,13 @@
-"""Streamlit-дашборд Qagro.
+"""Streamlit-дашборд Qagro — версия для обычного фермера (v3).
 
-Селекты района/культуры/языка, метрики, график Plotly (факт vs прогноз),
-карта Folium с рисками, выгрузка CSV/GeoJSON/PDF, дисклеймер про APPROX
-и даунскейлинг районов.
+Принципы: 3 шага (район -> культура -> ответ словами), весь интерфейс на
+выбранном языке RU/KZ/EN, цифры только понятные (ц/га, тенге/га),
+технические детали (MAE/RMSE/SHAP) спрятаны в "Подробно для агронома".
 
-C4 (веб-приятности, без переписывания логики):
-  st.cache_data(ttl=3600) на predict/insurance + загрузку fields/granaries,
-  sidebar (язык RU/KZ/EN + слайдер цены пшеницы для live-пересчёта payout),
-  вкладки: Прогноз / Поля и элеваторы / Метрики / О проекте.
+Карты: риски по районам + таблица, поля OSM/demo с фильтром и статистикой,
+элеваторы + маршруты район->элеватор, точки NDVI Sentinel-2.
 
-Запуск (Windows PowerShell):
-  streamlit run app/streamlit_app.py
+Запуск: python -m streamlit run app/streamlit_app.py (или run_web.bat)
 """
 from __future__ import annotations
 
@@ -23,8 +20,6 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-# streamlit опционален для мок-рендера: без него файл импортируется
-# (stub даёт cache_data-noop + runtime.exists()->False, UI не выполняется).
 try:
     import streamlit as st
 except ImportError:  # pragma: no cover — только для проверок без streamlit
@@ -77,23 +72,72 @@ except ImportError:  # запуск с другой cwd
     from report_pdf import build_report_pdf  # type: ignore
 
 PANEL = ROOT / "data" / "processed" / "akmola_panel.csv"
+PANEL_V3 = ROOT / "data" / "processed" / "akmola_panel_v3.csv"
 METRICS = ROOT / "metrics" / "metrics.json"
 RISK_EXAMPLE = ROOT / "reports" / "risk_example.json"
 FIELDS_GEOJSON = ROOT / "data" / "fields" / "akmola_osm_fields.geojson"
 GRANARIES_JSON = ROOT / "data" / "fields" / "granaries.json"
+NDVI_JSON = ROOT / "data" / "ndvi" / "ndvi_timeseries.json"
 
 CROP_ORDER = ("spring_wheat", "barley", "oats",
               "sunflower", "rapeseed", "flax")
+CROP_ICON = {"spring_wheat": "🌾", "barley": "🌾", "oats": "🌾",
+             "sunflower": "🌻", "rapeseed": "🌼", "flax": "🌿"}
 WHEAT_PRICE_MIN, WHEAT_PRICE_MAX, WHEAT_PRICE_DEFAULT = 70000, 130000, 95000
 
+UI = {
+    "ru": {"title": "🌾 Qagro — помощник фермера",
+           "sub": "Выберите район и культуру — получите ответ простыми словами.",
+           "step1": "Шаг 1. Ваш район", "step2": "Шаг 2. Культура",
+           "step3": "Шаг 3. Ваш ответ", "yield": "Урожай",
+           "risk": "Риск засухи", "ins": "Страховка", "todo": "Что делать",
+           "detail": "Подробно для агронома (цифры модели)",
+           "low": "низкий", "mid": "средний", "high": "высокий",
+           "maps": "🗺 Карты", "agro": "📊 Для агронома", "cal": "📅 Календарь и алерты",
+           "about": "ℹ О проекте", "price": "Цена зерна (тенге/т)",
+           "download": "Скачать отчёт PDF", "csv": "⬇️ CSV история",
+           "geo": "⬇️ GeoJSON районы+риски", "no_threat": "✅ Угроз на 7 дней нет.",
+           "exp": "⚠️ Пробный прогноз — ориентируйтесь на среднее за 5 лет.",
+           "offline": "📡 Интернет слабый — посчитано по сохранённым данным."},
+    "kz": {"title": "🌾 Qagro — фермер көмекшісі",
+           "sub": "Аудан мен дақылды таңдаңыз — жауапты қарапайым тілде алыңыз.",
+           "step1": "1-қадам. Ауданыңыз", "step2": "2-қадам. Дақыл",
+           "step3": "3-қадам. Сіздің жауабыңыз", "yield": "Өнім",
+           "risk": "Құрғақшылық қаупі", "ins": "Сақтандыру", "todo": "Не істеу керек",
+           "detail": "Агрономға арналған сандар",
+           "low": "төмен", "mid": "орташа", "high": "жоғары",
+           "maps": "🗺 Карталар", "agro": "📊 Агрономға", "cal": "📅 Күнтізбе және дабылдар",
+           "about": "ℹ Жоба туралы", "price": "Астық бағасы (теңге/т)",
+           "download": "PDF есепті жүктеу", "csv": "⬇️ CSV тарих",
+           "geo": "⬇️ GeoJSON аудандар+қауіп", "no_threat": "✅ 7 күнге қауіп жоқ.",
+           "exp": "⚠️ Сынақ болжамы — 5 жылдық орташаға сүйеніңіз.",
+           "offline": "📡 Интернет нашар — сақталған дерекпен есептелді."},
+    "en": {"title": "🌾 Qagro — farmer helper",
+           "sub": "Pick your district and crop — get a plain-words answer.",
+           "step1": "Step 1. Your district", "step2": "Step 2. Crop",
+           "step3": "Step 3. Your answer", "yield": "Yield",
+           "risk": "Drought risk", "ins": "Insurance", "todo": "What to do",
+           "detail": "Details for the agronomist (model numbers)",
+           "low": "low", "mid": "medium", "high": "high",
+           "maps": "🗺 Maps", "agro": "📊 For agronomist", "cal": "📅 Calendar & alerts",
+           "about": "ℹ About", "price": "Grain price (tenge/t)",
+           "download": "Download PDF report", "csv": "⬇️ CSV history",
+           "geo": "⬇️ GeoJSON districts+risk", "no_threat": "✅ No threats for 7 days.",
+           "exp": "⚠️ Experimental forecast — rely on the 5-year average.",
+           "offline": "📡 Weak internet — used saved data."},
+}
 
-# ---------- чистые хелперы (без streamlit — для мок-рендера/тестов) ----------
+
+def _w(p_loss: float, lang: str) -> str:
+    if p_loss > 0.4:
+        return UI[lang]["high"]
+    if p_loss > 0.2:
+        return UI[lang]["mid"]
+    return UI[lang]["low"]
+
 
 def recalc_payout_live(ins: dict, wheat_price_kzt_per_t: int) -> dict:
-    """Live-пересчёт выплаты под слайдер цены пшеницы.
-
-    Чистая функция: payout = shortfall/10 * price * subsidy.
-    """
+    """Live-пересчёт выплаты под слайдер цены пшеницы."""
     out = dict(ins)
     try:
         sub = float(ins.get("subsidy_rate", 0.8))
@@ -110,7 +154,6 @@ def recalc_payout_live(ins: dict, wheat_price_kzt_per_t: int) -> dict:
 
 
 def build_metrics_rows(metrics: dict) -> list[dict]:
-    """Строки таблицы Метрик: 6 культур + бейдж ✅ LGBM / 🧪 experimental."""
     rows: list[dict] = []
     for c in CROP_ORDER:
         m = (metrics.get(c) or {})
@@ -145,8 +188,6 @@ def _field_style(feat):
     return {"color": "green", "weight": 2, "fillOpacity": 0.25}
 
 
-# ---------- кэшированные загрузки/расчёты (ttl=3600) ----------
-
 @st.cache_data(ttl=3600)
 def load_cfg() -> dict:
     with open(ROOT / "config" / "districts.yaml", encoding="utf-8") as f:
@@ -155,7 +196,8 @@ def load_cfg() -> dict:
 
 @st.cache_data(ttl=3600)
 def load_panel() -> pd.DataFrame:
-    return pd.read_csv(PANEL)
+    p = PANEL_V3 if PANEL_V3.exists() else PANEL
+    return pd.read_csv(p)
 
 
 @st.cache_data(ttl=3600)
@@ -186,6 +228,18 @@ def load_granaries() -> dict:
     return {"granaries": []}
 
 
+@st.cache_data(ttl=3600)
+def load_ndvi() -> list:
+    if NDVI_JSON.exists():
+        try:
+            data = json.loads(NDVI_JSON.read_text(encoding="utf-8"))
+            items = data.get("items", data) if isinstance(data, dict) else data
+            return [x for x in items if x.get("ndvi_mean") is not None]
+        except Exception:
+            return []
+    return []
+
+
 def predict_none(district_en: str, crop: str) -> dict:
     if is_approx(crop):
         return predict_approx(district_en, crop, None)
@@ -204,7 +258,6 @@ def cached_insurance(district_en: str, crop: str) -> dict:
 
 @st.cache_data(ttl=10800)
 def cached_alerts(district_en: str) -> dict:
-    """C8 best-effort: алерты Open-Meteo, при офлайне — error без моков."""
     try:
         items = check_alerts(district_en)
         return {"alerts": items, "error": None}
@@ -212,55 +265,43 @@ def cached_alerts(district_en: str) -> dict:
         return {"alerts": [], "error": f"{type(e).__name__}: {e}"}
 
 
-# ---------- UI (выполняется только под `streamlit run`) ----------
-
 def main() -> None:
     import plotly.graph_objects as go
 
     import folium
     import streamlit.components.v1 as components
 
-    st.set_page_config(page_title="Qagro — Akmola yield & risk", layout="wide")
+    st.set_page_config(page_title="Qagro — farmer helper", layout="wide")
 
     cfg = load_cfg()
     districts = cfg.get("districts", [])
     crops = cfg.get("crops", [])
-    panel = load_panel()
-    metrics = load_metrics()
-    risks = load_risks()
-    fdata = load_fields()
-    gdata = load_granaries()
 
-    dlabel = {d["name_en"]: f"{d['name_ru']} ({d['name_en']})" for d in districts}
-    clabel = {c["id"]: f"{c.get('name_ru', c['id'])} ({c['id']})" for c in crops}
-
-    st.title("Qagro — прогноз урожайности и риски (Акмола, 2026)")
-
-    # ---- sidebar: язык + цена пшеницы (live-пересчёт payout) ----
-    st.sidebar.header("⚙️ Параметры / Параметрлер / Settings")
-    lang = st.sidebar.selectbox("Язык / Тіл / Language",
+    lang = st.sidebar.selectbox("🌍 Язык / Тіл / Language",
                                 options=["ru", "kz", "en"], index=0)
-    wheat_price = st.sidebar.slider(
-        "Цена пшеницы (KZT/т) — live-пересчёт выплаты",
-        min_value=WHEAT_PRICE_MIN, max_value=WHEAT_PRICE_MAX,
-        value=WHEAT_PRICE_DEFAULT, step=1000)
-    st.sidebar.caption("Слайдер влияет на пшеницу/ячмень; "
-                       "у APPROX-культур цена фиксирована "
-                       "(см. src/approx_crops.py).")
+    T = UI[lang]
+    wheat_price = st.sidebar.slider(T["price"], min_value=WHEAT_PRICE_MIN,
+                                    max_value=WHEAT_PRICE_MAX,
+                                    value=WHEAT_PRICE_DEFAULT, step=1000)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        district_en = st.selectbox("Район / Аудан / District",
-                                   options=list(dlabel.keys()),
-                                   format_func=lambda k: dlabel[k],
-                                   index=list(dlabel.keys()).index("Esil")
-                                   if "Esil" in dlabel else 0)
-    with col2:
-        crop = st.selectbox("Культура / Дақыл / Crop",
-                            options=list(clabel.keys()),
-                            format_func=lambda k: clabel[k])
+    st.title(T["title"])
+    st.write(T["sub"])
 
-    # ---- вычисления (локальные, без сети; predict/insurance кэшированы) ----
+    dlabel = {d["name_en"]: f"{d.get(f'name_{lang}', d['name_ru'])}" for d in districts}
+    clabel = {c["id"]: f"{CROP_ICON.get(c['id'], '🌱')} {c.get(f'name_{lang}', c['id'])}"
+              for c in crops}
+
+    st.header(T["step1"])
+    district_en = st.selectbox("📍", options=list(dlabel.keys()),
+                               format_func=lambda k: dlabel[k],
+                               index=list(dlabel.keys()).index("Esil")
+                               if "Esil" in dlabel else 0,
+                               label_visibility="collapsed")
+    st.header(T["step2"])
+    crop = st.selectbox("🌱", options=list(clabel.keys()),
+                        format_func=lambda k: clabel[k],
+                        label_visibility="collapsed")
+
     try:
         pred = cached_predict(district_en, crop)
         ins_raw = cached_insurance(district_en, crop)
@@ -269,314 +310,218 @@ def main() -> None:
     except Exception as e:
         pred = ins_raw = rec = None
         err = f"{type(e).__name__}: {e}"
-
     if err:
         st.error(f"⚠️ {err}")
         st.stop()
 
-    # live-пересчёт payout слайдером (только пшеница/ячмень — config-цена)
-    if crop in ("spring_wheat", "barley"):
-        ins = recalc_payout_live(ins_raw, wheat_price)
-        price_note = (f"live: цена {wheat_price} KZT/т (слайдер), "
-                      f"база конфига {ins_raw['price_kzt_per_t']} KZT/т.")
-    else:
-        ins = ins_raw
-        price_note = (f"фиксированная цена {crop}: "
-                      f"{ins['price_kzt_per_t']} KZT/т "
-                      f"(слайдер {wheat_price} — только пшеница/ячмень).")
+    ins = recalc_payout_live(ins_raw, wheat_price) if crop in ("spring_wheat", "barley") else ins_raw
+    panel = load_panel()
+    metrics = load_metrics()
+    risks = load_risks()
+    fdata = load_fields()
+    gdata = load_granaries()
+    ndvi_pts = load_ndvi()
 
     risk = (risks.get(f"{district_en}_risk") or {})
-    seasonal = risk.get("seasonal_risk")
-    light = risk.get("seasonal_light", "")
-    if seasonal is None:
-        # офлайн-фолбэк: светофор по p_loss, честно помечаем
-        p = float(ins["p_loss"])
-        light = "🔴" if p > 0.4 else ("🟡" if p > 0.2 else "🟢")
-        seasonal_txt = f"~{round(p * 100, 1)} (p_loss-proxy, риск офлайн)"
-    else:
-        seasonal_txt = f"{seasonal} {light}"
+    seasonal, light = risk.get("seasonal_risk"), risk.get("seasonal_light", "")
+    offline = seasonal is None
+    if offline:
+        p0 = float(ins["p_loss"])
+        light = "🔴" if p0 > 0.4 else ("🟡" if p0 > 0.2 else "🟢")
+    experimental = bool(pred.get("experimental") or ins.get("experimental"))
 
-    approx = bool(pred.get("approx") or ins.get("approx"))
+    # ---------- Шаг 3: ответ словами ----------
+    st.header(T["step3"])
+    y, lo, hi = round(pred["y_pred"], 1), round(pred["lo10"], 1), round(pred["hi90"], 1)
+    mean5 = round(float(ins.get("mean5_c_ha") or y), 1)
+    p_loss, payout = float(ins["p_loss"]), int(round(float(ins.get("expected_payout_ha") or 0)))
 
-    tab_forecast, tab_cal, tab_map, tab_metrics, tab_about = st.tabs(
-        ["Прогноз", "Календарь и алерты", "Поля и элеваторы", "Метрики", "О проекте"])
+    c1, c2 = st.columns(2)
+    with c1:
+        st.success(f"### {T['yield']}: ~{y} ц/га\n\n"
+                   + ({"ru": f"Обычно бывает {lo}–{hi}. Среднее за 5 лет: {mean5}.",
+                       "kz": f"Әдетте {lo}–{hi}. 5 жылдық орташа: {mean5}.",
+                       "en": f"Usually {lo}–{hi}. 5-year average: {mean5}."}[lang]))
+    with c2:
+        st.info(f"### {light} {T['risk']}: {_w(p_loss, lang)}\n\n"
+                + ({"ru": "Зелёный — спокойно, жёлтый — следите, красный — готовьтесь.",
+                    "kz": "Жасыл — тыныш, сары — бақылаңыз, қызыл — дайындалыңыз.",
+                    "en": "Green — calm, yellow — watch, red — prepare."}[lang]))
+    c3, c4 = st.columns(2)
+    with c3:
+        st.warning(f"### {T['ins']}: ~{payout} ₸/га\n\n"
+                   + ({"ru": f"Шанс не добрать 80%: {round(p_loss*100)} из 100. Это ориентир, не тариф.",
+                       "kz": f"80%-ға жетпеу: 100-ден {round(p_loss*100)}. Бұл бағдар, тариф емес.",
+                       "en": f"Below-80% chance: {round(p_loss*100)} in 100. Estimate, not a tariff."}[lang]))
+    with c4:
+        st.success(f"### {T['todo']}: {rec['window']}\n\n{rec['message']}")
+    if experimental:
+        st.warning(T["exp"])
+    if offline:
+        st.caption(T["offline"])
 
-    # ================= Прогноз =================
-    with tab_forecast:
-        if approx:
-            st.warning("⚠️ APPROX: культура без обучающих данных — "
-                       "масштабирование от пшеницы (см. src/approx_crops.py). "
-                       "Decision support, не тариф.")
-        if ins.get("experimental"):
-            st.warning("🧪 EXPERIMENTAL: LGBM хуже бейзлайна на hold-out "
-                       "2021–2025 — прогноз = baseline mean5, интервал ×1.5.")
+    d_ru = next((d.get("name_ru") for d in districts if d.get("name_en") == district_en), None)
+    _al = cached_alerts(district_en)
+    try:
+        from src.logistics import nearest_elevator as _ne
+    except ImportError:
+        try:
+            from logistics import nearest_elevator as _ne  # type: ignore
+        except ImportError:
+            _ne = None
+    _elev = None
+    if _ne is not None:
+        try:
+            _elev = _ne(district_en)
+        except Exception:
+            _elev = None
+    try:
+        _cal = sowing_calendar(crop, lang)
+    except Exception:
+        _cal = None
+    pdf_bytes = build_report_pdf(
+        district_en, crop, lang, pred=pred, ins=ins,
+        risk=risk or {"seasonal_risk": None, "error": "offline in demo"},
+        rec=rec, district_ru=d_ru, calendar=_cal,
+        alerts=_al.get("alerts"), alerts_error=_al.get("error"), elevator=_elev)
+    st.download_button(f"📄 {T['download']}", pdf_bytes,
+                       file_name=f"qagro_{district_en}_{crop}_{lang}.pdf",
+                       mime="application/pdf", type="primary")
 
-        m1, m2, m3, m4, m5 = st.columns(5)
-        m1.metric("y_pred 2026 (ц/га)", pred["y_pred"])
-        m2.metric("80% интервал", f"{pred['lo10']}–{pred['hi90']}")
-        m3.metric("Сезонный риск", seasonal_txt)
-        m4.metric("P_loss", ins["p_loss"])
-        m5.metric("Выплата live (KZT/га)", ins["expected_payout_ha"])
-
-        st.subheader("Страховка и рекомендация")
-        st.write(f"mean5={ins['mean5_c_ha']} {ins['mean5_years']}, "
-                 f"strike={ins['strike_c_ha']}, price={ins['price_kzt_per_t']} KZT/t. "
-                 f"{ins['disclaimer']}")
-        st.caption(price_note)
-        st.write(f"🌱 {rec['window']}: {rec['message']} "
-                 f"({' / '.join(rec.get('actions', []))})")
-
-        # ---- график Plotly: факт vs прогноз ----
-        st.subheader("Факт vs прогноз")
-        hist = panel[(panel["district_en"] == district_en)]
-        if is_approx(crop):
-            # истории APPROX-культур нет: показываем пшеницу x фактор + пометка
-            f = APPROX_YIELD_FACTOR[crop]
-            hw = hist[hist["crop"] == "spring_wheat"].sort_values("year")
-            y_hist = (hw["yield_c_ha"] * f).tolist()
-            years = hw["year"].tolist()
-            st.caption(f"APPROX: история = пшеница × {f} (обучающих данных по {crop} нет).")
-        else:
-            hc = hist[hist["crop"] == crop].sort_values("year")
-            years = hc["year"].tolist()
-            y_hist = hc["yield_c_ha"].tolist()
-
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=years, y=y_hist, mode="lines+markers", name="факт"))
-        fig.add_trace(go.Scatter(x=[2026], y=[pred["y_pred"]], mode="markers",
-                                 name="прогноз 2026",
-                                 error_y=dict(type="data",
-                                              array=[pred["hi90"] - pred["y_pred"]],
-                                              arrayminus=[pred["y_pred"] - pred["lo10"]])))
-        fig.update_layout(xaxis_title="год", yaxis_title="ц/га",
-                          title=f"{district_en} / {crop}: факт + прогноз 2026")
-        st.plotly_chart(fig, use_container_width=True)
-
-        # ---- метрики модели (кратко, полно — во вкладке Метрики) ----
-        st.subheader("Качество модели (hold-out 2021–2025)")
+    with st.expander(f"🔧 {T['detail']}"):
+        st.write(f"y_pred={pred['y_pred']}, 80% [{pred['lo10']}, {pred['hi90']}], "
+                 f"mean5={ins['mean5_c_ha']}, p_loss={ins['p_loss']}")
+        if pred.get("factors"):
+            st.write("Top factors:", [(f.get("feature"), round(float(f.get("shap_value", 0)), 3))
+                                      for f in pred["factors"][:3]])
         if crop in metrics:
             lm = metrics[crop]["lgbm"]
-            badge = ("🧪 experimental" if metrics[crop].get("below_baseline")
-                     else "✅ LGBM")
-            st.write(f"{badge} {crop}: MAE={lm['mae']:.2f}, RMSE={lm['rmse']:.2f}, "
-                     f"R²={lm['r2']:.2f}, n={lm['n']}")
-        else:
-            st.write(f"{crop}: обученной модели нет (APPROX). "
-                     f"Метрики пшеницы: {metrics.get('spring_wheat', {}).get('lgbm', {})}")
+            st.write(f"{crop}: MAE={lm['mae']:.2f}, RMSE={lm['rmse']:.2f}, R²={lm['r2']:.2f}")
 
-        # ---- выгрузки ----
-        st.subheader("Выгрузка")
-
-        # CSV: срез панели + строка прогноза
-        slice_df = panel[(panel["district_en"] == district_en)]
-        if not is_approx(crop):
-            slice_df = slice_df[slice_df["crop"] == crop]
-        csv_buf = io.StringIO()
-        slice_df.to_csv(csv_buf, index=False)
-        st.download_button("⬇️ CSV (история района)", csv_buf.getvalue(),
-                           file_name=f"qagro_{district_en}_{crop}.csv",
-                           mime="text/csv")
-
-        # GeoJSON: районы + риск-пропсы
-        features = []
+    # ---------- Карты ----------
+    st.header(T["maps"])
+    tab_risk, tab_fields = st.tabs(
+        ["🟢🟡🔴 " + ({"ru": "Риски", "kz": "Қауіптер", "en": "Risks"}[lang]),
+         "🌾 " + ({"ru": "Поля и элеваторы", "kz": "Егістік және элеваторлар", "en": "Fields & elevators"}[lang])])
+    with tab_risk:
+        rows = []
         for d in districts:
             en = d["name_en"]
             r = (risks.get(f"{en}_risk") or {}).get("seasonal_risk")
-            features.append({
-                "type": "Feature",
-                "geometry": {"type": "Point",
-                             "coordinates": [d["lon"], d["lat"]]},
-                "properties": {"name_en": en, "name_ru": d.get("name_ru"),
-                               "seasonal_risk": r,
-                               "cached": bool(risks.get(f"{en}_risk"))},
-            })
-        geojson = {"type": "FeatureCollection", "features": features,
-                   "note": "Точки-центроиды (даунскейлинг областной статистики), не границы."}
-        st.download_button("⬇️ GeoJSON (районы+риски)",
-                           json.dumps(geojson, ensure_ascii=False, indent=2),
-                           file_name="qagro_districts.geojson",
-                           mime="application/geo+json")
-
-        # PDF (C8: календарь+алерты+элеватор внутри отчёта)
-        d_ru = next((d.get("name_ru") for d in districts
-                     if d.get("name_en") == district_en), None)
-        _al = cached_alerts(district_en)
-        try:
-            from src.logistics import nearest_elevator as _ne
-        except ImportError:
-            try:
-                from logistics import nearest_elevator as _ne  # type: ignore
-            except ImportError:
-                _ne = None
-        _elev = None
-        if _ne is not None:
-            try:
-                _elev = _ne(district_en)
-            except Exception:
-                _elev = None
-        try:
-            _cal = sowing_calendar(crop, lang)
-        except Exception:
-            _cal = None
-        pdf_bytes = build_report_pdf(
-            district_en, crop, lang, pred=pred, ins=ins,
-            risk=risk or {"seasonal_risk": None,
-                          "error": "offline in Streamlit demo"},
-            rec=rec, district_ru=d_ru, calendar=_cal,
-            alerts=_al.get("alerts"), alerts_error=_al.get("error"),
-            elevator=_elev)
-        st.download_button("⬇️ PDF-отчёт", pdf_bytes,
-                           file_name=f"qagro_{district_en}_{crop}.pdf",
-                           mime="application/pdf")
-
-    # ================= Календарь и алерты (C8) =================
-    with tab_cal:
-        st.subheader("Посевной календарь Акмолы (справочник, agro-practice)")
-        try:
-            cal = sowing_calendar(crop, lang)
-            st.write(f"🌱 Сев {crop}: **{cal['sowing_window']}**; "
-                     f"уборка: **{cal['harvest_window']}**.")
-            st.write(f"GDD-норма: {cal['gdd_norm']} "
-                     f"(база {cal['gdd_base_temp']} °C). {cal['note']}")
-            st.caption(f"Источник: {cal['source']} (опыт региона, не ML-тариф).")
-        except Exception as e:
-            st.warning(f"Календарь недоступен: {e}")
-        st.subheader(f"Агроалерты: {district_en} (прогноз 7 дней, Open-Meteo)")
-        al = cached_alerts(district_en)
-        key = {"ru": "msg_ru", "kz": "msg_kz", "en": "msg_en"}.get(lang, "msg_ru")
-        if al.get("error"):
-            st.caption(f"Алерты офлайн: {al['error']}. Показан только календарь.")
-        elif not al.get("alerts"):
-            st.success("✅ Угроз на 7 дней нет "
-                       "(заморозки/жара/ливни/суховей не найдены).")
-        else:
-            for a in al["alerts"]:
-                st.write(f"{a.get('type')}/{a.get('level')} {a.get('date')}: "
-                         f"{(a.get(key) or a.get('msg_ru'))}")
-
-    # ================= Поля и элеваторы =================
-    with tab_map:
-        st.subheader("Карта: риски, поля и элеваторы")
-        st.markdown("🟩 **OSM-реальные поля** — зелёный контур | "
-                    "🟧 **demo 1×2 км** — оранжевый пунктир (не выдаются за OSM) | "
-                    "🔵 элеваторы | "
-                    "светофор риска: 🟢<35 🟡35–60 🔴>60.")
-
+            if r is None:
+                try:
+                    ii = cached_insurance(en, crop)
+                    r = round(float(ii["p_loss"]) * 100, 1)
+                except Exception:
+                    r = None
+            rows.append({"district": d.get(f"name_{lang}", en), "risk": r})
         m = folium.Map(location=[52.3, 69.0], zoom_start=7)
         for d in districts:
             en = d["name_en"]
             r = (risks.get(f"{en}_risk") or {}).get("seasonal_risk")
             folium.CircleMarker(
-                location=[d["lat"], d["lon"]], radius=9,
+                location=[d["lat"], d["lon"]], radius=12,
                 color=_color(r), fill=True, fill_opacity=0.7,
-                popup=(f"{d['name_ru']} ({en})<br>risk: {r}<br>"
-                       f"{'кэш risk_example.json' if r is not None else 'риск офлайн'}"),
-                tooltip=f"{d['name_ru']} — {r if r is not None else 'offline'}",
+                popup=f"{d.get(f'name_{lang}', en)}: {r}",
+                tooltip=f"{d.get(f'name_{lang}', en)} — {r if r is not None else 'offline'}",
             ).add_to(m)
-
-        # слой полей (OSM-реальные зелёные, demo-оранжевые пунктирные)
-        if FIELDS_GEOJSON.exists():
-            n_demo = sum(1 for f in fdata.get("features", [])
-                         if (f.get("properties") or {}).get("demo"))
-            n_real = len(fdata.get("features", [])) - n_demo
-            folium.GeoJson(
-                fdata,
-                name=f"Поля OSM (реальных {n_real}, demo {n_demo})",
-                style_function=_field_style,
-                tooltip=folium.GeoJsonTooltip(
-                    fields=["district_en", "area_ha", "source"],
-                    aliases=["Район", "Площадь, га", "Источник"]),
-                popup=folium.GeoJsonPopup(
-                    fields=["district_en", "area_ha", "source"],
-                    aliases=["Район", "Площадь, га", "Источник"]),
-            ).add_to(m)
-            st.caption(f"Поля: всего {len(fdata.get('features', []))} "
-                       f"(реальных OSM: {n_real}, demo 1×2 км: {n_demo}). "
-                       f"Демо — оранжевый пунктир, не выдаются за OSM.")
-        else:
-            st.warning("⚠️ data/fields/akmola_osm_fields.geojson нет — "
-                       "запустите: python src/fields_osm.py")
-
-        # слой элеваторов
-        if GRANARIES_JSON.exists():
-            for g in gdata.get("granaries", []):
-                folium.Marker(
-                    location=[g["lat"], g["lon"]],
-                    icon=folium.Icon(color="blue", icon="warehouse",
-                                     prefix="fa"),
-                    popup=(f"🌾 {g.get('name_ru')} ({g.get('name_en')})<br>"
-                           f"район: {g.get('district_en')}<br>"
-                           f"координаты оценочные (Qoldau-карта, уточнить)"),
-                    tooltip=f"🌾 {g.get('name_ru')}",
-                ).add_to(m)
-            st.caption("Элеваторы: 12 точек, координаты оценочные по "
-                       "Qoldau granaries-map (подлежат уточнению).")
-
-        folium.LayerControl().add_to(m)
-        components.html(m._repr_html_(), height=520)
-
-        # ближайший элеватор к выбранному району
-        try:
+        # NDVI-точки Sentinel-2 (5 реальных)
+        for pt in ndvi_pts[:20]:
             try:
-                from src.logistics import nearest_elevator
-            except ImportError:
-                from logistics import nearest_elevator  # type: ignore
-            ne = nearest_elevator(district_en)
-            st.write(f"🚚 Ближайший элеватор к {district_en}: "
-                     f"{ne['name_ru']} ({ne['name']}) — {ne['dist_km']} км. "
-                     f"Координаты оценочные.")
-        except Exception as e:
-            st.caption(f"Логистика недоступна: {e}")
+                folium.CircleMarker(
+                    location=[pt.get("lat", 51.95), pt.get("lon", 66.40)], radius=5,
+                    color="purple", fill=True, fill_opacity=0.8,
+                    popup=f"NDVI {pt.get('ndvi_mean')} ({pt.get('date')})",
+                    tooltip=f"NDVI {pt.get('ndvi_mean')}",
+                ).add_to(m)
+            except Exception:
+                pass
+        folium.LayerControl().add_to(m)
+        components.html(m._repr_html_(), height=480)
+        st.caption("🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (5 точек, июнь 2024).")
+        st.dataframe(pd.DataFrame(rows).sort_values("risk", ascending=False),
+                     use_container_width=True)
 
-    # ================= Метрики =================
-    with tab_metrics:
-        st.subheader("Метрики 6 культур (hold-out 2021–2025, n=50)")
+    with tab_fields:
+        feats = [f for f in fdata.get("features", [])
+                 if (f.get("properties") or {}).get("district_en") == district_en]
+        areas = [float((f.get("properties") or {}).get("area_ha") or 0) for f in feats]
+        n_demo = sum(1 for f in feats if (f.get("properties") or {}).get("demo"))
+        st.write(f"🌾 {len(feats)} " +
+                 ({"ru": f"полей в районе (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
+                         f"всего ~{round(sum(areas))} га",
+                   "kz": f"аудандағы егістік (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
+                         f"барлығы ~{round(sum(areas))} га",
+                   "en": f"fields in district (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
+                         f"total ~{round(sum(areas))} ha"}[lang]))
+        m2 = folium.Map(location=[next(d["lat"] for d in districts if d["name_en"] == district_en),
+                                  next(d["lon"] for d in districts if d["name_en"] == district_en)],
+                        zoom_start=10)
+        if feats:
+            folium.GeoJson(
+                {"type": "FeatureCollection", "features": feats},
+                style_function=_field_style,
+                tooltip=folium.GeoJsonTooltip(fields=["district_en", "area_ha", "source"],
+                                              aliases=["District", "ha", "Source"]),
+            ).add_to(m2)
+        for g in gdata.get("granaries", []):
+            folium.Marker(
+                location=[g["lat"], g["lon"]],
+                icon=folium.Icon(color="blue", icon="warehouse", prefix="fa"),
+                popup=f"🌾 {g.get('name_ru')} (~{g.get('dist_km', '?')} км)",
+                tooltip=f"🌾 {g.get('name_ru')}",
+            ).add_to(m2)
+            # маршрут район -> элеватор
+            try:
+                dc = next(d for d in districts if d["name_en"] == district_en)
+                folium.PolyLine([[dc["lat"], dc["lon"]], [g["lat"], g["lon"]]],
+                                color="blue", weight=1, opacity=0.3).add_to(m2)
+            except Exception:
+                pass
+        folium.LayerControl().add_to(m2)
+        components.html(m2._repr_html_(), height=480)
+        if _elev:
+            st.write(f"🚚 {_elev.get('name_ru')} — {_elev.get('dist_km')} км.")
+
+    # ---------- Агроном / календарь / о проекте ----------
+    tab_agro, tab_cal, tab_about = st.tabs([T["agro"], T["cal"], T["about"]])
+    with tab_agro:
+        hist = panel[(panel["district_en"] == district_en) & (panel["crop"] == crop)].sort_values("year")
+        fig = go.Figure()
+        if not hist.empty:
+            fig.add_trace(go.Scatter(x=hist["year"].tolist(), y=hist["yield_c_ha"].tolist(),
+                                     mode="lines+markers", name="fact"))
+        fig.add_trace(go.Scatter(x=[2026], y=[pred["y_pred"]], mode="markers", name="2026",
+                                 error_y=dict(type="data",
+                                              array=[pred["hi90"] - pred["y_pred"]],
+                                              arrayminus=[pred["y_pred"] - pred["lo10"]])))
+        fig.update_layout(xaxis_title="year", yaxis_title="c/ha")
+        st.plotly_chart(fig, use_container_width=True)
         rows = build_metrics_rows(metrics)
         st.dataframe(pd.DataFrame(rows), use_container_width=True)
-        st.caption("✅ LGBM — модель лучше бейзлайна среднего-5-лет; "
-                   "🧪 experimental — LGBM хуже бейзлайна "
-                   "(подсолнечник/рапс/лён: структурный сдвиг 2024–2025), "
-                   "прогноз = baseline mean5, интервал ×1.5. "
-                   "Источник: metrics/metrics.json, честно без подгонки.")
-
-    # ================= О проекте =================
+        slice_df = panel[(panel["district_en"] == district_en) & (panel["crop"] == crop)]
+        buf = io.StringIO()
+        slice_df.to_csv(buf, index=False)
+        st.download_button(T["csv"], buf.getvalue(),
+                           file_name=f"qagro_{district_en}_{crop}.csv", mime="text/csv")
+    with tab_cal:
+        try:
+            cal = sowing_calendar(crop, lang)
+            st.write(f"🌱 **{cal['sowing_window']}**; уборка: **{cal['harvest_window']}**.")
+        except Exception as e:
+            st.warning(str(e))
+        al = cached_alerts(district_en)
+        if al.get("error"):
+            st.caption(al["error"])
+        elif not al.get("alerts"):
+            st.success(T["no_threat"])
+        else:
+            key = {"ru": "msg_ru", "kz": "msg_kz", "en": "msg_en"}[lang]
+            for a in al["alerts"]:
+                st.write(a.get(key) or a.get("msg_ru"))
     with tab_about:
-        st.subheader("О проекте Qagro")
-        st.markdown(
-            "**Команда Qagro:**\n"
-            "- **Kairbek Ansar** — data pipeline / ML / API\n"
-            "- **Samat Ablayhan (капитан)** — бот / веб / интеграция / сдача\n\n"
-            "Трек 2 (AgriTech AI): прогноз урожайности 2026 по 10 районам "
-            "Акмолы × 6 культур, декадный риск засухи, индексная страховка "
-            "(decision support, не тариф) и рекомендации сева RU/KZ/EN.")
-        st.markdown(
-            "**Источники данных:**\n"
-            "- [Бюро нацстатистики РК (stat.gov.kz)](https://stat.gov.kz/) — "
-            "областные якоря урожайности\n"
-            "- [NASA POWER (MERRA-2)](https://power.larc.nasa.gov/) — климат 2005–2025\n"
-            "- [Open-Meteo (CC-BY 4.0)](https://open-meteo.com/en/docs) — "
-            "ERA5 архив + прогноз 16 дней\n"
-            "- [Geofabrik Kazakhstan (ODbL)](https://download.geofabrik.de/asia/kazakhstan.html) — "
-            "запасной OSM-дамп полей\n"
-            "- [Qoldau granaries-map](https://p-grain-receipt.qoldau.kz/ru/gr-info/granaries-map) — "
-            "перечень 12 элеваторов (координаты оценочные)\n"
-            "- [Copernicus Browser](https://browser.dataspace.copernicus.eu/) / "
-            "[Sentinel Hub](https://www.sentinel-hub.com/) — Sentinel-2 для пилота NDVI")
-        st.markdown(
-            "**Методология (OSS-образцы, код оригинальный):**\n"
-            "- [UniCrop (MIT)](https://github.com/CoDIS-Lab/UniCrop) — "
-            "MJJA-фичи + LightGBM + SHAP\n"
-            "- [crop-yield-prediction (MIT)](https://github.com/gsanaev/crop-yield-prediction-climate-change) — "
-            "регрессия урожайности по климату\n"
-            "- [Open-Meteo docs](https://open-meteo.com/en/docs) — декадный мониторинг\n"
-            "- [CropBot (MIT)](https://github.com/mishagrol/CropBot) — UX-образец Telegram-бота")
-
-    st.divider()
-    st.caption("Дисклеймер: APPROX-культуры (oats/sunflower/rapeseed/flax) — линейное "
-               "масштабирование от пшеницы, без обучающих данных. Районы — даунскейлинг "
-               "областной статистики на центроиды из config/districts.yaml (не границы, "
-               "не поля). Страховка — decision support, не тариф / "
-               "шешімді қолдау, тариф емес / decision support, not a tariff.")
+        st.write("**Qagro** — Kairbek Ansar (data/ML/API) + Samat Ablayhan, captain (bot/web).")
+        st.write("stat.gov.kz · NASA POWER · Open-Meteo · FAOSTAT · OSM · Qoldau · Copernicus/Sentinel-2")
 
 
 if _ST_RUN:
