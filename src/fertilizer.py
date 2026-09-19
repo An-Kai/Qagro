@@ -25,6 +25,10 @@ REMOVAL_NPK: dict[str, tuple[float, float, float]] = {
 
 _CROP_ALIASES: dict[str, str] = {
     "wheat": "wheat",
+    "spring_wheat": "wheat",
+    "spring wheat": "wheat",
+    "spring_barley": "barley",
+    "spring barley": "barley",
     "пшеница": "wheat",
     "бидай": "wheat",
     "barley": "barley",

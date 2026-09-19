@@ -98,7 +98,35 @@ UI = {
            "download": "Скачать отчёт PDF", "csv": "⬇️ CSV история",
            "geo": "⬇️ GeoJSON районы+риски", "no_threat": "✅ Угроз на 7 дней нет.",
            "exp": "⚠️ Пробный прогноз — ориентируйтесь на среднее за 5 лет.",
-           "offline": "📡 Интернет слабый — посчитано по сохранённым данным."},
+           "offline": "📡 Интернет слабый — посчитано по сохранённым данным.",
+           "step1_hint": "Если не знаете район — отправьте геолокацию в Telegram-боте, он подскажет район.",
+           "step2_hint": "Значок 🧪 — пробный прогноз: ориентируйтесь на среднее за 5 лет.",
+           "district_help": "Выберите район хозяйства. От него зависят прогноз, риски и элеватор.",
+           "crop_help": "Выберите культуру. Страховка считается для пшеницы и ячменя.",
+           "price_help": "Влияет только на расчёт страховки и прибыли, прогноз урожая не меняет.",
+           "farm": "🚜 Моё хозяйство", "plus": "🔬 Справочник и деньги",
+           "risk_tab": "Риски", "fields_tab": "Поля и элеваторы",
+           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (июнь 2024).",
+           "my_fields": "моих полей", "my_empty": "Полей пока нет — добавьте первое ниже 👇",
+           "field_name": "Название поля", "field_name_help": "Например: Поле у речки. Видно только вам.",
+           "field_area": "Площадь (га)", "field_area_help": "От 1 до 2000 га. Нужно для выплат на всё поле.",
+           "field_add": "➕ Добавить поле", "added_ok": "Поле добавлено ✅",
+           "pick_field": "Поле", "pick_field_help": "К какому полю относится заметка.",
+           "pick_problem": "Проблема", "pick_problem_help": "Тип проблемы — поможет агроному.",
+           "note_text": "Заметка", "note_text_help": "Коротко: что увидели и где на поле.",
+           "note_add": "📝 Сохранить заметку", "note_added": "Заметка сохранена ✅",
+           "need_field_first": "Сначала добавьте поле — тогда можно вести журнал.",
+           "del_help": "Удалить поле",
+           "km": "км", "ha": "га",
+           "spray_offline": "Окно опрыскивания офлайн",
+           "goal": "🎯 Цель по урожаю (ц/га)", "goal_help": "Для расчёта NPK под вашу цель.",
+            "osm_empty": "В этом районе OSM-полей нет — показаны элеваторы и маршруты.",
+            "hist_empty": "История пуста для этого района/культуры.",
+            "guide_empty": "Справочник пуст для этой культуры.",
+            "risk_empty": "Файл рисков не найден — таблица посчитана из p_loss модели (офлайн).",
+            "ndvi_empty": "NDVI-замеров с ndvi_mean пока нет.",
+            "fields_file_empty": "Файл полей не найден — показаны только элеваторы.",
+            "elev_offline": "Ближайший элеватор не определился."},
     "kz": {"title": "🌾 Qagro — фермер көмекшісі",
            "sub": "Аудан мен дақылды таңдаңыз — жауапты қарапайым тілде алыңыз.",
            "step1": "1-қадам. Ауданыңыз", "step2": "2-қадам. Дақыл",
@@ -111,7 +139,35 @@ UI = {
            "download": "PDF есепті жүктеу", "csv": "⬇️ CSV тарих",
            "geo": "⬇️ GeoJSON аудандар+қауіп", "no_threat": "✅ 7 күнге қауіп жоқ.",
            "exp": "⚠️ Сынақ болжамы — 5 жылдық орташаға сүйеніңіз.",
-           "offline": "📡 Интернет нашар — сақталған дерекпен есептелді."},
+           "offline": "📡 Интернет нашар — сақталған дерекпен есептелді.",
+           "step1_hint": "Ауданды білмесеңіз — Telegram-ботқа геолокация жіберіңіз, ауданды айтады.",
+           "step2_hint": "🧪 белгісі — сынақ болжам: 5 жылдық орташаға қараңыз.",
+           "district_help": "Шаруашылық ауданын таңдаңыз. Болжам, қауіп және элеватор соған байланысты.",
+           "crop_help": "Дақылды таңдаңыз. Сақтандыру бидай мен арпаға есептеледі.",
+           "price_help": "Тек сақтандыру мен пайдаға әсер етеді, өнім болжамын өзгертпейді.",
+           "farm": "🚜 Менің шаруашылығым", "plus": "🔬 Анықтама және ақша",
+           "risk_tab": "Қауіптер", "fields_tab": "Егістік және элеваторлар",
+           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (маусым 2024).",
+           "my_fields": "менің егістігім", "my_empty": "Егістік әзірге жоқ — төменнен біріншісін қосыңыз 👇",
+           "field_name": "Егістік атауы", "field_name_help": "Мысалы: Өзен жанындағы егіс. Тек сізге көрінеді.",
+           "field_area": "Ауданы (га)", "field_area_help": "1–2000 га. Төлемді бүкіл егіске есептеуге керек.",
+           "field_add": "➕ Егістік қосу", "added_ok": "Егістік қосылды ✅",
+           "pick_field": "Егістік", "pick_field_help": "Жазба қай егіске қатысты.",
+           "pick_problem": "Мәселе", "pick_problem_help": "Мәселе түрі — агрономға көмектеседі.",
+           "note_text": "Жазба", "note_text_help": "Қысқаша: не көрдіңіз, егістің қай жерінде.",
+           "note_add": "📝 Жазбаны сақтау", "note_added": "Жазба сақталды ✅",
+           "need_field_first": "Алдымен егістік қосыңыз — содан кейін журнал жүргізе аласыз.",
+           "del_help": "Егістікті жою",
+           "km": "км", "ha": "га",
+           "spray_offline": "Бүрку терезесі офлайн",
+           "goal": "🎯 Өнім мақсаты (ц/га)", "goal_help": "Мақсатыңызға NPK есептеу үшін.",
+            "osm_empty": "Бұл ауданда OSM-егістік жоқ — элеваторлар мен бағыттар көрсетілген.",
+            "hist_empty": "Бұл аудан/дақыл үшін тарих бос.",
+            "guide_empty": "Бұл дақылға анықтама бос.",
+            "risk_empty": "Қауіп файлы табылмады — кесте модель p_loss-ынан есептелді (офлайн).",
+            "ndvi_empty": "ndvi_mean өлшемдері әзірге жоқ.",
+            "fields_file_empty": "Егістік файлы табылмады — тек элеваторлар көрсетілген.",
+            "elev_offline": "Жақын элеватор анықталмады."},
     "en": {"title": "🌾 Qagro — farmer helper",
            "sub": "Pick your district and crop — get a plain-words answer.",
            "step1": "Step 1. Your district", "step2": "Step 2. Crop",
@@ -124,7 +180,35 @@ UI = {
            "download": "Download PDF report", "csv": "⬇️ CSV history",
            "geo": "⬇️ GeoJSON districts+risk", "no_threat": "✅ No threats for 7 days.",
            "exp": "⚠️ Experimental forecast — rely on the 5-year average.",
-           "offline": "📡 Weak internet — used saved data."},
+           "offline": "📡 Weak internet — used saved data.",
+           "step1_hint": "Don't know your district? Send geolocation to the Telegram bot, it will tell you.",
+           "step2_hint": "🧪 means experimental forecast: rely on the 5-year average.",
+           "district_help": "Pick your farm district. Forecast, risks and elevator depend on it.",
+           "crop_help": "Pick a crop. Insurance is calculated for wheat and barley.",
+           "price_help": "Affects only insurance and profit, not the yield forecast.",
+           "farm": "🚜 My farm", "plus": "🔬 Guide & money",
+           "risk_tab": "Risks", "fields_tab": "Fields & elevators",
+           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (June 2024).",
+           "my_fields": "my fields", "my_empty": "No fields yet — add the first one below 👇",
+           "field_name": "Field name", "field_name_help": "E.g. Field by the river. Visible only to you.",
+           "field_area": "Area (ha)", "field_area_help": "1 to 2000 ha. Needed for whole-field payout.",
+           "field_add": "➕ Add field", "added_ok": "Field added ✅",
+           "pick_field": "Field", "pick_field_help": "Which field this note belongs to.",
+           "pick_problem": "Issue", "pick_problem_help": "Issue type — helps the agronomist.",
+           "note_text": "Note", "note_text_help": "Briefly: what you saw and where in the field.",
+           "note_add": "📝 Save note", "note_added": "Note saved ✅",
+           "need_field_first": "Add a field first — then you can keep a journal.",
+           "del_help": "Delete field",
+           "km": "km", "ha": "ha",
+           "spray_offline": "Spray window offline",
+           "goal": "🎯 Target yield (c/ha)", "goal_help": "To calculate NPK for your target.",
+            "osm_empty": "No OSM fields in this district — elevators and routes shown.",
+            "hist_empty": "No history for this district/crop.",
+            "guide_empty": "Guide is empty for this crop.",
+            "risk_empty": "Risk file missing — table falls back to model p_loss (offline).",
+            "ndvi_empty": "No NDVI measurements with ndvi_mean yet.",
+            "fields_file_empty": "Fields file missing — elevators only.",
+            "elev_offline": "Nearest elevator unavailable."},
 }
 
 
@@ -186,6 +270,106 @@ def _field_style(feat):
         return {"color": "orange", "weight": 2, "fillOpacity": 0.15,
                 "dashArray": "5, 5"}
     return {"color": "green", "weight": 2, "fillOpacity": 0.25}
+
+
+import re as _re
+
+_BBOX_RE = _re.compile(
+    r"bbox\s*=\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*,"
+    r"\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)"
+)
+
+OSM_ATTR = "© OpenStreetMap contributors"
+
+NDVI_MARK = {
+    "ru": {"gps": "GPS из данных",
+           "scene-bbox": "📍 центр bbox сцены",
+           "district-center": "📍 центроид района ~ (оценочно, bbox нет в данных)"},
+    "kz": {"gps": "Деректегі GPS",
+           "scene-bbox": "📍 сцена bbox орталығы",
+           "district-center": "📍 аудан центроиді ~ (шамамен, bbox жоқ)"},
+    "en": {"gps": "GPS from data",
+           "scene-bbox": "📍 scene bbox center",
+           "district-center": "📍 district centroid ~ (approx, no bbox in data)"},
+}
+
+
+def _parse_bbox_center(status: str | None) -> tuple[float, float] | None:
+    """Центр сцены из 'bbox=lon_min,lat_min,lon_max,lat_max' в status.
+
+    Возвращает (lat, lon) или None. Порядок в строке — lon,lat (как в json).
+    """
+    if not status:
+        return None
+    m = _BBOX_RE.search(str(status))
+    if not m:
+        return None
+    try:
+        lon_min, lat_min, lon_max, lat_max = (float(x) for x in m.groups())
+    except ValueError:
+        return None
+    return ((lat_min + lat_max) / 2.0, (lon_min + lon_max) / 2.0)
+
+
+def _ndvi_latlon(pt: dict, districts: list[dict]) -> tuple[float, float, str]:
+    """Координаты NDVI-точки без молчаливых фейковых дефолтов.
+
+    Приоритет: явные lat/lon в json -> центр bbox из status/bbox ->
+    центроид района из districts.yaml. Третий элемент — источник:
+    'gps' | 'scene-bbox' | 'district-center' (для пометки в popup).
+    """
+    try:
+        if pt.get("lat") is not None and pt.get("lon") is not None:
+            return (float(pt["lat"]), float(pt["lon"]), "gps")
+    except (TypeError, ValueError):
+        pass
+    c = _parse_bbox_center(pt.get("status", ""))
+    if c is not None:
+        return (c[0], c[1], "scene-bbox")
+    b = pt.get("bbox")
+    if isinstance(b, (list, tuple)) and len(b) == 4:
+        try:
+            lon_min, lat_min, lon_max, lat_max = (float(x) for x in b)
+            return ((lat_min + lat_max) / 2.0,
+                    (lon_min + lon_max) / 2.0, "scene-bbox")
+        except (TypeError, ValueError):
+            pass
+    dname = pt.get("district")
+    for d in districts or []:
+        if d.get("name_en") == dname:
+            return (float(d["lat"]), float(d["lon"]), "district-center")
+    if districts:
+        return (float(districts[0]["lat"]), float(districts[0]["lon"]),
+                "district-center")
+    raise ValueError("no districts to anchor NDVI point")
+
+
+def _risk_bg(v) -> str:
+    """CSS-фон ячейки риска: 🟢<35 🟡35–60 🔴>60, None — серый."""
+    try:
+        r = None if v is None or (isinstance(v, float) and pd.isna(v)) else float(v)
+    except (TypeError, ValueError):
+        return ""
+    if r is None:
+        return "background-color: #9e9e9e55"
+    if r < 35:
+        return "background-color: #c8e6c966"
+    if r <= 60:
+        return "background-color: #ffecb366"
+    return "background-color: #ffcdd266"
+
+
+def style_risk_df(df: pd.DataFrame):
+    """Таблица рисков: цветные строки целиком (по колонке risk)."""
+    def _row(row):
+        bg = _risk_bg(row.get("risk"))
+        return [bg] * len(row)
+
+    try:
+        return df.style.apply(_row, axis=1).format({"risk": "{:.1f}"},
+                                                   na_rep="offline")
+    except Exception:
+        return df
 
 
 @st.cache_data(ttl=3600)
@@ -273,6 +457,19 @@ def main() -> None:
 
     st.set_page_config(page_title="Qagro — farmer helper", layout="wide")
 
+    # Мобильная вёрстка: колонки не сжимаются, а переносятся; кнопки — во всю ширину.
+    st.markdown(
+        """<style>
+@media (max-width: 640px) {
+  div[data-testid="stHorizontalBlock"] { flex-wrap: wrap !important; }
+  div[data-testid="column"] { min-width: 100% !important; flex-basis: 100% !important; }
+}
+div[data-testid="stDownloadButton"] > button { width: 100%; }
+div[data-testid="stFormSubmitButton"] > button { width: 100%; }
+</style>""",
+        unsafe_allow_html=True,
+    )
+
     cfg = load_cfg()
     districts = cfg.get("districts", [])
     crops = cfg.get("crops", [])
@@ -282,7 +479,8 @@ def main() -> None:
     T = UI[lang]
     wheat_price = st.sidebar.slider(T["price"], min_value=WHEAT_PRICE_MIN,
                                     max_value=WHEAT_PRICE_MAX,
-                                    value=WHEAT_PRICE_DEFAULT, step=1000)
+                                    value=WHEAT_PRICE_DEFAULT, step=1000,
+                                    help=T["price_help"])
 
     st.title(T["title"])
     st.write(T["sub"])
@@ -292,15 +490,19 @@ def main() -> None:
               for c in crops}
 
     st.header(T["step1"])
+    st.caption(T["step1_hint"])
     district_en = st.selectbox("📍", options=list(dlabel.keys()),
                                format_func=lambda k: dlabel[k],
                                index=list(dlabel.keys()).index("Esil")
                                if "Esil" in dlabel else 0,
-                               label_visibility="collapsed")
+                               label_visibility="collapsed",
+                               help=T["district_help"])
     st.header(T["step2"])
+    st.caption(T["step2_hint"])
     crop = st.selectbox("🌱", options=list(clabel.keys()),
                         format_func=lambda k: clabel[k],
-                        label_visibility="collapsed")
+                        label_visibility="collapsed",
+                        help=T["crop_help"])
 
     try:
         pred = cached_predict(district_en, crop)
@@ -386,7 +588,8 @@ def main() -> None:
         alerts=_al.get("alerts"), alerts_error=_al.get("error"), elevator=_elev)
     st.download_button(f"📄 {T['download']}", pdf_bytes,
                        file_name=f"qagro_{district_en}_{crop}_{lang}.pdf",
-                       mime="application/pdf", type="primary")
+                       mime="application/pdf", type="primary",
+                       use_container_width=True)
 
     with st.expander(f"🔧 {T['detail']}"):
         st.write(f"y_pred={pred['y_pred']}, 80% [{pred['lo10']}, {pred['hi90']}], "
@@ -401,8 +604,8 @@ def main() -> None:
     # ---------- Карты ----------
     st.header(T["maps"])
     tab_risk, tab_fields = st.tabs(
-        ["🟢🟡🔴 " + ({"ru": "Риски", "kz": "Қауіптер", "en": "Risks"}[lang]),
-         "🌾 " + ({"ru": "Поля и элеваторы", "kz": "Егістік және элеваторлар", "en": "Fields & elevators"}[lang])])
+        ["🟢🟡🔴 " + T["risk_tab"],
+         "🌾 " + T["fields_tab"]])
     with tab_risk:
         rows = []
         for d in districts:
@@ -415,7 +618,11 @@ def main() -> None:
                 except Exception:
                     r = None
             rows.append({"district": d.get(f"name_{lang}", en), "risk": r})
-        m = folium.Map(location=[52.3, 69.0], zoom_start=7)
+        if not risks:
+            st.warning(T["risk_empty"])
+        m = folium.Map(location=[52.3, 69.0], zoom_start=7,
+                       tiles="OpenStreetMap", attr=OSM_ATTR,
+                       control_scale=True)
         for d in districts:
             en = d["name_en"]
             r = (risks.get(f"{en}_risk") or {}).get("seasonal_risk")
@@ -425,28 +632,43 @@ def main() -> None:
                 popup=f"{d.get(f'name_{lang}', en)}: {r}",
                 tooltip=f"{d.get(f'name_{lang}', en)} — {r if r is not None else 'offline'}",
             ).add_to(m)
-        # NDVI-точки Sentinel-2 (5 реальных)
+        # NDVI-точки Sentinel-2: координаты из bbox сцены,
+        # иначе центроид района с честной пометкой (без фейковых lat/lon).
+        if not ndvi_pts:
+            st.caption(T["ndvi_empty"])
         for pt in ndvi_pts[:20]:
             try:
+                _lat, _lon, _src = _ndvi_latlon(pt, districts)
+                _mark = NDVI_MARK[lang][_src]
+                _dist = pt.get("district", "?")
                 folium.CircleMarker(
-                    location=[pt.get("lat", 51.95), pt.get("lon", 66.40)], radius=5,
+                    location=[_lat, _lon], radius=5,
                     color="purple", fill=True, fill_opacity=0.8,
-                    popup=f"NDVI {pt.get('ndvi_mean')} ({pt.get('date')})",
-                    tooltip=f"NDVI {pt.get('ndvi_mean')}",
+                    popup=(f"NDVI {pt.get('ndvi_mean')} "
+                           f"({pt.get('date')}, {_dist})<br>"
+                           f"{_mark}<br>{pt.get('scene_id', '')}"),
+                    tooltip=f"NDVI {pt.get('ndvi_mean')} — {_mark}",
                 ).add_to(m)
             except Exception:
                 pass
         folium.LayerControl().add_to(m)
         components.html(m._repr_html_(), height=480)
-        st.caption("🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (5 точек, июнь 2024).")
-        st.dataframe(pd.DataFrame(rows).sort_values("risk", ascending=False),
-                     use_container_width=True)
+        st.caption(T["legend"] + f" {OSM_ATTR}.")
+        _rdf = pd.DataFrame(rows).sort_values("risk", ascending=False,
+                                              na_position="last")
+        if _rdf["risk"].isna().all():
+            st.caption(T["risk_empty"])
+        st.dataframe(style_risk_df(_rdf), use_container_width=True)
 
     with tab_fields:
         feats = [f for f in fdata.get("features", [])
                  if (f.get("properties") or {}).get("district_en") == district_en]
         areas = [float((f.get("properties") or {}).get("area_ha") or 0) for f in feats]
         n_demo = sum(1 for f in feats if (f.get("properties") or {}).get("demo"))
+        if not fdata.get("features"):
+            st.warning(T["fields_file_empty"])
+        if not feats:
+            st.info(T["osm_empty"])
         st.write(f"🌾 {len(feats)} " +
                  ({"ru": f"полей в районе (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
                          f"всего ~{round(sum(areas))} га",
@@ -456,7 +678,8 @@ def main() -> None:
                          f"total ~{round(sum(areas))} ha"}[lang]))
         m2 = folium.Map(location=[next(d["lat"] for d in districts if d["name_en"] == district_en),
                                   next(d["lon"] for d in districts if d["name_en"] == district_en)],
-                        zoom_start=10)
+                        zoom_start=10, tiles="OpenStreetMap", attr=OSM_ATTR,
+                        control_scale=True)
         if feats:
             folium.GeoJson(
                 {"type": "FeatureCollection", "features": feats},
@@ -465,33 +688,38 @@ def main() -> None:
                                               aliases=["District", "ha", "Source"]),
             ).add_to(m2)
         for g in gdata.get("granaries", []):
+            _gname = g.get(f"name_{lang}", g.get("name_ru"))
             folium.Marker(
                 location=[g["lat"], g["lon"]],
                 icon=folium.Icon(color="blue", icon="warehouse", prefix="fa"),
-                popup=f"🌾 {g.get('name_ru')} (~{g.get('dist_km', '?')} км)",
-                tooltip=f"🌾 {g.get('name_ru')}",
+                popup=f"🌾 {_gname} (~{g.get('dist_km', '?')} {T['km']})",
+                tooltip=f"🌾 {_gname}",
             ).add_to(m2)
-            # маршрут район -> элеватор
+        # маршрут: только к ближайшему элеватору — 1 толстая синяя линия
+        if _elev:
             try:
                 dc = next(d for d in districts if d["name_en"] == district_en)
-                folium.PolyLine([[dc["lat"], dc["lon"]], [g["lat"], g["lon"]]],
-                                color="blue", weight=1, opacity=0.3).add_to(m2)
+                folium.PolyLine([[dc["lat"], dc["lon"]],
+                                 [_elev["lat"], _elev["lon"]]],
+                                color="blue", weight=5, opacity=0.9,
+                                tooltip=f"🚚 {_elev.get(f'name_{lang}', _elev.get('name_ru'))}").add_to(m2)
             except Exception:
                 pass
+        else:
+            st.caption(T["elev_offline"])
         folium.LayerControl().add_to(m2)
         components.html(m2._repr_html_(), height=480)
         if _elev:
-            st.write(f"🚚 {_elev.get('name_ru')} — {_elev.get('dist_km')} км.")
+            _ename = _elev.get(f"name_{lang}", _elev.get("name_ru"))
+            st.write(f"🚚 {_ename} — {_elev.get('dist_km')} {T['km']}.")
 
     # ---------- Агроном / хозяйство / календарь / о проекте ----------
-    farm_label = {"ru": "🚜 Моё хозяйство", "kz": "🚜 Менің шаруашылығым",
-                  "en": "🚜 My farm"}[lang]
-    plus_label = {"ru": "🔬 Справочник и деньги", "kz": "🔬 Анықтама және ақша",
-                  "en": "🔬 Guide & money"}[lang]
     tab_agro, tab_farm, tab_plus, tab_cal, tab_about = st.tabs(
-        [T["agro"], farm_label, plus_label, T["cal"], T["about"]])
+        [T["agro"], T["farm"], T["plus"], T["cal"], T["about"]])
     with tab_agro:
         hist = panel[(panel["district_en"] == district_en) & (panel["crop"] == crop)].sort_values("year")
+        if hist.empty:
+            st.caption(T["hist_empty"])
         fig = go.Figure()
         if not hist.empty:
             fig.add_trace(go.Scatter(x=hist["year"].tolist(), y=hist["yield_c_ha"].tolist(),
@@ -508,7 +736,8 @@ def main() -> None:
         buf = io.StringIO()
         slice_df.to_csv(buf, index=False)
         st.download_button(T["csv"], buf.getvalue(),
-                           file_name=f"qagro_{district_en}_{crop}.csv", mime="text/csv")
+                           file_name=f"qagro_{district_en}_{crop}.csv", mime="text/csv",
+                           use_container_width=True)
     with tab_farm:
         # v4: мои поля + журнал + окно опрыскивания (SQLite локально, spray живой).
         try:
@@ -527,44 +756,56 @@ def main() -> None:
                 _farm_ok = False
         if _farm_ok:
             fields = list_fields()
-            st.write(f"🌾 {len(fields)} " +
-                     ({"ru": "моих полей", "kz": "менің егістігім", "en": "my fields"}[lang]))
+            st.write(f"🌾 {len(fields)} {T['my_fields']}")
+            if not fields:
+                st.info(T["my_empty"])
             with st.form("add_field"):
-                fn = st.text_input("Название / Атауы / Name", "Поле 1")
-                farea = st.number_input("га / ha", 10.0, 2000.0, 100.0)
-                if st.form_submit_button("➕"):
+                _def_name = {"ru": "Поле 1", "kz": "1-егістік", "en": "Field 1"}[lang]
+                fn = st.text_input(T["field_name"], _def_name, help=T["field_name_help"])
+                farea = st.number_input(T["field_area"], 10.0, 2000.0, 100.0,
+                                        help=T["field_area_help"])
+                # st.rerun внутри form не нужен: submit формы и так даёт rerun.
+                # st.rerun оставлен только вне form (кнопка удаления ниже).
+                if st.form_submit_button(T["field_add"]):
                     try:
                         dc = next(d for d in districts if d["name_en"] == district_en)
                         add_field(fn, float(dc["lat"]), float(dc["lon"]),
                                   float(farea), crop)
-                        st.success("OK")
-                        st.rerun()
+                        st.success(T["added_ok"])
                     except Exception as e:
                         st.error(str(e))
             for f in fields:
                 c1, c2 = st.columns([4, 1])
-                c1.write(f"#{f['id']} {f['name']} — {f['area_ha']} га, {f['crop']}")
-                if c2.button("✖", key=f"del_{f['id']}"):
+                c1.write(f"#{f['id']} {f['name']} — {f['area_ha']} {T['ha']}, {f['crop']}")
+                if c2.button("✖", key=f"del_{f['id']}", help=T["del_help"],
+                             use_container_width=True):
                     delete_field(int(f["id"]))
                     st.rerun()
             with st.form("add_note"):
                 if fields:
-                    fid = st.selectbox("Поле", [f["id"] for f in fields])
-                    ptype = st.selectbox("Проблема", ["weeds", "pests", "disease",
-                                                      "lodging", "drought", "other"])
-                    txt = st.text_input("Заметка", "")
-                    if st.form_submit_button("📝"):
+                    fid = st.selectbox(T["pick_field"], [f["id"] for f in fields],
+                                       help=T["pick_field_help"])
+                    ptype_ids = ["weeds", "pests", "disease",
+                                 "lodging", "drought", "other"]
+                    ptype = st.selectbox(
+                        T["pick_problem"], ptype_ids,
+                        format_func=lambda p: PROBLEM_TYPES.get(p, {}).get(lang, p),
+                        help=T["pick_problem_help"])
+                    txt = st.text_input(T["note_text"], "", help=T["note_text_help"])
+                    if st.form_submit_button(T["note_add"]):
                         try:
                             add_note(int(fid), ptype, txt)
-                            st.success("OK")
+                            st.success(T["note_added"])
                         except Exception as e:
                             st.error(str(e))
+                else:
+                    st.caption(T["need_field_first"])
             try:
                 sp = check_spray_window(district_en)
                 key = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
                 st.info(f"🧴 {sp.get(key)}")
             except Exception as e:
-                st.caption(f"Spray offline: {e}")
+                st.caption(f"{T['spray_offline']}: {e}")
     with tab_plus:
         # v4: справочник + NPK + экономика.
         try:
@@ -572,16 +813,18 @@ def main() -> None:
             from src.fertilizer import calc_npk as _npk
             from src.economics import profit_ha as _profit
             items = _lookup(crop)[:4]
+            if not items:
+                st.info(T["guide_empty"])
             nk, sk, ak = {"ru": ("name_ru", "signs_ru", "action_ru"),
                           "kz": ("name_kz", "signs_kz", "action_kz"),
                           "en": ("name_en", "signs_en", "action_en")}[lang]
             for it in items:
                 st.write(f"🔬 **{it.get(nk)}**: {'; '.join(it.get(sk, [])[:2])}. → {it.get(ak)}")
-            goal = st.slider("🎯 Цель ц/га / Мақсат / Goal", 5.0, 30.0, 15.0)
+            goal = st.slider(T["goal"], 5.0, 30.0, 15.0, help=T["goal_help"])
             npk = _npk(crop, float(goal), "medium")
-            st.write(f"🧪 NPK: N {npk['N_kg_ha']} · P {npk['P_kg_ha']} · K {npk['K_kg_ha']} кг/га")
+            st.write(f"🧪 NPK: N {npk['N_kg_ha']} · P {npk['P_kg_ha']} · K {npk['K_kg_ha']} кг/{T['ha']}")
             pr = _profit(float(pred["y_pred"]), float(wheat_price))
-            st.write(f"💰 ~{int(pr['profit_kzt_ha'])} ₸/га "
+            st.write(f"💰 ~{int(pr['profit_kzt_ha'])} ₸/{T['ha']} "
                      f"({int(pr['revenue_kzt_ha'])} − {int(pr['cost_kzt_ha'])})")
         except Exception as e:
             st.warning(str(e))

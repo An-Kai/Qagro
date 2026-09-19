@@ -89,10 +89,10 @@ def _blend_predict(bundle: dict, X: pd.DataFrame) -> np.ndarray:
 def _experimental_crops() -> set[str]:
     """Культуры с below_baseline=true в metrics/metrics.json.
 
-    Для них LGBM хуже среднего-5-лет на hold-out 2021-2025
-    (sunflower/rapeseed/flax: структурный сдвиг 2024-2025),
+    Для них бленд хуже среднего-5-лет на hold-out 2021-2025
+    (v3: только rapeseed — структурный сдвиг 2024-2025),
     поэтому прогноз = baseline mean5, интервал шире, флаг experimental:true.
-    Wheat/barley/oats остаются LGBM.
+    Остальные 5/6 (wheat/barley/oats/sunflower/flax) — бленд.
     """
     import json
 

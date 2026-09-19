@@ -289,6 +289,10 @@ GUIDE: dict[str, list[dict]] = {
 # Алиасы культур (ru/kz/en -> ключ GUIDE)
 _CROP_ALIASES: dict[str, str] = {
     "wheat": "wheat",
+    "spring_wheat": "wheat",
+    "spring wheat": "wheat",
+    "spring_barley": "barley",
+    "spring barley": "barley",
     "пшеница": "wheat",
     "бидай": "wheat",
     "бидайдың": "wheat",

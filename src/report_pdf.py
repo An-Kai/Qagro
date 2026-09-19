@@ -54,14 +54,17 @@ PDF_TXT: dict[str, dict[str, str]] = {
     "ru": {"summary": "Коротко для фермера", "yield": "1. Прогноз урожая 2026 (ц/га)",
            "ins": "2. Страховка (ориентир, НЕ тариф)", "risk": "3. Риск засухи по декадам",
            "rec": "4. Когда сеять", "cal": "5. Календарь, алерты и элеватор",
+           "farm": "6. Хозяйство и деньги (NPK, экономика, опрыскивание)",
            "no_data": "Нет данных.", "disc": "Это подсказка, а не гарантия. Проверьте с агрономом."},
     "kz": {"summary": "Фермерге қысқаша", "yield": "1. 2026 өнім болжамы (ц/га)",
            "ins": "2. Сақтандыру (бағдар, тариф ЕМЕС)", "risk": "3. Декадалар бойынша құрғақшылық қаупі",
            "rec": "4. Қашан себу керек", "cal": "5. Күнтізбе, дабылдар және элеватор",
+           "farm": "6. Шаруашылық және ақша (NPK, экономика, бүрку)",
            "no_data": "Дерек жоқ.", "disc": "Бұл кеңес, кепілдік емес. Агрономмен тексеріңіз."},
     "en": {"summary": "Short version for the farmer", "yield": "1. 2026 yield forecast (c/ha)",
            "ins": "2. Insurance (estimate, NOT a tariff)", "risk": "3. Decade drought risk",
            "rec": "4. When to sow", "cal": "5. Calendar, alerts & elevator",
+           "farm": "6. Farm & money (NPK, economy, spraying)",
            "no_data": "No data.", "disc": "Advice only, not a guarantee. Check with your agronomist."},
 }
 
@@ -315,6 +318,88 @@ def build_report_pdf(
         ]))
     else:
         story.append(Paragraph("No elevator data.", styles["Normal"]))
+    story.append(Spacer(1, 8))
+
+    # 6) C7: хозяйство и деньги — NPK + экономика + spray-вердикт из alerts.
+    # Best-effort офлайн: только форматируем переданное (pred/ins/alerts),
+    # в сеть не ходим; любая ошибка гасится, PDF не роняем.
+    story.append(Paragraph(_esc(L["farm"]), styles["Heading2"]))
+    _msg_key = {"ru": "message_ru", "kz": "message_kz", "en": "message_en"}.get(lang, "message_ru")
+    _alert_key = {"ru": "msg_ru", "kz": "msg_kz", "en": "msg_en"}.get(lang, "msg_ru")
+    try:
+        _y_goal = float((pred or {}).get("y_pred") or 0)
+    except (TypeError, ValueError):
+        _y_goal = 0
+    # 6a) NPK для цели = y_pred
+    try:
+        if _y_goal > 0:
+            try:
+                from src.fertilizer import calc_npk as _calc_npk
+            except ImportError:
+                from fertilizer import calc_npk as _calc_npk  # type: ignore
+            _npk = _calc_npk(crop, _y_goal)
+            story.append(_kv_table([
+                ("NPK goal (c/ha)", _npk.get("yield_goal_c_ha")),
+                ("N kg/ha", _npk.get("N_kg_ha")),
+                ("P kg/ha", _npk.get("P_kg_ha")),
+                ("K kg/ha", _npk.get("K_kg_ha")),
+                ("soil / source", f"{_npk.get('soil_level')} / {_npk.get('source')}"),
+            ]))
+            story.append(Spacer(1, 4))
+            story.append(Paragraph(
+                _esc(str(_npk.get(_msg_key) or _npk.get("message_ru") or "")),
+                styles["Normal"]))
+        else:
+            story.append(Paragraph(_esc("NPK: " + L["no_data"]), styles["Normal"]))
+    except Exception:
+        story.append(Paragraph(_esc("NPK: " + L["no_data"]), styles["Normal"]))
+    story.append(Spacer(1, 4))
+    # 6b) экономика profit_ha(y_pred, price)
+    try:
+        _price = (ins or {}).get("price_kzt_per_t")
+        if _y_goal > 0 and _price:
+            try:
+                from src.economics import EXPLAIN as _EXPLAIN
+                from src.economics import profit_ha as _profit_ha
+            except ImportError:
+                from economics import EXPLAIN as _EXPLAIN  # type: ignore
+                from economics import profit_ha as _profit_ha  # type: ignore
+            _eco = _profit_ha(float(_y_goal), float(_price))
+            story.append(_kv_table([
+                ("yield (c/ha)", _eco.get("yield_c_ha")),
+                ("price KZT/t", _eco.get("price_kzt_t")),
+                ("revenue KZT/ha", _eco.get("revenue_kzt_ha")),
+                ("profit KZT/ha", _eco.get("profit_kzt_ha")),
+                ("profitability %", _eco.get("profitability_pct")),
+                ("cost note", _eco.get("assumption", "")),
+            ]))
+            story.append(Spacer(1, 4))
+            _e_msg = _eco.get(_msg_key)  # будущие message_ru/kz/en, если появятся
+            if not _e_msg:
+                try:
+                    _e_msg = (_EXPLAIN or {}).get(lang) or (_EXPLAIN or {}).get("ru", "")
+                except Exception:
+                    _e_msg = ""
+            if _e_msg:
+                story.append(Paragraph(_esc(str(_e_msg)), styles["Normal"]))
+        else:
+            story.append(Paragraph(_esc("Economy: " + L["no_data"]), styles["Normal"]))
+    except Exception:
+        story.append(Paragraph(_esc("Economy: " + L["no_data"]), styles["Normal"]))
+    story.append(Spacer(1, 4))
+    # 6c) spray-вердикт из переданных alerts (первые 2), без сети
+    try:
+        if alerts:
+            for _a in list(alerts)[:2]:
+                _m = (_a or {}).get(_alert_key) or (_a or {}).get("msg_ru") or ""
+                story.append(Paragraph(
+                    _esc(f"{(_a or {}).get('date', '')} "
+                         f"{(_a or {}).get('type', '')}/{(_a or {}).get('level', '')}: {_m}"),
+                    styles["Normal"]))
+        else:
+            story.append(Paragraph(_esc("Spray: " + L["no_data"]), styles["Normal"]))
+    except Exception:
+        story.append(Paragraph(_esc("Spray: " + L["no_data"]), styles["Normal"]))
     story.append(Spacer(1, 10))
 
     story.append(Paragraph(

@@ -4,6 +4,8 @@ GET  /health  -> {"status": "ok", ...}
 POST /predict {district_en, crop, [lang, weather, year, include_risk]} ->
      {y_pred, lo, hi, factors, p_loss, payout, risk, rec,
       approx, insurance, meta}
+     Кэш 5 мин; query ?fresh=true = пересчёт мимо кэша (по умолчанию
+     ?fresh=false — брать кэш; заголовок ответа X-Qagro-Cache: HIT/MISS).
 POST /report  {district_en, crop, [lang, weather]} -> application/pdf bytes
      (таблица + риски через reportlab, см. src/report_pdf.py).
 
@@ -20,7 +22,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
@@ -338,15 +340,24 @@ def alerts(district_en: str = "Esil", days: int = 7) -> dict:
 
 
 @app.post("/predict")
-def predict(req: PredictRequest) -> dict:
+def predict(
+    req: PredictRequest,
+    response: Response,
+    fresh: bool = Query(
+        default=False,
+        description="true = мимо кэша (пересчёт), false = кэш predict 5 мин (для офлайн-демо)",
+    ),
+) -> dict:
     import time as _time
 
     key = _cache_key(req.district_en, req.crop, req.lang,
                      req.weather, req.year, req.include_risk)
     now = _time.time()
-    hit = _PREDICT_CACHE.get(key)
-    if hit and (now - hit[0]) < CACHE_TTL:
-        return hit[1]
+    if not fresh:
+        hit = _PREDICT_CACHE.get(key)
+        if hit and (now - hit[0]) < CACHE_TTL:
+            response.headers["X-Qagro-Cache"] = "HIT"
+            return hit[1]
     try:
         res = _full_result(req.district_en, req.crop, req.lang,
                            req.weather, req.year, req.include_risk)
@@ -355,6 +366,7 @@ def predict(req: PredictRequest) -> dict:
     except FileNotFoundError as e:
         raise HTTPException(status_code=500, detail=str(e)) from e
     _PREDICT_CACHE[key] = (now, res)
+    response.headers["X-Qagro-Cache"] = "MISS"
     return res
 
 
@@ -447,3 +459,46 @@ def api_economy(yield_c_ha: float = 12.0, price_kzt_t: float = 95000.0,
     except ImportError:
         from economics import profit_ha  # type: ignore
     return profit_ha(float(yield_c_ha), float(price_kzt_t), float(cost_kzt_ha))
+
+
+@app.get("/soil")
+def api_soil(district_en: str | None = None) -> dict:
+    """C3: почва SoilGrids из data/processed/soil.csv (только чтение).
+
+    Query ?district_en=Esil — фильтр по району. Файла нет —
+    404 с честным текстом (сначала python src/soil.py).
+    """
+    import csv
+
+    p = ROOT / "data" / "processed" / "soil.csv"
+    if not p.exists():
+        raise HTTPException(status_code=404, detail=(
+            "data/processed/soil.csv не найден. "
+            "Запустите: python src/soil.py"))
+    with open(p, encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    for r in rows:
+        for k in ("nitrogen", "ph", "soc", "clay"):
+            if k in r and r[k] not in (None, ""):
+                try:
+                    r[k] = float(r[k])  # type: ignore[assignment]
+                except (TypeError, ValueError):
+                    pass
+    if district_en:
+        rows = [r for r in rows if r.get("district_en") == district_en]
+    return {"rows": rows, "count": len(rows),
+            "source": "data/processed/soil.csv"}
+
+
+@app.get("/intervals")
+def api_intervals() -> dict:
+    """C3: конформные интервалы из metrics/intervals.json (только чтение)."""
+    import json
+
+    p = ROOT / "metrics" / "intervals.json"
+    if not p.exists():
+        raise HTTPException(status_code=404, detail=(
+            "metrics/intervals.json не найден. "
+            "Запустите: python src/intervals.py"))
+    data = json.loads(p.read_text(encoding="utf-8"))
+    return {"crops": data, "counts": {"crops": len(data)}}

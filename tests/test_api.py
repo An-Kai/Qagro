@@ -62,14 +62,16 @@ def t_predict_wheat():
     assert exp is False, j.get("pred")
 
 
-def t_predict_sunflower_experimental():
-    # Статус experimental читаем из metrics/metrics.json (below_baseline):
-    # v3-бленд может честно перевести культуру в strong — тест сверяется
-    # с фактом, а не захардкоженным ожиданием.
+def t_predict_sunflower_strong():
+    # C6: sunflower v3 — strong (below_baseline=false, experimental:false).
+    # Сверяемся с metrics/metrics.json как источником истины + требуем strong явно.
     import json
     mj = ROOT / "metrics" / "metrics.json"
     below = bool(json.loads(mj.read_text(encoding="utf-8"))
                  .get("sunflower", {}).get("below_baseline", False))
+    assert below is False, (
+        f"metrics.json: sunflower должен быть strong (below_baseline=false), получили {below}"
+    )
     r = client.post("/predict", json={
         "district_en": "Esil", "crop": "sunflower",
         "lang": "ru", "include_risk": False,
@@ -79,11 +81,9 @@ def t_predict_sunflower_experimental():
     exp_top = j.get("experimental")
     exp_pred = (j.get("pred") or {}).get("experimental")
     exp_ins = (j.get("insurance") or {}).get("experimental")
-    got = True in (exp_top, exp_pred, exp_ins)
-    assert got == below, (
-        f"sunflower experimental={got} не совпадает с metrics below_baseline={below}: "
-        f"top={exp_top} pred={exp_pred} ins={exp_ins}"
-    )
+    assert exp_top is False, f"sunflower top experimental должен быть False: {j.get('pred')}"
+    assert exp_pred is False, f"sunflower pred.experimental должен быть False: {j.get('pred')}"
+    assert exp_ins is False, f"sunflower insurance.experimental должен быть False: {j.get('insurance')}"
 
 
 def t_predict_bad_district_422():
@@ -144,14 +144,97 @@ def t_version():
     assert j.get("build_date") or j.get("git_date"), j
 
 
+def t_guide():
+    r = client.get("/guide", params={"crop": "spring_wheat"})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    items = j.get("items", [])
+    assert isinstance(items, list) and len(items) >= 1, j
+    for it in items:
+        assert "names" in it, it
+        assert isinstance(it["names"], dict), it
+
+
+def t_fertilizer():
+    r = client.get("/fertilizer", params={"crop": "spring_wheat"})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert isinstance(j.get("N_kg_ha"), (int, float)), j
+    assert j["N_kg_ha"] > 0, j
+    assert j.get("P_kg_ha", 0) > 0 and j.get("K_kg_ha", 0) > 0, j
+
+
+def t_economy():
+    r = client.get("/economy")
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert "profit_kzt_ha" in j, j
+    assert isinstance(j["profit_kzt_ha"], (int, float)), j
+
+
+def t_spray():
+    r = client.get("/spray", params={"district_en": "Esil"})
+    if r.status_code == 200:
+        j = r.json()
+        assert "good_count" in j or "next_good_hours" in j, j
+        assert "verdict_ru" in j, j
+    elif r.status_code in (502, 500):
+        # честный offline-error без моков
+        body = r.text.lower()
+        assert "detail" in r.json() or "error" in body or "недоступен" in body, r.text
+    else:
+        raise AssertionError(f"spray: ожидали 200/502, получили {r.status_code}: {r.text}")
+
+
+def t_calendar():
+    r = client.get("/calendar", params={"crop": "spring_wheat"})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert j.get("crop") == "spring_wheat", j
+    assert "sowing_window" in j, j
+
+
+def t_alerts():
+    r = client.get("/alerts", params={"district_en": "Esil"})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert "alerts" in j, j
+    assert isinstance(j["alerts"], list), j
+
+
+def t_soil():
+    r = client.get("/soil")
+    assert r.status_code == 200, r.text
+    j = r.json()
+    rows = j.get("rows", [])
+    assert isinstance(rows, list) and len(rows) >= 1, j
+    assert "district_en" in rows[0], rows[0]
+
+
+def t_intervals():
+    r = client.get("/intervals")
+    assert r.status_code == 200, r.text
+    j = r.json()
+    crops = j.get("crops", {})
+    assert "spring_wheat" in crops, crops.keys() if isinstance(crops, dict) else crops
+
+
 if __name__ == "__main__":
     check("health 200 + counts", t_health)
     check("predict Esil wheat 200", t_predict_wheat)
-    check("predict Esil sunflower experimental", t_predict_sunflower_experimental)
+    check("predict Esil sunflower strong", t_predict_sunflower_strong)
     check("predict bad district 422", t_predict_bad_district_422)
     check("predict bad crop 422", t_predict_bad_crop_422)
     check("fields >=60", t_fields)
     check("granaries 12", t_granaries)
     check("metrics trimmed", t_metrics_trimmed)
     check("version git sha", t_version)
+    check("guide spring_wheat 200 + names", t_guide)
+    check("fertilizer spring_wheat 200 + N>0", t_fertilizer)
+    check("economy 200 + profit", t_economy)
+    check("spray Esil 200/offline-error", t_spray)
+    check("calendar spring_wheat 200", t_calendar)
+    check("alerts Esil 200", t_alerts)
+    check("soil 200 + rows", t_soil)
+    check("intervals 200 + crops", t_intervals)
     print(f"\nOK: {len(passed)}/{len(passed)} passed")

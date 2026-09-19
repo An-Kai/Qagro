@@ -9,8 +9,8 @@ Qagro — MVP decision-support системы для фермеров и агр�
 индексное страхование (P_loss, ожидаемая выплата) и рекомендации по севу — на 3 языках (RU/KZ/EN).
 
 Покрытие MVP: **10 районов** Акмолинской области × **6 культур**
-(пшеница яровая, ячмень, овёс — обученные LGBM-модели, R² 0.55/0.54/0.69;
-подсолнечник, рапс, лён — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
+(модель v3: бленд LightGBM+Ridge 0.7/0.3, R² пшеница 0.68 / ячмень 0.67 / овёс 0.78;
+5/6 strong (пшеница, ячмень, овёс, подсолнечник, лён), рапс — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
 годы панели 2005–2025, прогноз — 2026.
 
 Интерфейсы: **FastAPI** (`POST /predict`, `POST /report` → PDF), **Telegram-бот** (aiogram 3.x),
@@ -60,7 +60,8 @@ python src/evaluate.py
 python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
 # GET  http://127.0.0.1:8000/health
 # POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"spring_wheat"}
-# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"oats"}  # APPROX
+# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"oats"}  # strong v3
+# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"rapeseed"}  # EXPERIMENTAL
 # POST http://127.0.0.1:8000/report   {"district_en":"Esil","crop":"spring_wheat"} -> PDF
 ```
 
@@ -164,18 +165,20 @@ python src/sentinel_ndvi.py
 
 Лицензии соблюдены: указаны авторы/ссылки, чужой код не копировался, заимствованы только подходы.
 
-## Метрики (hold-out 2021–2025, n=50 на культуру; 6 культур, см. metrics/metrics.json)
+## Метрики v3 (hold-out 2021–2025, n=50 на культуру; 6 культур, см. metrics/metrics.json)
 
-| Культура | Бейзлайн (среднее 5 лет) | LGBM (Qagro) | Статус |
+Модель v3: бленд LightGBM+Ridge 0.7/0.3 (ключ `lgbm` в `metrics.json` сохранён для совместимости). 5/6 strong, 1 experimental (рапс).
+
+| Культура | Бейзлайн (среднее 5 лет) | Бленд (Qagro) | Статус |
 |---|---|---|---|
-| Пшеница яровая | MAE **2.68**, RMSE 2.89, R² **-0.26** | MAE **1.46**, RMSE 1.72, R² **0.55** | LGBM strong |
-| Ячмень | MAE **2.78**, RMSE 3.00, R² **-0.25** | MAE **1.52**, RMSE 1.81, R² **0.54** | LGBM strong |
-| Овёс | MAE **3.59**, RMSE 4.00, R² **-0.33** | MAE **1.65**, RMSE 1.92, R² **0.69** | LGBM strong |
-| Подсолнечник | MAE **2.52**, R² **-0.35** | MAE 2.80, R² -0.47 | EXPERIMENTAL baseline |
-| Рапс | MAE **3.70**, R² **-0.85** | MAE 5.25, R² -2.58 | EXPERIMENTAL baseline |
-| Лён | MAE **1.22**, R² **-0.05** | MAE 1.65, R² -1.07 | EXPERIMENTAL baseline |
+| Пшеница яровая | MAE **2.68**, RMSE 2.89, R² **-0.26** | MAE **1.18**, RMSE 1.46, R² **0.68** | ✅ strong |
+| Ячмень | MAE **2.78**, RMSE 3.00, R² **-0.26** | MAE **1.25**, RMSE 1.53, R² **0.67** | ✅ strong |
+| Овёс | MAE **3.59**, RMSE 4.00, R² **-0.33** | MAE **1.26**, RMSE 1.64, R² **0.78** | ✅ strong |
+| Подсолнечник | MAE **2.52**, RMSE 3.69, R² **-0.35** | MAE **2.15**, RMSE 3.21, R² **-0.02** | ✅ strong (лучше бейзлайна по MAE) |
+| Рапс | MAE **3.70**, RMSE 4.26, R² **-0.85** | MAE 3.79, RMSE 4.49, R² -1.06 | 🧪 EXPERIMENTAL baseline |
+| Лён | MAE **1.22**, RMSE 1.44, R² **-0.05** | MAE **1.15**, RMSE 1.34, R² **0.09** | ✅ strong |
 
-Источники: `metrics/metrics.json` (`below_baseline:true` у подсолнечника/рапса/льна), графики `metrics/plots/scatter_*.png`, SHAP `metrics/shap_*.json`.
+Источники: `metrics/metrics.json` (`below_baseline:true` только у рапса), графики `metrics/plots/scatter_*.png`, SHAP `metrics/shap_*.json`.
 Честный fallback: для культур с `below_baseline=true` прогноз = baseline mean5 за 5 лет, интервал шире (residual×1.5), флаг `experimental:true` в `src/predict.py` / `src/insurance.py` (без подгонки метрик).
 
 Пример эффекта (нейтральный сценарий MJJA 2016–2025, `reports/risk_example.json`):
@@ -184,7 +187,7 @@ Esil/пшеница — expected payout **1558 тг/га** (p_loss 0.23); Zerend
 ## Ограничения (честно)
 
 - **Район = даунскейлинг области.** Районных длинных рядов БНС в открытом доступе нет; районная урожайность = областной якорь × агрозональный коэффициент (север 1.02–1.06, юг 0.92–0.98). Центроиды из `config/districts.yaml` — не границы и не поля.
-- **6 культур: 3 LGBM strong + 3 experimental baseline.** Пшеница/ячмень/овёс — настоящий LGBM (R² 0.55/0.54/0.69). Подсолнечник/рапс/лён 2024–2025 — структурный сдвиг (гибриды, площади), LGBM хуже бейзлайна на hold-out 2021–2025 (`below_baseline:true`): прогноз = mean5, интервал ×1.5, флаг `experimental:true`. APPROX-масштаб от пшеницы — только если модели нет вообще (флаг `approx`).
+- **6 культур: 5 strong + 1 experimental baseline.** Пшеница/ячмень/овёс/подсолнечник/лён — бленд v3 лучше бейзлайна (R² 0.68/0.67/0.78; подсолнечник MAE 2.15<2.52; лён MAE 1.15<1.22). Только рапс 2024–2025 — структурный сдвиг (гибриды, площади), бленд хуже бейзлайна на hold-out 2021–2025 (`below_baseline:true` только у рапса): прогноз = mean5, интервал ×1.5, флаг `experimental:true`. APPROX-масштаб от пшеницы — только если модели нет вообще (флаг `approx`).
 - **Поля — 78, честно подписаны.** 60 реальных OSM-полигонов (Overpass, ODbL) + 18 демо-прямоугольников 1×2 км (`demo:true`, НЕ OSM). Официальный источник для пилота — map.iaqmola.kz (Smart GeoHub, нужна авторизация).
 - **Элеваторы — 12, координаты оценочные.** Перечень по карте Qoldau granaries-map (публичного API нет), подлежат уточнению по официальному реестру ХПП.
 - **NDVI v2 = только список из 62 сцен, без выдуманных чисел.** `ndvi_mean` в `data/ndvi/ndvi_timeseries.json` всегда None (MISSING); модель работает без NDVI (optional join). Ручной NDVI для пилота — Copernicus Browser / Sentinel Hub (см. блок выше).
@@ -224,7 +227,7 @@ Qagro/
 Qagro (Track 2: 2.1/2.2/2.4) — Akmola district-level 2026 yield forecast (LightGBM vs 5y-mean baseline),
 decade drought-risk traffic light (Open-Meteo), index-insurance decision support + sowing advice (RU/KZ/EN)
 via FastAPI, Telegram bot (`TELEGRAM_BOT_TOKEN` from env only, never hardcoded) and Streamlit.
-Wheat: baseline MAE 2.68/R² -0.26 → LGBM MAE 1.46/R² 0.55; barley: 2.78/-0.25 → 1.52/0.54; oats: R² 0.69 (LGBM strong).
-Sunflower/rapeseed/flax: LGBM below baseline on hold-out → honest EXPERIMENTAL baseline-5y fallback (flag experimental:true, interval x1.5).
+Wheat: baseline MAE 2.68/R² -0.26 → blend MAE 1.18/R² 0.68; barley: 2.78/-0.26 → 1.25/0.67; oats: 3.59/-0.33 → 1.26/0.78 (5/6 strong).
+Sunflower (MAE 2.15<2.52) / flax (MAE 1.15<1.22): strong; rapeseed only: blend below baseline on hold-out → honest EXPERIMENTAL baseline-5y fallback (flag experimental:true, interval x1.5).
 Limits: districts = downscaled oblast stats (centroids, not fields); 78 fields (60 OSM + 18 demo), 12 elevators (coords estimated);
 insurance is decision support, not a tariff.

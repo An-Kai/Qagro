@@ -127,6 +127,9 @@ T: dict[str, dict[str, str]] = {
     # C8: алерты (только факты Open-Meteo, без подписок)
     "btn_alerts": {"ru": "⚠️ Алерты", "kz": "⚠️ Дабылдар",
                    "en": "⚠️ Alerts"},
+    # C2: окно опрыскивания (кнопка в ответе прогноза)
+    "btn_spray": {"ru": "🧴 Spray", "kz": "🧴 Spray",
+                  "en": "🧴 Spray"},
     "alerts_none": {"ru": "✅ Угроз на 7 дней нет (заморозки/жара/ливни/суховей не найдены).",
                     "kz": "✅ 7 күнге қауіп жоқ (үсік/ыстық/нөсер/қуаң жел табылмады).",
                     "en": "✅ No threats for 7 days (no frost/heat/downpour/dry wind)."},
@@ -145,6 +148,10 @@ HELP_TEXT: dict[str, str] = {
            "• Есильский → Пшеница яровая\n"
            "• Отправь 📍 геолокацию — сам найду ближайший район\n"
            "• /about — о команде и источниках\n"
+           "• /spray — окно опрыскивания (ветер/дождь, 48ч)\n"
+           "• /guide — болезни и вредители культуры\n"
+           "• /fields — мои поля OSM, /elevators — элеваторы\n"
+           "• /alerts — угрозы 7 дней (заморозки/жара/ливни)\n"
            "\n* — экспериментальный прогноз (мало данных), ориентируйся на среднее.\n"
            "~ — оценка от пшеницы (мало данных)."),
     "kz": ("🌾 Болжамды қалай алуға болады:\n"
@@ -156,6 +163,10 @@ HELP_TEXT: dict[str, str] = {
            "• Есіл → Жаздық бидай\n"
            "• 📍 Геолокация жіберіңіз — жақын ауданды өзім табамын\n"
            "• /about — команда мен дереккөздер туралы\n"
+           "• /spray — бүрку терезесі (жел/жаңбыр, 48с)\n"
+           "• /guide — дақыл аурулары мен зиянкестері\n"
+           "• /fields — менің егістіктерім OSM, /elevators — элеваторлар\n"
+           "• /alerts — 7 күндік қауіптер (үсік/ыстық/нөсер)\n"
            "\n* — эксперименттік болжам (дерек аз), орташа мәнге қараңыз.\n"
            "~ — бидайдан есептелген бағалау."),
     "en": ("🌾 How to get a forecast:\n"
@@ -167,6 +178,10 @@ HELP_TEXT: dict[str, str] = {
            "• Esil → Spring wheat\n"
            "• Send 📍 location — I'll find the nearest district\n"
            "• /about — team & sources\n"
+           "• /spray — spray window (wind/rain, 48h)\n"
+           "• /guide — crop diseases & pests\n"
+           "• /fields — my OSM fields, /elevators — elevators\n"
+           "• /alerts — 7-day threats (frost/heat/downpour)\n"
            "\n* — experimental forecast (little data), rely on the average.\n"
            "~ — wheat-based estimate (little data)."),
 }
@@ -176,18 +191,21 @@ ABOUT_TEXT: dict[str, str] = {
            "\nКоманда: Kairbek Ansar (данные / ML / API) и Samat Ablayhan, капитан (бот / веб).\n"
            "\nИсточники: Бюро нацстатистики РК, NASA POWER, Open-Meteo (ERA5), "
            "FAOSTAT, OpenStreetMap, Qoldau (элеваторы).\n"
+           "\nПлатформа v4: мои поля, журнал работ, NPK-баланс, экономика.\n"
            "\n⚠️ Дисклеймер: это decision support, не гарантия урожая и не страховой тариф. "
            "Проверяй с агрономом."),
     "kz": ("🌾 Qagro — Ақмола облысы фермерінің көмекшісі (2026 болжам).\n"
            "\nКоманда: Kairbek Ansar (деректер / ML / API) және Samat Ablayhan, капитан (бот / веб).\n"
            "\nДереккөздер: ҚР Ұлттық статистика бюросы, NASA POWER, Open-Meteo (ERA5), "
            "FAOSTAT, OpenStreetMap, Qoldau (элеваторлар).\n"
+           "\nv4 платформасы: менің егістіктерім, жұмыс журналы, NPK-баланс, экономика.\n"
            "\n⚠️ Дисклеймер: бұл decision support — өнім кепілдігі де, сақтандыру тарифі де емес. "
            "Агрономмен тексеріңіз."),
     "en": ("🌾 Qagro — farmer assistant for Akmola region (2026 forecast).\n"
            "\nTeam: Kairbek Ansar (data / ML / API) & Samat Ablayhan, captain (bot / web).\n"
            "\nSources: Bureau of National Statistics (KZ), NASA POWER, Open-Meteo (ERA5), "
            "FAOSTAT, OpenStreetMap, Qoldau (elevators).\n"
+           "\nPlatform v4: my fields, work journal, NPK balance, economics.\n"
            "\n⚠️ Disclaimer: decision support only, not a yield guarantee nor an insurance tariff. "
            "Check with your agronomist."),
 }
@@ -566,12 +584,14 @@ def create_dispatcher():
         return b.as_markup()
 
     def _kb_pdf(district_en: str, crop: str, lang: str):
-        # C3: две кнопки — PDF отчет + Новый прогноз; C8: + Алерты
+        # C3: две кнопки — PDF отчет + Новый прогноз; C8: + Алерты; C2: + Spray
         b = InlineKeyboardBuilder()
         b.button(text=T["btn_pdf"].get(lang, T["btn_pdf"]["ru"]),
                  callback_data=f"pdf:{district_en}:{crop}:{lang}")
         b.button(text=T["btn_alerts"].get(lang, T["btn_alerts"]["ru"]),
                  callback_data=f"alerts:{district_en}:{lang}")
+        b.button(text=T["btn_spray"].get(lang, T["btn_spray"]["ru"]),
+                 callback_data=f"spray:{district_en}:{lang}")
         b.button(text=T["btn_new"].get(lang, T["btn_new"]["ru"]),
                  callback_data="new")
         b.adjust(1)
@@ -747,6 +767,30 @@ def create_dispatcher():
             await cb.message.answer(f"⚠️ {district} (7d):\n{format_alerts(items, lang)}")
         except Exception as e:
             log.exception("on_alerts_cb failed")
+            await cb.message.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
+        await cb.answer()
+
+    @dp.callback_query(F.data.startswith("spray:"))
+    async def on_spray_cb(cb: CallbackQuery):
+        # C2: кнопка 🧴 Spray из ответа прогноза (аналог on_alerts_cb).
+        try:
+            _, district, lang = cb.data.split(":")
+        except ValueError:
+            await cb.answer("bad callback")
+            return
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        try:
+            try:
+                from src.spray import check_spray_window
+            except ImportError:
+                from spray import check_spray_window  # type: ignore
+            r = await asyncio.to_thread(check_spray_window, district)
+            key = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
+            await cb.message.answer(f"🧴 {district}: {r.get(key)}\n"
+                                    f"good {r.get('good_hours', '?')}/{r.get('total_hours', 48)}h")
+        except Exception as e:
+            log.exception("on_spray_cb failed")
             await cb.message.answer(f"{T['err_generic'][lang]}\n⚠️ {type(e).__name__}: {e}")
         await cb.answer()
 
