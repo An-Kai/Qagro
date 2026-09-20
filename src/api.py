@@ -526,3 +526,87 @@ def api_gis(district_en: str = "Esil", max_fields: int = 6) -> dict:
         raise HTTPException(status_code=422, detail=str(e))
     except RuntimeError as e:
         raise HTTPException(status_code=502, detail=f"GIS offline: {e}")
+
+
+@app.get("/compare")
+def api_compare(district_en: str = "Esil", crops: str = "spring_wheat,barley",
+                lang: str = "ru", price_kzt_t: float | None = None) -> dict:
+    """Сравнение 2–4 культур: урожай/риск-слово/выплата/вывод (для UI-таба).
+
+    Query crops — список через запятую. Модели не меняет: только читает
+    predict/insurance. Цена опциональна: для пшеницы/ячменя выплата
+    пересчитывается как в Streamlit (live-слайдер).
+    """
+    crop_list = [c.strip() for c in (crops or "").split(",") if c.strip()]
+    if len(crop_list) < 2 or len(crop_list) > 4:
+        raise HTTPException(status_code=422, detail="crops: нужно 2–4 через запятую")
+    lang = (lang or "ru").lower()
+    items: list[dict] = []
+    for c in crop_list:
+        try:
+            _validate_inputs(district_en, c, lang)
+        except ValueError as e:
+            raise HTTPException(status_code=422, detail=_err422(e)) from e
+        pred = _predict(district_en, c, None)
+        try:
+            ins = insurance_quote(district_en, c)
+        except Exception as e:
+            raise HTTPException(status_code=422, detail=_err422(e)) from e
+        if price_kzt_t and c in ("spring_wheat", "barley"):
+            try:
+                sub = float(ins.get("subsidy_rate", 0.8))
+                exp_short = float(ins.get("expected_shortfall_c_ha", 0.0))
+                point_short = float(ins.get("shortfall_c_ha", 0.0))
+                ins = dict(ins, price_kzt_per_t=float(price_kzt_t),
+                           expected_payout_ha=round(exp_short / 10.0 * float(price_kzt_t) * sub, 0),
+                           payout_at_pred_ha=round(point_short / 10.0 * float(price_kzt_t) * sub, 0))
+            except (TypeError, ValueError):
+                pass
+        p_loss = float(ins["p_loss"])
+        risk_word = ("high" if p_loss > 0.4 else ("medium" if p_loss > 0.2 else "low"))
+        items.append({"crop": c, "y_pred": round(float(pred["y_pred"]), 1),
+                      "p_loss": p_loss, "risk_word": risk_word,
+                      "payout_ha": int(round(float(ins.get("expected_payout_ha") or 0))),
+                      "mean5_c_ha": ins.get("mean5_c_ha")})
+    best = max(items, key=lambda r: r["y_pred"])["crop"]
+    calm = min(items, key=lambda r: r["p_loss"])["crop"]
+    return {"district_en": district_en, "lang": lang, "items": items,
+            "best_yield": best, "calmest": calm, "count": len(items)}
+
+
+@app.get("/season")
+def api_season(district_en: str = "Esil", crop: str = "spring_wheat",
+               lang: str = "ru") -> dict:
+    """Сезонный календарь: GDD-факт vs норма + spray-окна 48 ч (best-effort).
+
+    GDD-факт — средний GDD района из панели (gdd_context recommend_sowing),
+    норма — sowing_calendar. Spray офлайн -> {"error": ...}, а не выдумка.
+    """
+    lang = (lang or "ru").lower()
+    try:
+        _validate_inputs(district_en, crop, lang)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=_err422(e)) from e
+    cal = sowing_calendar(crop, lang)
+    try:
+        rec = recommend_sowing(district_en, crop, lang)
+        fact = float((rec.get("gdd_context") or {}).get("district_gdd5_mean") or 0.0)
+    except Exception:
+        fact, rec = 0.0, None
+    norm = cal.get("gdd_norm") or [0, 1]
+    hi = float(norm[1]) if len(norm) > 1 else float(norm[0])
+    progress = min(max(fact / hi if hi > 0 else 0.0, 0.0), 1.0)
+    try:
+        try:
+            from src.spray import check_spray_window
+        except ImportError:
+            from spray import check_spray_window  # type: ignore
+        spray = check_spray_window(district_en, 48)
+    except Exception as e:
+        spray = {"district_en": district_en, "windows": [],
+                 "next_good_hours": [], "good_count": 0,
+                 "error": f"{type(e).__name__}: {e}"}
+    return {"district_en": district_en, "crop": crop, "lang": lang,
+            "calendar": cal, "gdd_fact": round(fact, 1),
+            "gdd_progress": round(progress, 3), "spray": spray,
+            "sowing_window": (rec or {}).get("window")}

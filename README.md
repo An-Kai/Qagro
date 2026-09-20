@@ -78,9 +78,10 @@ python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
 Copy-Item .env.example .env  # вписать токен от BotFather в .env
 $env:TELEGRAM_BOT_TOKEN="вставь_токен_сюда"  # или export в shell; в коде токена нет
 python -m src.bot
-# /start -> язык (RU/KZ/EN) -> район (10) -> культура (6) -> прогноз + риск + страховка + PDF
-# /fields — число OSM полей (78: 60 OSM + 18 demo); /elevators — 12 элеваторов
-# Кнопка Share Location -> ближайший район по haversine
+# /start -> язык (RU/KZ/EN) -> район (10) -> культура (6) -> ответ словами + PDF
+# /gis — поля со спутника; /spray — окно опрыскивания; /guide — болезни;
+# /compare — 2 культуры рядом; /fields — 115 полей (109 OSM + 6 demo); /elevators — 12
+# Кнопка геолокации -> ближайший район по haversine
 ```
 
 > Никаких токенов в коде и в README. Единственный источник — переменная окружения `TELEGRAM_BOT_TOKEN` (см. `.env.example`).
@@ -88,9 +89,9 @@ python -m src.bot
 ### Streamlit
 
 ```powershell
-streamlit run app/streamlit_app.py
-# селекты район/культура/язык, Plotly факт vs прогноз, Folium-карта рисков,
-# CSV / GeoJSON / PDF, дисклеймер APPROX + даунскейлинг
+python -m streamlit run app/streamlit_app.py
+# 3 шага словами + сравнение культур + сезонный календарь + карты (риски/поля/NDVI),
+# CSV / GeoJSON / PDF, техдетали только в "Подробно для агронома"
 ```
 
 ### Docker

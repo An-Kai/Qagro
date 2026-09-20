@@ -123,10 +123,49 @@ UI = {
             "osm_empty": "В этом районе OSM-полей нет — показаны элеваторы и маршруты.",
             "hist_empty": "История пуста для этого района/культуры.",
             "guide_empty": "Справочник пуст для этой культуры.",
-            "risk_empty": "Файл рисков не найден — таблица посчитана из p_loss модели (офлайн).",
+            "risk_empty": "Файл рисков не найден — таблица посчитана из прогноза модели (офлайн).",
             "ndvi_empty": "NDVI-замеров с ndvi_mean пока нет.",
             "fields_file_empty": "Файл полей не найден — показаны только элеваторы.",
-            "elev_offline": "Ближайший элеватор не определился."},
+            "elev_offline": "Ближайший элеватор не определился.",
+            "usual": "Обычно бывает {lo}–{hi}. Среднее за 5 лет: {mean5}.",
+            "risk_hint": "Зелёный — спокойно, жёлтый — следите, красный — готовьтесь.",
+            "payout_hint": "Шанс не добрать 80%: {pct} из 100. Это ориентир, не тариф.",
+            "dcode": "Код района",
+            "fields_summary": "полей в районе (OSM: {osm}, demo: {demo}), всего ~{area} га",
+            "gis_title": "Мониторинг всходов со спутника (Sentinel-2)",
+            "gis_sub": "Зелёный ход — посевы растут; ровный низкий — проверьте поле. Пороги эвристические, не ГОСТ.",
+            "gis_manual": "Copernicus Browser / Sentinel Hub / LandsatLook — для ручной проверки.",
+            "gis_checked": "Проверено {done} из {total}.",
+            "gis_borders": "Границы и площади — OSM (экспорт GeoJSON во вкладке прогноза).",
+            "gis_offline": "🛰 Спутник офлайн: {err}",
+            "gis_dead": "погибших дат",
+            "axis_year": "год", "axis_yield": "ц/га",
+            "trace_fact": "факт", "trace_forecast": "прогноз 2026",
+            "ndvi_x": "дата", "ndvi_y": "NDVI",
+            "field_default": "Поле 1",
+            "sow_label": "Посев", "harvest_label": "Уборка",
+            "sat_tab": "Со спутника",
+            "about1": "**Qagro** — Кайрбек Ансар (данные/ML/API) + Самат Аблайхан, капитан (бот/веб).",
+            "about2": "stat.gov.kz · NASA POWER · Open-Meteo · FAOSTAT · OSM · Qoldau · Copernicus/Sentinel-2",
+            "th_district": "Район", "th_code": "Код", "th_risk": "Риск (0–100)",
+            "compare": "⚖️ Сравнение культур",
+            "compare_hint": "Выберите 2–4 культуры — сравним урожай, риск и выплату.",
+            "compare_pick": "Культуры для сравнения",
+            "compare_need": "Выберите от 2 до 4 культур ☝️",
+            "cc_crop": "Культура", "cc_yield": "Урожай, ц/га",
+            "cc_risk": "Риск", "cc_payout": "Выплата, ₸/га",
+            "cc_verdict": "Вывод",
+            "verdict_best": "лучший урожай", "verdict_calm": "самый спокойный",
+            "verdict_mid": "средний вариант",
+            "compare_chart_title": "Урожай по культурам",
+            "compare_chart_yield": "Урожай, ц/га",
+            "compare_chart_payout": "Выплата, тыс. ₸/га",
+            "season_gdd": "Рост сезона (тепло)",
+            "season_gdd_text": "Накоплено ~{fact} из нормы {lo}–{hi} (база {base}°C).",
+            "season_spray": "Окна опрыскивания (48 ч)",
+            "season_spray_none": "Хороших часов нет — опрыскивание отложить.",
+            "alias_src": "Источник", "ms": "м/с",
+            "lang_label": "🌍 Язык / Тіл / Language"},
     "kz": {"title": "🌾 Qagro — фермер көмекшісі",
            "sub": "Аудан мен дақылды таңдаңыз — жауапты қарапайым тілде алыңыз.",
            "step1": "1-қадам. Ауданыңыз", "step2": "2-қадам. Дақыл",
@@ -164,10 +203,49 @@ UI = {
             "osm_empty": "Бұл ауданда OSM-егістік жоқ — элеваторлар мен бағыттар көрсетілген.",
             "hist_empty": "Бұл аудан/дақыл үшін тарих бос.",
             "guide_empty": "Бұл дақылға анықтама бос.",
-            "risk_empty": "Қауіп файлы табылмады — кесте модель p_loss-ынан есептелді (офлайн).",
+            "risk_empty": "Қауіп файлы табылмады — кесте модель болжамынан есептелді (офлайн).",
             "ndvi_empty": "ndvi_mean өлшемдері әзірге жоқ.",
             "fields_file_empty": "Егістік файлы табылмады — тек элеваторлар көрсетілген.",
-            "elev_offline": "Жақын элеватор анықталмады."},
+            "elev_offline": "Жақын элеватор анықталмады.",
+            "usual": "Әдетте {lo}–{hi}. 5 жылдық орташа: {mean5}.",
+            "risk_hint": "Жасыл — тыныш, сары — бақылаңыз, қызыл — дайындалыңыз.",
+            "payout_hint": "80%-ға жетпеу: 100-ден {pct}. Бұл бағдар, тариф емес.",
+            "dcode": "Аудан коды",
+            "fields_summary": "аудандағы егістік (OSM: {osm}, demo: {demo}), барлығы ~{area} га",
+            "gis_title": "Серіктен өскін мониторингі (Sentinel-2)",
+            "gis_sub": "Жасыл өсу — егін өсуде; тегіс төмен — егістікті тексеріңіз.",
+            "gis_manual": "Copernicus Browser / Sentinel Hub / LandsatLook — қолмен тексеруге.",
+            "gis_checked": "Тексерілді {done} / {total}.",
+            "gis_borders": "Шекаралар мен аудандар — OSM (болжам қойындысында GeoJSON экспорт).",
+            "gis_offline": "🛰 Серік офлайн: {err}",
+            "gis_dead": "өлген күндер",
+            "axis_year": "жыл", "axis_yield": "ц/га",
+            "trace_fact": "факт", "trace_forecast": "болжам 2026",
+            "ndvi_x": "күн", "ndvi_y": "NDVI",
+            "field_default": "1-егістік",
+            "sow_label": "Себу", "harvest_label": "Жинау",
+            "sat_tab": "Серіктен",
+            "about1": "**Qagro** — Қайырбек Ансар (дерек/ML/API) + Самат Аблайхан, капитан (бот/веб).",
+            "about2": "stat.gov.kz · NASA POWER · Open-Meteo · FAOSTAT · OSM · Qoldau · Copernicus/Sentinel-2",
+            "th_district": "Аудан", "th_code": "Код", "th_risk": "Қауіп (0–100)",
+            "compare": "⚖️ Дақылдарды салыстыру",
+            "compare_hint": "2–4 дақыл таңдаңыз — өнім, қауіп және төлемді салыстырамыз.",
+            "compare_pick": "Салыстыруға дақылдар",
+            "compare_need": "2–4 дақыл таңдаңыз ☝️",
+            "cc_crop": "Дақыл", "cc_yield": "Өнім, ц/га",
+            "cc_risk": "Қауіп", "cc_payout": "Төлем, ₸/га",
+            "cc_verdict": "Қорытынды",
+            "verdict_best": "ең жоғары өнім", "verdict_calm": "ең тыныш",
+            "verdict_mid": "орташа нұсқа",
+            "compare_chart_title": "Дақылдар бойынша өнім",
+            "compare_chart_yield": "Өнім, ц/га",
+            "compare_chart_payout": "Төлем, мың ₸/га",
+            "season_gdd": "Маусым өсуі (жылу)",
+            "season_gdd_text": "Жинақталды ~{fact}, норма {lo}–{hi} (база {base}°C).",
+            "season_spray": "Бүрку терезелері (48 сағ)",
+            "season_spray_none": "Жақсы сағаттар жоқ — бүркуді кейінге қалдырыңыз.",
+            "alias_src": "Дереккөз", "ms": "м/с",
+            "lang_label": "🌍 Язык / Тіл / Language"},
     "en": {"title": "🌾 Qagro — farmer helper",
            "sub": "Pick your district and crop — get a plain-words answer.",
            "step1": "Step 1. Your district", "step2": "Step 2. Crop",
@@ -205,10 +283,49 @@ UI = {
             "osm_empty": "No OSM fields in this district — elevators and routes shown.",
             "hist_empty": "No history for this district/crop.",
             "guide_empty": "Guide is empty for this crop.",
-            "risk_empty": "Risk file missing — table falls back to model p_loss (offline).",
+            "risk_empty": "Risk file missing — table falls back to model forecast (offline).",
             "ndvi_empty": "No NDVI measurements with ndvi_mean yet.",
             "fields_file_empty": "Fields file missing — elevators only.",
-            "elev_offline": "Nearest elevator unavailable."},
+            "elev_offline": "Nearest elevator unavailable.",
+            "usual": "Usually {lo}–{hi}. 5-year average: {mean5}.",
+            "risk_hint": "Green — calm, yellow — watch, red — prepare.",
+            "payout_hint": "Below-80% chance: {pct} in 100. Estimate, not a tariff.",
+            "dcode": "District code",
+            "fields_summary": "fields in district (OSM: {osm}, demo: {demo}), total ~{area} ha",
+            "gis_title": "Satellite emergence monitoring (Sentinel-2)",
+            "gis_sub": "Rising green — crops grow; flat low — check the field.",
+            "gis_manual": "Copernicus Browser / Sentinel Hub / LandsatLook — for manual check.",
+            "gis_checked": "Checked {done} of {total}.",
+            "gis_borders": "Borders and areas — OSM (GeoJSON export in forecast tab).",
+            "gis_offline": "🛰 Satellite offline: {err}",
+            "gis_dead": "dead dates",
+            "axis_year": "year", "axis_yield": "c/ha",
+            "trace_fact": "actual", "trace_forecast": "2026 forecast",
+            "ndvi_x": "date", "ndvi_y": "NDVI",
+            "field_default": "Field 1",
+            "sow_label": "Sowing", "harvest_label": "Harvest",
+            "sat_tab": "Satellite",
+            "about1": "**Qagro** — Kairbek Ansar (data/ML/API) + Samat Ablayhan, captain (bot/web).",
+            "about2": "stat.gov.kz · NASA POWER · Open-Meteo · FAOSTAT · OSM · Qoldau · Copernicus/Sentinel-2",
+            "th_district": "District", "th_code": "Code", "th_risk": "Risk (0–100)",
+            "compare": "⚖️ Crop comparison",
+            "compare_hint": "Pick 2–4 crops — we compare yield, risk and payout.",
+            "compare_pick": "Crops to compare",
+            "compare_need": "Pick 2 to 4 crops ☝️",
+            "cc_crop": "Crop", "cc_yield": "Yield, c/ha",
+            "cc_risk": "Risk", "cc_payout": "Payout, ₸/ha",
+            "cc_verdict": "Verdict",
+            "verdict_best": "best yield", "verdict_calm": "calmest",
+            "verdict_mid": "average option",
+            "compare_chart_title": "Yield by crop",
+            "compare_chart_yield": "Yield, c/ha",
+            "compare_chart_payout": "Payout, k ₸/ha",
+            "season_gdd": "Season growth (heat)",
+            "season_gdd_text": "Accumulated ~{fact} of norm {lo}–{hi} (base {base}°C).",
+            "season_spray": "Spray windows (48 h)",
+            "season_spray_none": "No good hours — postpone spraying.",
+            "alias_src": "Source", "ms": "m/s",
+            "lang_label": "🌍 Язык / Тіл / Language"},
 }
 
 
@@ -457,9 +574,35 @@ def main() -> None:
 
     st.set_page_config(page_title="Qagro — farmer helper", layout="wide")
 
-    # Мобильная вёрстка: колонки не сжимаются, а переносятся; кнопки — во всю ширину.
+    # Дизайн 50+: крупный шрифт, высокий контраст, большие кнопки/ответы.
     st.markdown(
         """<style>
+html, body, [data-testid="stAppViewContainer"] { font-size: 20px; }
+[data-testid="stAppViewContainer"] p, [data-testid="stAppViewContainer"] li,
+[data-testid="stAppViewContainer"] label, [data-testid="stMarkdownContainer"] p {
+  font-size: 20px; line-height: 1.55; color: #111111;
+}
+h1 { font-size: 36px !important; }
+h2 { font-size: 30px !important; }
+h3 { font-size: 26px !important; }
+div[data-testid="stAlert"] p { font-size: 22px !important; }
+div[data-testid="stSuccess"] p, div[data-testid="stInfo"] p,
+div[data-testid="stWarning"] p { font-size: 24px !important; }
+.big-answer { font-size: 46px !important; font-weight: 800; line-height: 1.1; }
+div[data-testid="stButton"] > button,
+div[data-testid="stDownloadButton"] > button,
+div[data-testid="stFormSubmitButton"] > button {
+  width: 100%; font-size: 22px !important; font-weight: 700;
+  padding: 16px 22px !important; min-height: 60px; border-radius: 12px;
+}
+div[data-testid="stSelectbox"] label, div[data-testid="stSlider"] label {
+  font-size: 21px !important; font-weight: 700; color: #111111;
+}
+div[data-testid="stCaptionContainer"] small, div[data-testid="stCaptionContainer"] {
+  color: #333333 !important; font-size: 18px !important;
+}
+div[data-testid="stProgress"] > div > div > div { height: 22px !important; border-radius: 11px; }
+.district-code small { font-size: 17px !important; color: #333333; }
 @media (max-width: 640px) {
   div[data-testid="stHorizontalBlock"] { flex-wrap: wrap !important; }
   div[data-testid="column"] { min-width: 100% !important; flex-basis: 100% !important; }
@@ -474,7 +617,7 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     districts = cfg.get("districts", [])
     crops = cfg.get("crops", [])
 
-    lang = st.sidebar.selectbox("🌍 Язык / Тіл / Language",
+    lang = st.sidebar.selectbox(UI["ru"]["lang_label"],
                                 options=["ru", "kz", "en"], index=0)
     T = UI[lang]
     wheat_price = st.sidebar.slider(T["price"], min_value=WHEAT_PRICE_MIN,
@@ -497,6 +640,8 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                                if "Esil" in dlabel else 0,
                                label_visibility="collapsed",
                                help=T["district_help"])
+    st.markdown(f"<div class='district-code'><small>{T['dcode']}: <b>{district_en}</b></small></div>",
+                unsafe_allow_html=True)
     st.header(T["step2"])
     st.caption(T["step2_hint"])
     crop = st.selectbox("🌱", options=list(clabel.keys()),
@@ -540,23 +685,20 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
 
     c1, c2 = st.columns(2)
     with c1:
-        st.success(f"### {T['yield']}: ~{y} ц/га\n\n"
-                   + ({"ru": f"Обычно бывает {lo}–{hi}. Среднее за 5 лет: {mean5}.",
-                       "kz": f"Әдетте {lo}–{hi}. 5 жылдық орташа: {mean5}.",
-                       "en": f"Usually {lo}–{hi}. 5-year average: {mean5}."}[lang]))
+        st.success(f"<div class='big-answer'>{T['yield']}: ~{y} {T['axis_yield']}</div>\n\n"
+                   + T["usual"].format(lo=lo, hi=hi, mean5=mean5),
+                   icon="🌾")
     with c2:
-        st.info(f"### {light} {T['risk']}: {_w(p_loss, lang)}\n\n"
-                + ({"ru": "Зелёный — спокойно, жёлтый — следите, красный — готовьтесь.",
-                    "kz": "Жасыл — тыныш, сары — бақылаңыз, қызыл — дайындалыңыз.",
-                    "en": "Green — calm, yellow — watch, red — prepare."}[lang]))
+        st.info(f"<div class='big-answer'>{light} {T['risk']}: {_w(p_loss, lang)}</div>\n\n"
+                + T["risk_hint"], icon="ℹ️")
     c3, c4 = st.columns(2)
     with c3:
-        st.warning(f"### {T['ins']}: ~{payout} ₸/га\n\n"
-                   + ({"ru": f"Шанс не добрать 80%: {round(p_loss*100)} из 100. Это ориентир, не тариф.",
-                       "kz": f"80%-ға жетпеу: 100-ден {round(p_loss*100)}. Бұл бағдар, тариф емес.",
-                       "en": f"Below-80% chance: {round(p_loss*100)} in 100. Estimate, not a tariff."}[lang]))
+        st.warning(f"<div class='big-answer'>{T['ins']}: ~{payout} ₸/{T['ha']}</div>\n\n"
+                   + T["payout_hint"].format(pct=round(p_loss * 100)),
+                   icon="🛡️")
     with c4:
-        st.success(f"### {T['todo']}: {rec['window']}\n\n{rec['message']}")
+        st.success(f"<div class='big-answer'>{T['todo']}: {rec['window']}</div>\n\n{rec['message']}",
+                   icon="✅")
     if experimental:
         st.warning(T["exp"])
     if offline:
@@ -606,8 +748,7 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     tab_risk, tab_fields, tab_gis = st.tabs(
         ["🟢🟡🔴 " + T["risk_tab"],
          "🌾 " + T["fields_tab"],
-         "🛰 " + ({"ru": "Со спутника", "kz": "Серіктен",
-                    "en": "Satellite"}[lang])])
+         "🛰 " + T["sat_tab"]])
     with tab_risk:
         rows = []
         for d in districts:
@@ -619,7 +760,8 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                     r = round(float(ii["p_loss"]) * 100, 1)
                 except Exception:
                     r = None
-            rows.append({"district": d.get(f"name_{lang}", en), "risk": r})
+            rows.append({"district": d.get(f"name_{lang}", en),
+                         "code": en, "risk": r})
         if not risks:
             st.warning(T["risk_empty"])
         m = folium.Map(location=[52.3, 69.0], zoom_start=7,
@@ -660,7 +802,17 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                                               na_position="last")
         if _rdf["risk"].isna().all():
             st.caption(T["risk_empty"])
-        st.dataframe(style_risk_df(_rdf), use_container_width=True)
+        _show = _rdf.rename(columns={"district": T["th_district"],
+                                     "code": T["th_code"],
+                                     "risk": T["th_risk"]})
+        # Цветные строки по риску: красим по внутренней колонке, показываем локализованную.
+        try:
+            _sty = _show.style.apply(
+                lambda row: [_risk_bg(_rdf.iloc[row.name]["risk"])] * len(row),
+                axis=1).format({T["th_risk"]: "{:.1f}"}, na_rep="offline")
+        except Exception:
+            _sty = _show
+        st.dataframe(_sty, use_container_width=True)
 
     with tab_fields:
         feats = [f for f in fdata.get("features", [])
@@ -672,12 +824,9 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
         if not feats:
             st.info(T["osm_empty"])
         st.write(f"🌾 {len(feats)} " +
-                 ({"ru": f"полей в районе (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
-                         f"всего ~{round(sum(areas))} га",
-                   "kz": f"аудандағы егістік (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
-                         f"барлығы ~{round(sum(areas))} га",
-                   "en": f"fields in district (OSM: {len(feats)-n_demo}, demo: {n_demo}), "
-                         f"total ~{round(sum(areas))} ha"}[lang]))
+                 T["fields_summary"].format(osm=len(feats) - n_demo,
+                                            demo=n_demo,
+                                            area=round(sum(areas))))
         m2 = folium.Map(location=[next(d["lat"] for d in districts if d["name_en"] == district_en),
                                   next(d["lon"] for d in districts if d["name_en"] == district_en)],
                         zoom_start=10, tiles="OpenStreetMap", attr=OSM_ATTR,
@@ -687,7 +836,8 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                 {"type": "FeatureCollection", "features": feats},
                 style_function=_field_style,
                 tooltip=folium.GeoJsonTooltip(fields=["district_en", "area_ha", "source"],
-                                              aliases=["District", "ha", "Source"]),
+                                              aliases=[T["th_district"], T["ha"],
+                                                       T["alias_src"]]),
             ).add_to(m2)
         for g in gdata.get("granaries", []):
             _gname = g.get(f"name_{lang}", g.get("name_ru"))
@@ -717,15 +867,8 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
 
     with tab_gis:
         # Трек 1: NDVI-мониторинг (1.1), залежи (1.3), гибель (1.4). Границы (1.2) — OSM.
-        gis_h = {"ru": ("Мониторинг всходов со спутника (Sentinel-2)",
-                        "Зелёный ход — посевы растут; ровный низкий — проверьте поле. "
-                        "Пороги эвристические, не ГОСТ."),
-                 "kz": ("Серіктен өскін мониторингі (Sentinel-2)",
-                        "Жасыл өсу — егін өсуде; тегіс төмен — егістікті тексеріңіз."),
-                 "en": ("Satellite emergence monitoring (Sentinel-2)",
-                        "Rising green — crops grow; flat low — check the field.")}[lang]
-        st.subheader("🛰 " + gis_h[0])
-        st.caption(gis_h[1] + " Copernicus Browser / Sentinel Hub / LandsatLook — для ручной проверки.")
+        st.subheader("🛰 " + T["gis_title"])
+        st.caption(T["gis_sub"] + " " + T["gis_manual"])
         skey = {"ru": "status_ru", "kz": "status_kz", "en": "status_en"}[lang]
         try:
             # C5-2: сначала свежий файл (<7 дней), иначе живой запрос (медленно).
@@ -743,9 +886,9 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                     g = _gis_run(district_en, max_fields=4)
             for fl in g.get("fields", []):
                 c = fl.get("classification") or {}
-                st.write(f"**{fl.get('field_id')}** ({fl.get('area_ha')} га): "
+                st.write(f"**{fl.get('field_id')}** ({fl.get('area_ha')} {T['ha']}): "
                          f"{c.get(skey, c.get('status_ru', c.get('status')))} — NDVI max {c.get('ndvi_max')}, "
-                         f"погибших дат {round(float(c.get('dead_share') or 0) * 100)}%.")
+                         f"{T['gis_dead']} {round(float(c.get('dead_share') or 0) * 100)}%.")
                 series = [(p.get("date"), p.get("ndvi_mean")) for p in fl.get("series", [])
                           if p.get("ndvi_mean") is not None]
                 if series:
@@ -753,17 +896,18 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                     fig2.add_trace(go.Scatter(x=[s[0] for s in series],
                                               y=[s[1] for s in series],
                                               mode="lines+markers", name="NDVI"))
-                    fig2.update_layout(xaxis_title="date", yaxis_title="NDVI",
+                    fig2.update_layout(xaxis_title=T["ndvi_x"], yaxis_title=T["ndvi_y"],
                                        height=220, margin=dict(l=10, r=10, t=10, b=10))
                     st.plotly_chart(fig2, use_container_width=True)
-            st.caption(f"Проверено {g.get('checked', 0)} из {g.get('total_fields', 0)}. "
-                       "Границы и площади — OSM (экспорт GeoJSON во вкладке прогноза).")
+            st.caption(T["gis_checked"].format(done=g.get('checked', 0),
+                                               total=g.get('total_fields', 0))
+                       + " " + T["gis_borders"])
         except Exception as e:
-            st.warning(f"🛰 GIS offline: {e}")
+            st.warning(T["gis_offline"].format(err=e))
 
     # ---------- Агроном / хозяйство / календарь / о проекте ----------
-    tab_agro, tab_farm, tab_plus, tab_cal, tab_about = st.tabs(
-        [T["agro"], T["farm"], T["plus"], T["cal"], T["about"]])
+    tab_agro, tab_farm, tab_plus, tab_compare, tab_cal, tab_about = st.tabs(
+        [T["agro"], T["farm"], T["plus"], T["compare"], T["cal"], T["about"]])
     with tab_agro:
         hist = panel[(panel["district_en"] == district_en) & (panel["crop"] == crop)].sort_values("year")
         if hist.empty:
@@ -771,12 +915,12 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
         fig = go.Figure()
         if not hist.empty:
             fig.add_trace(go.Scatter(x=hist["year"].tolist(), y=hist["yield_c_ha"].tolist(),
-                                     mode="lines+markers", name="fact"))
-        fig.add_trace(go.Scatter(x=[2026], y=[pred["y_pred"]], mode="markers", name="2026",
+                                     mode="lines+markers", name=T["trace_fact"]))
+        fig.add_trace(go.Scatter(x=[2026], y=[pred["y_pred"]], mode="markers", name=T["trace_forecast"],
                                  error_y=dict(type="data",
                                               array=[pred["hi90"] - pred["y_pred"]],
                                               arrayminus=[pred["y_pred"] - pred["lo10"]])))
-        fig.update_layout(xaxis_title="year", yaxis_title="c/ha")
+        fig.update_layout(xaxis_title=T["axis_year"], yaxis_title=T["axis_yield"])
         st.plotly_chart(fig, use_container_width=True)
         rows = build_metrics_rows(metrics)
         st.dataframe(pd.DataFrame(rows), use_container_width=True)
@@ -808,7 +952,7 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
             if not fields:
                 st.info(T["my_empty"])
             with st.form("add_field"):
-                _def_name = {"ru": "Поле 1", "kz": "1-егістік", "en": "Field 1"}[lang]
+                _def_name = T["field_default"]
                 fn = st.text_input(T["field_name"], _def_name, help=T["field_name_help"])
                 farea = st.number_input(T["field_area"], 10.0, 2000.0, 100.0,
                                         help=T["field_area_help"])
@@ -876,12 +1020,108 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                      f"({int(pr['revenue_kzt_ha'])} − {int(pr['cost_kzt_ha'])})")
         except Exception as e:
             st.warning(str(e))
+    with tab_compare:
+        # Фича (a): сравнение 2–4 культур — таблица + групповой bar-chart.
+        st.caption(T["compare_hint"])
+        _def_cmp = [c for c in ("spring_wheat", "barley") if c in clabel]
+        cmp_crops = st.multiselect(T["compare_pick"], options=list(clabel.keys()),
+                                   format_func=lambda k: clabel[k],
+                                   default=_def_cmp)
+        if len(cmp_crops) < 2 or len(cmp_crops) > 4:
+            st.info(T["compare_need"])
+        else:
+            _rows, _y, _pl, _pay = [], [], [], []
+            for cc in cmp_crops:
+                try:
+                    _p = cached_predict(district_en, cc)
+                    _i = cached_insurance(district_en, cc)
+                    if cc in ("spring_wheat", "barley"):
+                        _i = recalc_payout_live(_i, wheat_price)
+                    _yy = round(float(_p["y_pred"]), 1)
+                    _pp = float(_i["p_loss"])
+                    _po = int(round(float(_i.get("expected_payout_ha") or 0)))
+                except Exception:
+                    continue
+                _y.append(_yy)
+                _pl.append(_pp)
+                _pay.append(_po)
+                _rows.append({"_id": cc, T["cc_crop"]: clabel.get(cc, cc),
+                              T["cc_yield"]: _yy,
+                              T["cc_risk"]: _w(_pp, lang),
+                              T["cc_payout"]: _po, "_p": _pp, "_y": _yy})
+            if _rows:
+                _best = max(_rows, key=lambda r: r["_y"])["_id"]
+                _calm = min(_rows, key=lambda r: r["_p"])["_id"]
+                for r in _rows:
+                    if r["_id"] == _best:
+                        r[T["cc_verdict"]] = f"⭐ {T['verdict_best']}"
+                    elif r["_id"] == _calm:
+                        r[T["cc_verdict"]] = f"🛡️ {T['verdict_calm']}"
+                    else:
+                        r[T["cc_verdict"]] = T["verdict_mid"]
+                    del r["_id"]
+                    del r["_p"]
+                    del r["_y"]
+                _cdf = pd.DataFrame(_rows)
+                st.dataframe(_cdf, use_container_width=True)
+                _fig = go.Figure()
+                _fig.add_trace(go.Bar(x=_cdf[T["cc_crop"]].tolist(),
+                                      y=_y, name=T["compare_chart_yield"]))
+                _fig.add_trace(go.Bar(
+                    x=_cdf[T["cc_crop"]].tolist(),
+                    y=[round(p / 1000.0, 1) for p in _pay],
+                    name=T["compare_chart_payout"]))
+                _fig.update_layout(barmode="group",
+                                   title=T["compare_chart_title"],
+                                   xaxis_title=T["compare_pick"],
+                                   yaxis_title=f"{T['compare_chart_yield']} / {T['compare_chart_payout']}",
+                                   height=360,
+                                   margin=dict(l=10, r=10, t=40, b=10))
+                st.plotly_chart(_fig, use_container_width=True)
     with tab_cal:
+        # Фича (b): сезонный календарь — GDD-факт vs норма + spray-окна 48 ч + алерты.
         try:
             cal = sowing_calendar(crop, lang)
-            st.write(f"🌱 **{cal['sowing_window']}**; уборка: **{cal['harvest_window']}**.")
+            st.write(f"🌱 **{T['sow_label']}: {cal['sowing_window']}**; "
+                     f"**{T['harvest_label']}: {cal['harvest_window']}**.")
+            st.caption(cal.get("note", ""))
+            try:
+                _gdd_fact = float((rec.get("gdd_context") or {}).get(
+                    "district_gdd5_mean") or 0.0)
+            except (TypeError, ValueError):
+                _gdd_fact = 0.0
+            _norm = cal.get("gdd_norm") or [0, 1]
+            _lo, _hi = float(_norm[0]), float(_norm[1]) if len(_norm) > 1 else float(_norm[0])
+            _base = cal.get("gdd_base_temp", 5.0)
+            _prog = min(max(_gdd_fact / _hi if _hi > 0 else 0.0, 0.0), 1.0)
+            st.subheader(f"🌡️ {T['season_gdd']}")
+            st.progress(_prog)
+            st.write(T["season_gdd_text"].format(fact=round(_gdd_fact),
+                                                 lo=round(_lo), hi=round(_hi),
+                                                 base=_base))
         except Exception as e:
             st.warning(str(e))
+        st.subheader(f"🧴 {T['season_spray']}")
+        try:
+            try:
+                from src.spray import check_spray_window as _spray2
+            except ImportError:
+                from spray import check_spray_window as _spray2  # type: ignore
+            _sp = _spray2(district_en, 48)
+            _vk = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
+            st.info(f"🧴 {_sp.get(_vk)}")
+            _wins = _sp.get("windows") or []
+            if _wins:
+                for _wn in _wins[:4]:
+                    st.write(f"✅ {_wn.get('start')} → {_wn.get('end')}")
+            elif not _sp.get("next_good_hours"):
+                st.caption(T["season_spray_none"])
+            else:
+                for _gh in (_sp.get("next_good_hours") or [])[:6]:
+                    st.write(f"✅ {_gh.get('time')} — {_gh.get('temp_c')}°C, "
+                             f"{_gh.get('wind_ms')} {T['ms']}")
+        except Exception as e:
+            st.caption(f"{T['spray_offline']}: {e}")
         al = cached_alerts(district_en)
         if al.get("error"):
             st.caption(al["error"])
@@ -892,8 +1132,8 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
             for a in al["alerts"]:
                 st.write(a.get(key) or a.get("msg_ru"))
     with tab_about:
-        st.write("**Qagro** — Kairbek Ansar (data/ML/API) + Samat Ablayhan, captain (bot/web).")
-        st.write("stat.gov.kz · NASA POWER · Open-Meteo · FAOSTAT · OSM · Qoldau · Copernicus/Sentinel-2")
+        st.write(T["about1"])
+        st.write(T["about2"])
 
 
 if _ST_RUN:

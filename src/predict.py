@@ -235,8 +235,15 @@ def predict_yield(district_en: str, crop: str,
     # --- experimental fallback: LGBM хуже бейзлайна на hold-out ---
     if is_experimental(crop):
         mean5, years = _baseline_mean5(df, district_en, crop, BASELINE_WINDOW)
+        # Ширина — из волатильности последних 5 лет (прошлое, адаптивно),
+        # минимум — конформный интервал: честно широко при сдвигах уровня.
+        sub5 = df[(df["district_en"] == district_en) & (df["crop"] == crop)
+                  ].sort_values("year").tail(BASELINE_WINDOW)[TARGET]
+        std5 = float(sub5.std(ddof=1)) if len(sub5) > 1 else float(resid_std)
+        lo_c, hi_c = _conformal_bounds(mean5, crop, resid_std, WIDE_FACTOR)
+        lo_s, hi_s = round(mean5 - Z80 * std5, 2), round(mean5 + Z80 * std5, 2)
+        lo10, hi90 = min(lo_c, lo_s), max(hi_c, hi_s)
         wide = float(resid_std * WIDE_FACTOR)
-        lo10, hi90 = _conformal_bounds(mean5, crop, resid_std, WIDE_FACTOR)
         return {"y_pred": round(mean5, 2), "lo10": lo10,
                 "hi90": hi90, "factors": [],
                 "experimental": True,
@@ -244,6 +251,7 @@ def predict_yield(district_en: str, crop: str,
                 "meta": {"district_en": district_en, "crop": crop, "year": 2026,
                          "yield_lag1": round(yield_lag1, 2),
                          "residual_std": round(wide, 3),
+                         "baseline_std5": round(std5, 3),
                          "lgbm_residual_std": round(resid_std, 3),
                          "wide_factor": WIDE_FACTOR,
                          "baseline_mean5": round(mean5, 2),

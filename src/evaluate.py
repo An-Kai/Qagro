@@ -72,20 +72,11 @@ HOLDOUT_FROM = 2021
 LAST_YEAR = 2025
 TARGET = "yield_c_ha"
 
-# Кандидатные наборы фич v3 для подбора, если бленд не бьёт бейзлайн
-# (фильтруются по наличию колонок в панели; ndvi_* — только при покрытии).
-FEATURE_CANDIDATES = {
-    "full": None,  # заполняется фичами бандла
-    "no_geo": ["tmean_mjja", "precip_mjja", "gdd5", "heat30", "dry_max",
-               "et0", "p30_anom", "precip_spring", "tmax_july", "dtr",
-               "vpd_proxy", "spei_proxy", "year_trend",
-               "yield_lag1", "yield_roll3"],
-    "no_lag": ["tmean_mjja", "precip_mjja", "gdd5", "heat30", "dry_max",
-               "et0", "p30_anom", "lat", "lon", "precip_spring", "tmax_july",
-               "dtr", "vpd_proxy", "spei_proxy", "year_trend"],
-    "core": ["precip_mjja", "heat30", "et0", "gdd5", "spei_proxy",
-             "year_trend", "yield_lag1", "yield_roll3"],
-}
+# REMOVED (бывшие кандидатные наборы для holdout-подбора): подбор по метрикам
+# hold-out — это подгонка (tuning on hold-out). Подбор фич/весов — только
+# по train-CV в src/train.py. Константа и _fit_blend ниже оставлены пустыми
+# для совместимости импортов и удаляются следующим коммитом.
+FEATURE_CANDIDATES = {}
 
 # FAOSTAT-национальный контекст (sanity-check для METRICS.md, НЕ фичи модели —
 # утечки нет: национальные агрегаты сравниваются постфактум с hold-out).
@@ -218,14 +209,10 @@ def shap_top3(bundle: dict, df_crop: pd.DataFrame, crop: str) -> dict:
 
 
 def _fit_blend(train: pd.DataFrame, feats: list[str], lgbm_params: dict) -> dict:
-    """Бленд LGBM+Ridge на train (для fallback-подбора фич)."""
-    from lightgbm import LGBMRegressor
-    lgbm = LGBMRegressor(**lgbm_params)
-    lgbm.fit(train[feats].to_numpy(), train[TARGET].to_numpy())
-    ridge = make_ridge()
-    ridge.fit(train[feats], train[TARGET])
-    return {"model": lgbm, "ridge_model": ridge,
-            "blend_weights": {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE}}
+    """DEPRECATED: остался для совместимости, evaluate больше не подбирает
+    модели на hold-out (см. evaluate_crop). Не использовать."""
+    raise NotImplementedError(
+        "Hold-out refit удалён: подбор только по train-CV в src/train.py.")
 
 
 def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
@@ -261,63 +248,30 @@ def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
     STRICT_CROPS = {"spring_wheat", "barley"}
     chosen = {"name": "selected", "features": feats, "metrics": blend_m}
     if blend_m["mae"] >= bl_m["mae"]:
-        print(f"[{crop}] бленд не лучше бейзлайна по MAE — подбор фич (v3-кандидаты)...")
-        # ВАЖНО: dropna только по колонкам кандидата (глобальный dropna убил бы
-        # все строки из-за ndvi_max-NaN и yield_roll3-2005/07 — подбор стал бы no-op).
-        train = df_crop[df_crop["year"] < HOLDOUT_FROM].reset_index(drop=True)
-        best = chosen
-        cands = dict(FEATURE_CANDIDATES)
-        cands["full"] = feats
-        for name, flist in cands.items():
-            if name == "full" or flist is None:
-                continue
-            if any(c not in df_crop.columns for c in flist):
-                continue
-            sub = train.dropna(subset=["yield_lag1", *flist])
-            if len(sub) < MIN_ROWS_FALLBACK:
-                continue
-            cand_bundle = _fit_blend(sub, flist, bundle["lgbm_params"])
-            p = blend_predict(cand_bundle, m[flist])
-            cm = metrics3(y, p)
-            print(f"  кандидат {name}: MAE={cm['mae']:.3f} RMSE={cm['rmse']:.3f} R2={cm['r2']:.3f}")
-            if cm["mae"] < best["metrics"]["mae"]:
-                best = {"name": name, "features": flist, "metrics": cm,
-                        "blend": cand_bundle}
-        if best["metrics"]["mae"] >= bl_m["mae"]:
-            if crop in STRICT_CROPS:
-                raise RuntimeError(
-                    f"[{crop}] бленд ({best['metrics']['mae']:.3f}) не лучше бейзлайна "
-                    f"({bl_m['mae']:.3f}) даже после подбора фич. Останавливаемся честно.")
-            print(f"[{crop}] ВНИМАНИЕ: бленд хуже бейзлайна даже после подбора "
-                  f"({best['metrics']['mae']:.3f} vs {bl_m['mae']:.3f}) — фиксируем честно "
-                  f"с флагом below_baseline (структурный сдвиг 2024-2025, см. data_card).")
-            plot_path = scatter_plot(m.rename(columns={"y_lgbm": "y_lgbm"}), crop)
-            shap_top3(bundle, df_crop, crop)
-            entry = {"model": bundle.get("model_kind", "blend"),
-                     "blend_weights": bundle.get("blend_weights"),
-                     "baseline": bl_m, "lgbm": chosen["metrics"],
-                     "residuals": resid_stats,
-                     "features_used": chosen["features"],
-                     "holdout_years": [HOLDOUT_FROM, LAST_YEAR],
-                     "scatter": str(plot_path.as_posix()),
-                     "below_baseline": True,
-                     "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out "
-                             "(rapeseed 2024-2025 structural break: hybrids/area; "
-                             "см. fetch_stat.py / data_card). Metrics are honest, no tuning."}
-            return entry, m
-        print(f"[{crop}] выбран набор фич '{best['name']}'")
-        if "blend" in best:
-            m["y_lgbm"] = blend_predict(best["blend"], m[best["features"]])
-            bundle = {**bundle, "model": best["blend"]["model"],
-                      "ridge_model": best["blend"]["ridge_model"],
-                      "blend_weights": best["blend"]["blend_weights"],
-                      "features": best["features"]}
-            with open(MODELS / f"lgbm_{crop}.pkl", "wb") as f:
-                pickle.dump(bundle, f)
-        chosen = best
-        # пересчёт остатков после возможного подбора фич
-        resid = y - m["y_lgbm"].to_numpy()
-        resid_stats = {"mean": float(np.mean(resid)), "std": float(np.std(resid, ddof=1) if len(resid) > 1 else 0.0)}
+        # Честно фиксируем без подбора на hold-out: любой рефит по метрикам
+        # hold-out был бы подгонкой (tuning on hold-out). Подбор фич/весов —
+        # только по train-CV в src/train.py. Здесь только флаг.
+        if crop in STRICT_CROPS:
+            raise RuntimeError(
+                f"[{crop}] blend ({blend_m['mae']:.3f}) not better than baseline "
+                f"({bl_m['mae']:.3f}). Stop honestly.")
+        print(f"[{crop}] WARNING: blend worse than baseline "
+              f"({blend_m['mae']:.3f} vs {bl_m['mae']:.3f}) — honest "
+              f"below_baseline flag (2024-2025 structural break, see data_card).")
+        plot_path = scatter_plot(m.rename(columns={"y_lgbm": "y_lgbm"}), crop)
+        shap_top3(bundle, df_crop, crop)
+        entry = {"model": bundle.get("model_kind", "blend"),
+                 "blend_weights": bundle.get("blend_weights"),
+                 "baseline": bl_m, "lgbm": chosen["metrics"],
+                 "residuals": resid_stats,
+                 "features_used": chosen["features"],
+                 "holdout_years": [HOLDOUT_FROM, LAST_YEAR],
+                 "scatter": str(plot_path.as_posix()),
+                 "below_baseline": True,
+                 "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out "
+                         "(rapeseed 2024-2025 structural break: hybrids/area; "
+                         "see fetch_stat.py / data_card). Metrics are honest, no tuning."}
+        return entry, m
 
     plot_path = scatter_plot(m.rename(columns={"y_lgbm": "y_lgbm"}), crop)
     shap_top3(bundle, df_crop, crop)

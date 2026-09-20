@@ -58,7 +58,8 @@ def main() -> None:
     piv = piv.rename(columns={"grain": "grain_area_ha",
                               "oilseeds": "oilseeds_area_ha",
                               "sunflower": "sunflower_area_ha"})
-    # Кокшетау-город и ранние годы: ffill+bfill внутри района
+    # Кокшетау-город и ранние годы: ffill внутри района (только прошлое),
+    # остаток — областное значение ТОГО ЖЕ года (пространство, не будущее).
     for c in ("grain_area_ha", "oilseeds_area_ha", "sunflower_area_ha"):
         if c not in piv.columns:
             piv[c] = float("nan")
@@ -66,8 +67,12 @@ def main() -> None:
     filled_flag = piv[["grain_area_ha", "oilseeds_area_ha",
                        "sunflower_area_ha"]].isna().any(axis=1)
     for c in ("grain_area_ha", "oilseeds_area_ha", "sunflower_area_ha"):
-        piv[c] = piv.groupby("district_en")[c].transform(
-            lambda s: s.ffill().bfill())
+        piv[c] = piv.groupby("district_en")[c].transform(lambda s: s.ffill())
+    oblast = piv[piv["district_en"] == "Akmola_oblast"].set_index("year")
+    for c in ("grain_area_ha", "oilseeds_area_ha", "sunflower_area_ha"):
+        piv[c] = piv.apply(
+            lambda r: (oblast[c].get(r["year"]) if pd.isna(r[c]) and r["year"] in oblast.index
+                       else r[c]), axis=1)
     piv["area_filled"] = filled_flag.astype(int)
     # районы без своих площадей (нет в sown_area) — областной якорь невозможен
     # попиксельно: оставляем NaN->0 с флагом (таких нет: все 10 районов есть)

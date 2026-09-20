@@ -199,7 +199,7 @@
     ],
     "scatter": "metrics/plots/scatter_rapeseed.png",
     "below_baseline": true,
-    "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; см. fetch_stat.py / data_card). Metrics are honest, no tuning."
+    "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; see fetch_stat.py / data_card). Metrics are honest, no tuning."
   },
   "flax": {
     "model": "blend_lgbm_ridge_70_30",
