@@ -1,13 +1,15 @@
-# Data Card — akmola_panel.csv (Qagro Track 2, AgriTech AI Hackathon)
+# Data Card — akmola_panel v2/v3/v4 (Qagro Track 2, AgriTech AI Hackathon)
 
 ## Что это
 Панель «район × год × культура» для Акмолинской области: урожайность + сезонные
 агроклиматические признаки (май–август). Назначение — MVP прогноза урожайности /
-триггеров засухи и агро-дашборда.
+триггеров засухи и агро-дашборда. Актуальная панель: v4 (33 колонки).
 
 ## Файл
-- `data/processed/akmola_panel.csv` — 1260 строк, годы 2005–2025,
+- `data/processed/akmola_panel_v4.csv` — 1260 строк, годы 2005–2025,
   районов: 10, культуры: barley, flax, oats, rapeseed, spring_wheat, sunflower (строк на культуру: 210).
+  v4 = v3 + площади stat.gov.kz (grain/oilseeds/sunflower, share), ГТК Селянинова,
+  SoilGrids (N/pH/SOC/clay). Предыдущие: v3 (23 кол.), v2 `akmola_panel.csv` (14 кол.).
 - Схема: `year,district,district_en,lat,lon,crop,yield_c_ha,tmean_mjja,precip_mjja,gdd5,heat30,dry_max,et0,p30_anom`
 - Единицы: yield — ц/га (вес после доработки); tmean — °C (MJJA); precip — мм;
   gdd5 — °C·сут (base 5); heat30 — дни tmax>30; dry_max — дни (осадки<1мм);

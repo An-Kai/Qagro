@@ -79,72 +79,72 @@
   {
     "district": "Esil",
     "date": "2025-08-29",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2601,
     "scene_id": "S2A_MSIL2A_20250829T064321_R120_T42UUC_20250829T092116",
-    "status": "listed via requests (cloud=0.011997): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2601 median=0.2614 std=0.1129 valid_pixels=27060 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-29",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2521,
     "scene_id": "S2A_MSIL2A_20250829T064321_R120_T41UQT_20250829T092116",
-    "status": "listed via requests (cloud=0.024592): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2521 median=0.2532 std=0.1059 valid_pixels=29241 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-27",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.25,
     "scene_id": "S2C_MSIL2A_20250827T063641_R120_T42UUC_20250827T101257",
-    "status": "listed via requests (cloud=0.13695): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.25 median=0.2532 std=0.1118 valid_pixels=27060 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-27",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2489,
     "scene_id": "S2C_MSIL2A_20250827T063641_R120_T41UQT_20250827T101257",
-    "status": "listed via requests (cloud=0.179054): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2489 median=0.2525 std=0.1117 valid_pixels=29241 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-25",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2547,
     "scene_id": "S2B_MSIL2A_20250825T064629_R020_T42UUC_20250825T090844",
-    "status": "listed via requests (cloud=13.746718): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2547 median=0.2604 std=0.1057 valid_pixels=27060 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-25",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2545,
     "scene_id": "S2B_MSIL2A_20250825T064629_R020_T41UQT_20250825T090844",
-    "status": "listed via requests (cloud=13.20599): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2545 median=0.2609 std=0.1062 valid_pixels=29241 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-10",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2029,
     "scene_id": "S2C_MSIL2A_20250810T064641_R020_T42UUC_20250810T102215",
-    "status": "listed via requests (cloud=17.46531): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2029 median=0.1811 std=0.137 valid_pixels=27059 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-10",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2027,
     "scene_id": "S2C_MSIL2A_20250810T064641_R020_T41UQT_20250810T102215",
-    "status": "listed via requests (cloud=15.776064): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2027 median=0.1815 std=0.137 valid_pixels=29240 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-09",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2342,
     "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UUC_20250809T092714",
-    "status": "listed via requests (cloud=5.684152): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2342 median=0.2231 std=0.1201 valid_pixels=27060 (100%)"
   },
   {
     "district": "Esil",
     "date": "2025-08-09",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2342,
     "scene_id": "S2A_MSIL2A_20250809T064321_R120_T41UQT_20250809T092714",
-    "status": "listed via requests (cloud=5.415161): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2342 median=0.2229 std=0.1203 valid_pixels=29241 (100%)"
   },
   {
     "district": "Esil",
@@ -289,65 +289,65 @@
   {
     "district": "Zerenda",
     "date": "2025-08-29",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.3392,
     "scene_id": "S2B_MSIL2A_20250829T062629_R077_T42UWD_20250829T083857",
-    "status": "listed via requests (cloud=17.51741): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3392 median=0.3403 std=0.0733 valid_pixels=27225 (100%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-26",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.3547,
     "scene_id": "S2A_MSIL2A_20250826T063321_R077_T42UVD_20250826T080215",
-    "status": "listed via requests (cloud=4.108594): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3547 median=0.3542 std=0.0817 valid_pixels=7544 (28.05%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-24",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.3427,
     "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UWD_20250824T100321",
-    "status": "listed via requests (cloud=0.758717): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3427 median=0.3402 std=0.0797 valid_pixels=27225 (100%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-24",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.3619,
     "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UVD_20250824T100321",
-    "status": "listed via requests (cloud=1.693989): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3619 median=0.3616 std=0.0859 valid_pixels=7544 (28.05%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-22",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.3483,
     "scene_id": "S2B_MSIL2A_20250822T063629_R120_T42UVD_20250822T085323",
-    "status": "listed via requests (cloud=14.614768): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3483 median=0.3499 std=0.0927 valid_pixels=7544 (28.05%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-19",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.3329,
     "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UWD_20250819T083232",
-    "status": "listed via requests (cloud=12.253881): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3329 median=0.328 std=0.0794 valid_pixels=27225 (100%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-19",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.343,
     "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UVD_20250819T083232",
-    "status": "listed via requests (cloud=6.228629): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.343 median=0.3402 std=0.0831 valid_pixels=7544 (28.05%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-09",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.1496,
     "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UVD_20250809T092714",
-    "status": "listed via requests (cloud=16.870061): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.1496 median=0.1204 std=0.0896 valid_pixels=7544 (28.05%)"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-09",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2946,
     "scene_id": "S2B_MSIL2A_20250809T062629_R077_T42UVD_20250809T083435",
-    "status": "listed via requests (cloud=19.157377): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2946 median=0.2973 std=0.0874 valid_pixels=7544 (28.05%)"
   },
   {
     "district": "Zerenda",

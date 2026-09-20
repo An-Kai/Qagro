@@ -1,6 +1,11 @@
-district_en,nitrogen,ph,soc,clay
-Burabay,3.905,6.4,55.6,26.4
-Sandyktau,4.43,7.0,51.1,28.4
-Tselinograd,3.935,7.05,69.3,26.7
-Zerenda,3.455,6.8,51.55,25.0
-Zhaksy,3.645,7.15,73.0,24.05
+district_en,nitrogen,ph,soc,clay,source
+Atbasar,3.11,7.3,51.35,21.8,arable-offset
+Bulandy,4.115,6.95,64.2,26.0,arable-offset
+Burabay,3.905,6.4,55.6,26.4,centroid
+Esil,3.67,7.35,46.15,27.55,arable-offset
+Kokshetau,3.155,6.9,46.55,28.75,arable-offset
+Sandyktau,4.43,7.0,51.1,28.4,centroid
+Shortandy,3.995,7.0,99.75,24.9,arable-offset
+Tselinograd,3.935,7.05,69.3,26.7,centroid
+Zerenda,3.455,6.8,51.55,25.0,centroid
+Zhaksy,3.645,7.15,73.0,24.05,centroid

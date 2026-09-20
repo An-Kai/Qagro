@@ -1,0 +1,639 @@
+year,district_en,crop_group,area_ha,source
+2005,Akmola_oblast,grain,3604292,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2006,Akmola_oblast,grain,3702436,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2007,Akmola_oblast,grain,3875187,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2008,Akmola_oblast,grain,4131350,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2009,Akmola_oblast,grain,4542656,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2010,Akmola_oblast,grain,4433672,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2011,Akmola_oblast,grain,4278933,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2012,Akmola_oblast,grain,4353709,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2013,Akmola_oblast,grain,4252009,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2014,Akmola_oblast,grain,4173378,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2015,Akmola_oblast,grain,4193826,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2016,Akmola_oblast,grain,4353423,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2017,Akmola_oblast,grain,4350556,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2018,Akmola_oblast,grain,4334225,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2019,Akmola_oblast,grain,4447890,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2020,Akmola_oblast,grain,4462838,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2021,Akmola_oblast,grain,4585629,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2022,Akmola_oblast,grain,4670646,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2023,Akmola_oblast,grain,4915073,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2024,Akmola_oblast,grain,4693012,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2025,Akmola_oblast,grain,4680325,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=по области
+2005,Atbasar,grain,322786,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2006,Atbasar,grain,320665,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2007,Atbasar,grain,347106,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2008,Atbasar,grain,365767,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2009,Atbasar,grain,423283,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2010,Atbasar,grain,426494,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2011,Atbasar,grain,416823,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2012,Atbasar,grain,416478,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2013,Atbasar,grain,406793,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2014,Atbasar,grain,401156,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2015,Atbasar,grain,382538,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2016,Atbasar,grain,395505,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2017,Atbasar,grain,398796,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2018,Atbasar,grain,394144,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2019,Atbasar,grain,395124,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2020,Atbasar,grain,387609,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2021,Atbasar,grain,390995,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2022,Atbasar,grain,394284,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2023,Atbasar,grain,417090,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2024,Atbasar,grain,421235,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2025,Atbasar,grain,408081,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Атбасарский
+2005,Bulandy,grain,178171,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2006,Bulandy,grain,188787,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2007,Bulandy,grain,198509,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2008,Bulandy,grain,217375,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2009,Bulandy,grain,229152,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2010,Bulandy,grain,225786,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2011,Bulandy,grain,226347,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2012,Bulandy,grain,221140,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2013,Bulandy,grain,213054,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2014,Bulandy,grain,191738,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2015,Bulandy,grain,191066,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2016,Bulandy,grain,199405,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2017,Bulandy,grain,201286,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2018,Bulandy,grain,205822,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2019,Bulandy,grain,201159,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2020,Bulandy,grain,200467,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2021,Bulandy,grain,196142,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2022,Bulandy,grain,193100,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2023,Bulandy,grain,211693,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2024,Bulandy,grain,195105,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2025,Bulandy,grain,202921,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Буландынский
+2005,Burabay,grain,150148,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2006,Burabay,grain,147428,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2007,Burabay,grain,147340,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2008,Burabay,grain,156139,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2009,Burabay,grain,167087,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2010,Burabay,grain,132936,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2011,Burabay,grain,125635,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2012,Burabay,grain,131122,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2013,Burabay,grain,125593,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2014,Burabay,grain,112675,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2015,Burabay,grain,111821,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2016,Burabay,grain,123220,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2017,Burabay,grain,110875,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2018,Burabay,grain,101419,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2019,Burabay,grain,107144,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2020,Burabay,grain,121636,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2021,Burabay,grain,126944,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2022,Burabay,grain,120454,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2023,Burabay,grain,140502,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2024,Burabay,grain,125871,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2025,Burabay,grain,125179,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Бурабайский
+2005,Esil,grain,332064,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2006,Esil,grain,403831,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2007,Esil,grain,421761,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2008,Esil,grain,438857,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2009,Esil,grain,481843,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2010,Esil,grain,471197,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2011,Esil,grain,426675,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2012,Esil,grain,454864,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2013,Esil,grain,437048,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2014,Esil,grain,438289,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2015,Esil,grain,450763,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2016,Esil,grain,453804,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2017,Esil,grain,435942,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2018,Esil,grain,440092,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2019,Esil,grain,446787,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2020,Esil,grain,419208,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2021,Esil,grain,446030,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2022,Esil,grain,446597,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2023,Esil,grain,452019,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2024,Esil,grain,442624,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2025,Esil,grain,430826,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Есильский
+2005,Kokshetau,grain,2709,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2006,Kokshetau,grain,615,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2007,Kokshetau,grain,540,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2008,Kokshetau,grain,2152,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2009,Kokshetau,grain,2263,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2010,Kokshetau,grain,3016,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2011,Kokshetau,grain,2604,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2012,Kokshetau,grain,3704,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2013,Kokshetau,grain,2822,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2014,Kokshetau,grain,1801,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2015,Kokshetau,grain,1884,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2016,Kokshetau,grain,1859,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2017,Kokshetau,grain,3450,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2018,Kokshetau,grain,3449,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2019,Kokshetau,grain,3616,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2020,Kokshetau,grain,3679,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2021,Kokshetau,grain,3885,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2022,Kokshetau,grain,3807,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2023,Kokshetau,grain,4093,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2024,Kokshetau,grain,3832,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2025,Kokshetau,grain,2682,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=г.а. Кокшетау
+2005,Sandyktau,grain,271330,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2006,Sandyktau,grain,281599,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2007,Sandyktau,grain,290987,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2008,Sandyktau,grain,292542,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2009,Sandyktau,grain,317016,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2010,Sandyktau,grain,315384,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2011,Sandyktau,grain,310390,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2012,Sandyktau,grain,313543,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2013,Sandyktau,grain,306750,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2014,Sandyktau,grain,293927,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2015,Sandyktau,grain,295648,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2016,Sandyktau,grain,280984,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2017,Sandyktau,grain,295834,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2018,Sandyktau,grain,289555,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2019,Sandyktau,grain,294090,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2020,Sandyktau,grain,305066,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2021,Sandyktau,grain,309752,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2022,Sandyktau,grain,314242,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2023,Sandyktau,grain,330386,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2024,Sandyktau,grain,311126,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2025,Sandyktau,grain,313240,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Сандыктауский
+2005,Shortandy,grain,185447,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2006,Shortandy,grain,186850,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2007,Shortandy,grain,190382,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2008,Shortandy,grain,196241,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2009,Shortandy,grain,226939,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2010,Shortandy,grain,218090,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2011,Shortandy,grain,205463,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2012,Shortandy,grain,199787,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2013,Shortandy,grain,197888,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2014,Shortandy,grain,192054,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2015,Shortandy,grain,189969,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2016,Shortandy,grain,199106,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2017,Shortandy,grain,203089,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2018,Shortandy,grain,203975,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2019,Shortandy,grain,206237,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2020,Shortandy,grain,199386,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2021,Shortandy,grain,204912,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2022,Shortandy,grain,212946,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2023,Shortandy,grain,223597,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2024,Shortandy,grain,213746,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2025,Shortandy,grain,199451,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Шортандинский
+2005,Tselinograd,grain,228620,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2006,Tselinograd,grain,229826,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2007,Tselinograd,grain,234097,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2008,Tselinograd,grain,247973,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2009,Tselinograd,grain,250544,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2010,Tselinograd,grain,238374,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2011,Tselinograd,grain,239891,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2012,Tselinograd,grain,230526,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2013,Tselinograd,grain,230651,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2014,Tselinograd,grain,233910,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2015,Tselinograd,grain,223549,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2016,Tselinograd,grain,232266,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2017,Tselinograd,grain,226749,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2018,Tselinograd,grain,203956,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2019,Tselinograd,grain,220220,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2020,Tselinograd,grain,226402,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2021,Tselinograd,grain,228626,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2022,Tselinograd,grain,224725,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2023,Tselinograd,grain,228083,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2024,Tselinograd,grain,215078,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2025,Tselinograd,grain,212061,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Целиноградский
+2005,Zerenda,grain,205000,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2006,Zerenda,grain,210505,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2007,Zerenda,grain,219004,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2008,Zerenda,grain,214260,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2009,Zerenda,grain,223925,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2010,Zerenda,grain,170959,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2011,Zerenda,grain,162266,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2012,Zerenda,grain,166021,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2013,Zerenda,grain,171358,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2014,Zerenda,grain,155979,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2015,Zerenda,grain,163840,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2016,Zerenda,grain,181602,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2017,Zerenda,grain,179714,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2018,Zerenda,grain,179789,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2019,Zerenda,grain,193252,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2020,Zerenda,grain,209108,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2021,Zerenda,grain,205765,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2022,Zerenda,grain,207610,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2023,Zerenda,grain,247608,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2024,Zerenda,grain,220398,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2025,Zerenda,grain,217625,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Зерендинский
+2005,Zhaksy,grain,326346,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2006,Zhaksy,grain,360486,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2007,Zhaksy,grain,373461,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2008,Zhaksy,grain,388489,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2009,Zhaksy,grain,404593,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2010,Zhaksy,grain,411531,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2011,Zhaksy,grain,407226,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2012,Zhaksy,grain,412914,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2013,Zhaksy,grain,411029,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2014,Zhaksy,grain,410079,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2015,Zhaksy,grain,408807,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2016,Zhaksy,grain,437243,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2017,Zhaksy,grain,435588,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2018,Zhaksy,grain,427881,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2019,Zhaksy,grain,447785,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2020,Zhaksy,grain,451317,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2021,Zhaksy,grain,450294,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2022,Zhaksy,grain,460734,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2023,Zhaksy,grain,477056,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2024,Zhaksy,grain,473653,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2025,Zhaksy,grain,470763,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40088 row=Жаксынский
+2005,Akmola_oblast,oilseeds,13030,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2006,Akmola_oblast,oilseeds,27956,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2007,Akmola_oblast,oilseeds,16901,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2008,Akmola_oblast,oilseeds,28726,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2009,Akmola_oblast,oilseeds,45760,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2010,Akmola_oblast,oilseeds,130456,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2011,Akmola_oblast,oilseeds,177827,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2012,Akmola_oblast,oilseeds,198588,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2013,Akmola_oblast,oilseeds,251526,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2014,Akmola_oblast,oilseeds,349227,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2015,Akmola_oblast,oilseeds,245608,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2016,Akmola_oblast,oilseeds,219714,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2017,Akmola_oblast,oilseeds,276540,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2018,Akmola_oblast,oilseeds,278382,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2019,Akmola_oblast,oilseeds,252972,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2020,Akmola_oblast,oilseeds,213078,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2021,Akmola_oblast,oilseeds,270545,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2022,Akmola_oblast,oilseeds,368811,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2023,Akmola_oblast,oilseeds,197804,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2024,Akmola_oblast,oilseeds,267675,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2025,Akmola_oblast,oilseeds,498610,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2005,Atbasar,oilseeds,1358,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2006,Atbasar,oilseeds,986,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2007,Atbasar,oilseeds,1223,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2008,Atbasar,oilseeds,3324,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2009,Atbasar,oilseeds,5796,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2010,Atbasar,oilseeds,11651,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2011,Atbasar,oilseeds,7315,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2012,Atbasar,oilseeds,13667,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2013,Atbasar,oilseeds,24111,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2014,Atbasar,oilseeds,24620,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2015,Atbasar,oilseeds,13182,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2016,Atbasar,oilseeds,16432,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2017,Atbasar,oilseeds,18588,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2018,Atbasar,oilseeds,19365,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2019,Atbasar,oilseeds,19615,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2020,Atbasar,oilseeds,19844,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2021,Atbasar,oilseeds,20957,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2022,Atbasar,oilseeds,22873,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2023,Atbasar,oilseeds,15649,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2024,Atbasar,oilseeds,16286,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2025,Atbasar,oilseeds,36656,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2006,Bulandy,oilseeds,1033,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2007,Bulandy,oilseeds,1453,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2008,Bulandy,oilseeds,1585,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2009,Bulandy,oilseeds,2610,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2010,Bulandy,oilseeds,5049,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2011,Bulandy,oilseeds,4201,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2012,Bulandy,oilseeds,6118,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2013,Bulandy,oilseeds,11335,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2014,Bulandy,oilseeds,27275,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2015,Bulandy,oilseeds,16451,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2016,Bulandy,oilseeds,16675,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2017,Bulandy,oilseeds,20052,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2018,Bulandy,oilseeds,17249,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2019,Bulandy,oilseeds,23346,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2020,Bulandy,oilseeds,17140,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2021,Bulandy,oilseeds,27586,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2022,Bulandy,oilseeds,42728,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2023,Bulandy,oilseeds,31787,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2024,Bulandy,oilseeds,41123,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2025,Bulandy,oilseeds,44463,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2006,Burabay,oilseeds,5090,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2007,Burabay,oilseeds,5450,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2008,Burabay,oilseeds,4528,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2009,Burabay,oilseeds,4094,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2010,Burabay,oilseeds,9653,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2011,Burabay,oilseeds,12758,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2012,Burabay,oilseeds,25201,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2013,Burabay,oilseeds,26021,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2014,Burabay,oilseeds,34778,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2015,Burabay,oilseeds,33526,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2016,Burabay,oilseeds,26132,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2017,Burabay,oilseeds,33373,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2018,Burabay,oilseeds,43145,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2019,Burabay,oilseeds,36605,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2020,Burabay,oilseeds,25070,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2021,Burabay,oilseeds,36430,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2022,Burabay,oilseeds,41259,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2023,Burabay,oilseeds,21418,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2024,Burabay,oilseeds,27194,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2025,Burabay,oilseeds,37610,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2005,Esil,oilseeds,120,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2006,Esil,oilseeds,20,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2007,Esil,oilseeds,210,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2008,Esil,oilseeds,1000,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2009,Esil,oilseeds,500,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2010,Esil,oilseeds,4533,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2011,Esil,oilseeds,26361,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2012,Esil,oilseeds,17800,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2013,Esil,oilseeds,26213,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2014,Esil,oilseeds,34435,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2015,Esil,oilseeds,30131,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2016,Esil,oilseeds,22569,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2017,Esil,oilseeds,23714,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2018,Esil,oilseeds,22285,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2019,Esil,oilseeds,24045,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2020,Esil,oilseeds,18492,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2021,Esil,oilseeds,21724,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2022,Esil,oilseeds,36254,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2023,Esil,oilseeds,21458,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2024,Esil,oilseeds,24872,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2025,Esil,oilseeds,45788,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2005,Kokshetau,oilseeds,4,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2011,Kokshetau,oilseeds,967,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2013,Kokshetau,oilseeds,1037,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2014,Kokshetau,oilseeds,2326,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2015,Kokshetau,oilseeds,912,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2017,Kokshetau,oilseeds,995,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2018,Kokshetau,oilseeds,1014,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2019,Kokshetau,oilseeds,1335,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2020,Kokshetau,oilseeds,1431,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2021,Kokshetau,oilseeds,617,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2022,Kokshetau,oilseeds,1294,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2023,Kokshetau,oilseeds,778,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2024,Kokshetau,oilseeds,539,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2025,Kokshetau,oilseeds,2769,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2005,Sandyktau,oilseeds,289,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2006,Sandyktau,oilseeds,5,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2008,Sandyktau,oilseeds,200,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2009,Sandyktau,oilseeds,500,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2010,Sandyktau,oilseeds,2872,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2011,Sandyktau,oilseeds,11488,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2012,Sandyktau,oilseeds,12187,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2013,Sandyktau,oilseeds,14662,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2014,Sandyktau,oilseeds,14401,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2015,Sandyktau,oilseeds,6860,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2016,Sandyktau,oilseeds,12363,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2017,Sandyktau,oilseeds,12905,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2018,Sandyktau,oilseeds,12928,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2019,Sandyktau,oilseeds,11171,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2020,Sandyktau,oilseeds,8869,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2021,Sandyktau,oilseeds,8498,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2022,Sandyktau,oilseeds,16062,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2023,Sandyktau,oilseeds,5306,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2024,Sandyktau,oilseeds,16006,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2025,Sandyktau,oilseeds,42953,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2005,Shortandy,oilseeds,12,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2006,Shortandy,oilseeds,22,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2007,Shortandy,oilseeds,8,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2008,Shortandy,oilseeds,1247,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2009,Shortandy,oilseeds,14,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2010,Shortandy,oilseeds,13521,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2011,Shortandy,oilseeds,13529,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2012,Shortandy,oilseeds,13584,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2013,Shortandy,oilseeds,12807,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2014,Shortandy,oilseeds,28538,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2015,Shortandy,oilseeds,11624,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2016,Shortandy,oilseeds,5437,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2017,Shortandy,oilseeds,4651,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2018,Shortandy,oilseeds,4418,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2019,Shortandy,oilseeds,3411,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2020,Shortandy,oilseeds,6558,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2021,Shortandy,oilseeds,9047,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2022,Shortandy,oilseeds,14541,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2023,Shortandy,oilseeds,7752,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2024,Shortandy,oilseeds,20672,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2025,Shortandy,oilseeds,39626,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2005,Tselinograd,oilseeds,717,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2007,Tselinograd,oilseeds,600,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2008,Tselinograd,oilseeds,5756,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2009,Tselinograd,oilseeds,9755,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2010,Tselinograd,oilseeds,17540,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2011,Tselinograd,oilseeds,18632,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2012,Tselinograd,oilseeds,6760,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2013,Tselinograd,oilseeds,8762,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2014,Tselinograd,oilseeds,12011,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2015,Tselinograd,oilseeds,4663,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2016,Tselinograd,oilseeds,1350,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2017,Tselinograd,oilseeds,10523,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2018,Tselinograd,oilseeds,17037,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2019,Tselinograd,oilseeds,10759,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2020,Tselinograd,oilseeds,6933,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2021,Tselinograd,oilseeds,16889,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2022,Tselinograd,oilseeds,23430,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2023,Tselinograd,oilseeds,20007,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2024,Tselinograd,oilseeds,17746,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2025,Tselinograd,oilseeds,27748,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2005,Zerenda,oilseeds,2509,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2006,Zerenda,oilseeds,5772,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2007,Zerenda,oilseeds,4480,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2008,Zerenda,oilseeds,3805,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2009,Zerenda,oilseeds,15570,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2010,Zerenda,oilseeds,34836,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2011,Zerenda,oilseeds,30000,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2012,Zerenda,oilseeds,38373,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2013,Zerenda,oilseeds,48441,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2014,Zerenda,oilseeds,70667,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2015,Zerenda,oilseeds,57431,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2016,Zerenda,oilseeds,50905,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2017,Zerenda,oilseeds,53957,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2018,Zerenda,oilseeds,61234,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2019,Zerenda,oilseeds,66856,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2020,Zerenda,oilseeds,54177,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2021,Zerenda,oilseeds,67779,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2022,Zerenda,oilseeds,65866,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2023,Zerenda,oilseeds,28643,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2024,Zerenda,oilseeds,56233,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2025,Zerenda,oilseeds,87575,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2005,Zhaksy,oilseeds,1200,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2006,Zhaksy,oilseeds,3009,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2008,Zhaksy,oilseeds,1189,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2009,Zhaksy,oilseeds,610,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2010,Zhaksy,oilseeds,685,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2011,Zhaksy,oilseeds,1756,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2012,Zhaksy,oilseeds,2229,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2013,Zhaksy,oilseeds,6190,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2014,Zhaksy,oilseeds,14018,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2015,Zhaksy,oilseeds,10923,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2016,Zhaksy,oilseeds,8468,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2017,Zhaksy,oilseeds,17445,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2018,Zhaksy,oilseeds,21242,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2019,Zhaksy,oilseeds,13913,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2020,Zhaksy,oilseeds,11155,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2021,Zhaksy,oilseeds,13780,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2022,Zhaksy,oilseeds,13082,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2023,Zhaksy,oilseeds,5255,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2024,Zhaksy,oilseeds,4328,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2025,Zhaksy,oilseeds,13931,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2005,Akmola_oblast,sunflower,10002,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2006,Akmola_oblast,sunflower,13428,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2007,Akmola_oblast,sunflower,5503,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2008,Akmola_oblast,sunflower,17756,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2009,Akmola_oblast,sunflower,22374,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2010,Akmola_oblast,sunflower,54478,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2011,Akmola_oblast,sunflower,74153,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2012,Akmola_oblast,sunflower,54194,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2013,Akmola_oblast,sunflower,81852,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2014,Akmola_oblast,sunflower,59077,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2015,Akmola_oblast,sunflower,29011,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2016,Akmola_oblast,sunflower,30076,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2017,Akmola_oblast,sunflower,57856,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2018,Akmola_oblast,sunflower,29396,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2019,Akmola_oblast,sunflower,25734,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2020,Akmola_oblast,sunflower,21399,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2021,Akmola_oblast,sunflower,43054,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2022,Akmola_oblast,sunflower,52530,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2023,Akmola_oblast,sunflower,62790,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2024,Akmola_oblast,sunflower,91588,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2025,Akmola_oblast,sunflower,136935,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Всего по области
+2005,Atbasar,sunflower,1358,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2006,Atbasar,sunflower,986,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2007,Atbasar,sunflower,1223,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2008,Atbasar,sunflower,3186,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2009,Atbasar,sunflower,5796,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2010,Atbasar,sunflower,6204,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2011,Atbasar,sunflower,6112,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2012,Atbasar,sunflower,12715,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2013,Atbasar,sunflower,22154,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2014,Atbasar,sunflower,16729,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2015,Atbasar,sunflower,8114,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2016,Atbasar,sunflower,9532,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2017,Atbasar,sunflower,14147,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2018,Atbasar,sunflower,9419,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2019,Atbasar,sunflower,8447,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2020,Atbasar,sunflower,5273,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2021,Atbasar,sunflower,6043,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2022,Atbasar,sunflower,4683,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2023,Atbasar,sunflower,7246,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2024,Atbasar,sunflower,7748,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2025,Atbasar,sunflower,16500,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Атбасарский
+2010,Bulandy,sunflower,1144,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2011,Bulandy,sunflower,865,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2012,Bulandy,sunflower,350,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2016,Bulandy,sunflower,639,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2017,Bulandy,sunflower,600,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2019,Bulandy,sunflower,400,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2020,Bulandy,sunflower,1543,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2021,Bulandy,sunflower,3014,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2022,Bulandy,sunflower,8797,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2023,Bulandy,sunflower,10429,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2024,Bulandy,sunflower,17432,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2025,Bulandy,sunflower,13578,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Буландынский
+2009,Burabay,sunflower,69,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2010,Burabay,sunflower,221,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2011,Burabay,sunflower,531,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2013,Burabay,sunflower,2892,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2014,Burabay,sunflower,2460,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2015,Burabay,sunflower,861,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2016,Burabay,sunflower,412,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2017,Burabay,sunflower,1508,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2018,Burabay,sunflower,893,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2019,Burabay,sunflower,513,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2020,Burabay,sunflower,312,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2021,Burabay,sunflower,360,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2022,Burabay,sunflower,1497,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2023,Burabay,sunflower,4602,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2024,Burabay,sunflower,7235,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2025,Burabay,sunflower,9475,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Бурабайский
+2007,Esil,sunflower,100,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2008,Esil,sunflower,850,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2009,Esil,sunflower,380,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2010,Esil,sunflower,2048,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2011,Esil,sunflower,6879,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2012,Esil,sunflower,2935,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2013,Esil,sunflower,5638,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2014,Esil,sunflower,4386,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2015,Esil,sunflower,2697,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2016,Esil,sunflower,5155,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2017,Esil,sunflower,11705,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2018,Esil,sunflower,8671,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2019,Esil,sunflower,5673,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2020,Esil,sunflower,4892,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2021,Esil,sunflower,8324,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2022,Esil,sunflower,10104,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2023,Esil,sunflower,8580,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2024,Esil,sunflower,9917,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2025,Esil,sunflower,16444,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Есильский
+2005,Kokshetau,sunflower,4,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2011,Kokshetau,sunflower,747,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2014,Kokshetau,sunflower,207,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=г.а. Кокшетау
+2005,Sandyktau,sunflower,289,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2006,Sandyktau,sunflower,5,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2008,Sandyktau,sunflower,200,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2009,Sandyktau,sunflower,500,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2010,Sandyktau,sunflower,1402,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2011,Sandyktau,sunflower,3004,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2012,Sandyktau,sunflower,4153,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2013,Sandyktau,sunflower,5343,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2014,Sandyktau,sunflower,4139,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2015,Sandyktau,sunflower,3344,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2016,Sandyktau,sunflower,2847,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2017,Sandyktau,sunflower,3240,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2018,Sandyktau,sunflower,1966,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2019,Sandyktau,sunflower,1379,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2020,Sandyktau,sunflower,811,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2021,Sandyktau,sunflower,3067,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2022,Sandyktau,sunflower,1927,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2023,Sandyktau,sunflower,892,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2024,Sandyktau,sunflower,2006,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2025,Sandyktau,sunflower,7477,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Сандыктауский
+2005,Shortandy,sunflower,12,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2006,Shortandy,sunflower,15,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2007,Shortandy,sunflower,3,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2008,Shortandy,sunflower,1244,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2009,Shortandy,sunflower,2,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2010,Shortandy,sunflower,3284,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2011,Shortandy,sunflower,4184,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2012,Shortandy,sunflower,1060,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2013,Shortandy,sunflower,2255,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2014,Shortandy,sunflower,4918,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2015,Shortandy,sunflower,2100,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2016,Shortandy,sunflower,1686,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2017,Shortandy,sunflower,2944,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2018,Shortandy,sunflower,1007,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2019,Shortandy,sunflower,1950,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2020,Shortandy,sunflower,2,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2021,Shortandy,sunflower,41,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2022,Shortandy,sunflower,154,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2023,Shortandy,sunflower,257,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2024,Shortandy,sunflower,2115,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2025,Shortandy,sunflower,8491,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Шортандинский
+2005,Tselinograd,sunflower,717,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2007,Tselinograd,sunflower,600,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2008,Tselinograd,sunflower,5756,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2009,Tselinograd,sunflower,9755,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2010,Tselinograd,sunflower,15540,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2011,Tselinograd,sunflower,16508,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2012,Tselinograd,sunflower,4723,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2013,Tselinograd,sunflower,4028,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2014,Tselinograd,sunflower,3867,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2015,Tselinograd,sunflower,200,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2016,Tselinograd,sunflower,250,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2017,Tselinograd,sunflower,1200,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2018,Tselinograd,sunflower,1529,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2019,Tselinograd,sunflower,10,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2020,Tselinograd,sunflower,355,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2021,Tselinograd,sunflower,2027,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2022,Tselinograd,sunflower,7688,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2023,Tselinograd,sunflower,8385,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2024,Tselinograd,sunflower,10814,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2025,Tselinograd,sunflower,12065,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Целиноградский
+2006,Zerenda,sunflower,413,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2007,Zerenda,sunflower,400,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2010,Zerenda,sunflower,2678,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2011,Zerenda,sunflower,5714,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2012,Zerenda,sunflower,2593,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2013,Zerenda,sunflower,3291,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2014,Zerenda,sunflower,3580,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2015,Zerenda,sunflower,2101,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2016,Zerenda,sunflower,1174,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2017,Zerenda,sunflower,12599,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2018,Zerenda,sunflower,2006,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2019,Zerenda,sunflower,958,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2020,Zerenda,sunflower,438,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2021,Zerenda,sunflower,9472,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2022,Zerenda,sunflower,8630,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2023,Zerenda,sunflower,5476,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2024,Zerenda,sunflower,10957,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2025,Zerenda,sunflower,11546,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Зерендинский
+2005,Zhaksy,sunflower,1200,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2006,Zhaksy,sunflower,810,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2008,Zhaksy,sunflower,1189,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2009,Zhaksy,sunflower,610,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2010,Zhaksy,sunflower,460,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2012,Zhaksy,sunflower,368,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2013,Zhaksy,sunflower,4206,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2014,Zhaksy,sunflower,1823,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2017,Zhaksy,sunflower,1558,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2018,Zhaksy,sunflower,767,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2019,Zhaksy,sunflower,1498,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2020,Zhaksy,sunflower,1176,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2021,Zhaksy,sunflower,2074,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2022,Zhaksy,sunflower,1838,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2023,Zhaksy,sunflower,2586,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2024,Zhaksy,sunflower,2612,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский
+2025,Zhaksy,sunflower,4791,BNS stat.gov.kz dynamic-tables akmola/1485 fileId=40090 row=Жаксынский

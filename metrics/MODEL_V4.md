@@ -97,3 +97,19 @@ R2 = 0.677 ≥ 0.60. Подэксперимент v3+soil на 5 районах 
   `models/lgbm_*.pkl` v4 (причина — §1).
 - НЕ тронуты: `app/streamlit_app.py`, `src/bot.py`, `src/api.py`,
   `metrics/metrics.json`, `metrics/METRICS.md`, `metrics/summary.csv`.
+
+## 5. SoilGrids arable-offset — 2026-09-20 (гипотеза: центроиды в городах/лесу, пашня рядом)
+
+Точки — центроид первого полигона района из `data/fields/akmola_osm_fields.geojson`, запросы поодиночке как в `src/soil.py` (timeout 20с, без моков). Маркер: `arable-offset 2026-09-20`.
+
+| district_en | lon | lat | поле | osm_id | итог |
+|---|---|---|---|---|---|
+| Atbasar | 68.265759 | 51.747593 | OSM | 206543108 | nitrogen=3.11 ph=7.3 soc=51.35 clay=21.8 |
+| Esil | 66.356276 | 51.914068 | demo-fallback (OSM нет) | None | nitrogen=3.67 ph=7.35 soc=46.15 clay=27.55 |
+| Shortandy | 71.193873 | 51.705592 | OSM | 298205408 | nitrogen=3.995 ph=7.0 soc=99.75 clay=24.9 |
+| Bulandy | 70.471606 | 52.539667 | OSM | 317788359 | nitrogen=4.115 ph=6.95 soc=64.2 clay=26.0 |
+| Kokshetau | 69.344917 | 53.254068 | demo-fallback (OSM нет) | None | nitrogen=3.155 ph=6.9 soc=46.55 clay=28.75 |
+
+Закрыто offset-запросом в этом прогоне: 5/5 
+soil.csv: 10 строк (колонка source: centroid/arable-offset).
+Панель/модели не тронуты.

@@ -59,9 +59,11 @@ except Exception:  # pragma: no cover - exotic streams
     pass
 
 ROOT = Path(__file__).resolve().parents[1]
+PANEL_V4 = ROOT / "data" / "processed" / "akmola_panel_v4.csv"
 PANEL_V3 = ROOT / "data" / "processed" / "akmola_panel_v3.csv"
 PANEL_V2 = ROOT / "data" / "processed" / "akmola_panel.csv"
-PANEL = PANEL_V3 if PANEL_V3.exists() else PANEL_V2
+PANEL = (PANEL_V4 if PANEL_V4.exists()
+         else PANEL_V3 if PANEL_V3.exists() else PANEL_V2)
 MODELS = ROOT / "models"
 
 # v3: 6 культур. Обучаем каждую, где достаточно строк (MIN_TRAIN_ROWS).
@@ -85,13 +87,23 @@ EXTRA_FEATURES = [
     "precip_spring", "tmax_july", "dtr", "vpd_proxy", "spei_proxy",
     "year_trend", "yield_roll3",
 ]
+# v4 (см. src/features_v4.py): площади stat.gov.kz, ГТК Селянинова
+# (методология КазГидромет), SoilGrids-статика. Все — прошлое/статика, без утечек.
+V4_FEATURES = [
+    "oilseeds_area_ha", "sunflower_area_ha", "grain_area_ha",
+    "oilseeds_share", "htc_mjja",
+    "soil_N", "soil_pH", "soil_SOC", "soil_clay",
+]
 OPTIONAL_NDVI = ["ndvi_max", "ndvi_flag"]
-CANDIDATE_FEATURES = BASE_FEATURES + EXTRA_FEATURES + OPTIONAL_NDVI
+CANDIDATE_FEATURES = BASE_FEATURES + EXTRA_FEATURES + V4_FEATURES + OPTIONAL_NDVI
 TARGET = "yield_c_ha"
 
 SELECT_K = 10  # per-crop top-K по SelectKBest(f_regression) на train
-BLEND_W_LGBM = 0.7  # бленд LightGBM+Ridge: Ridge стабилен на малых n масличных
+BLEND_W_LGBM = 0.7  # дефолт бленда LightGBM+Ridge (переопределяется per-crop ниже)
 BLEND_W_RIDGE = 0.3
+# Кандидаты весов per-crop: выбор ТОЛЬКО по train-CV (TimeSeriesSplit на <=2020),
+# hold-out 2021-2025 в выборе не участвует — подглядывания нет.
+WEIGHT_OPTIONS = [(0.7, 0.3), (0.5, 0.5), (0.3, 0.7)]
 RIDGE_ALPHA = 1.0
 
 LGBM_PARAMS = dict(
@@ -228,8 +240,35 @@ def _fit_pair(X: pd.DataFrame, y: pd.Series) -> tuple:
     return lgbm, ridge
 
 
-def cv_report(df_crop: pd.DataFrame, crop: str, feats: list[str]) -> tuple[np.ndarray, dict]:
+def select_blend_weights(X: pd.DataFrame, y: np.ndarray, crop: str) -> dict:
+    """Per-crop веса бленда по train-CV (TimeSeriesSplit, только train<=2020).
+
+    Честно: hold-out 2021-2025 не видит выбор. При равенстве — ближе к 0.7/0.3.
+    """
+    from sklearn.model_selection import TimeSeriesSplit as _TSS
+
+    tss = _TSS(n_splits=5)
+    oof_lgbm = np.full_like(y, np.nan, dtype=float)
+    oof_ridge = np.full_like(y, np.nan, dtype=float)
+    for tr, te in tss.split(X):
+        lgbm, ridge = _fit_pair(X.iloc[tr], pd.Series(y[tr]))
+        oof_lgbm[te] = np.asarray(lgbm.predict(X.iloc[te].to_numpy()), dtype=float)
+        oof_ridge[te] = np.asarray(ridge.predict(X.iloc[te]), dtype=float)
+    mask = ~(np.isnan(oof_lgbm) | np.isnan(oof_ridge))
+    best, best_mae = {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE}, float("inf")
+    for wl, wr in WEIGHT_OPTIONS:
+        mae = float(mean_absolute_error(y[mask], wl * oof_lgbm[mask] + wr * oof_ridge[mask]))
+        if mae < best_mae - 1e-9:
+            best_mae, best = mae, {"lgbm": wl, "ridge": wr}
+    print(f"  [weights] {crop}: train-CV OOF MAE -> {best} (mae={best_mae:.3f})")
+    return best
+
+
+def cv_report(df_crop: pd.DataFrame, crop: str, feats: list[str],
+              weights: dict | None = None) -> tuple[np.ndarray, dict]:
     """TimeSeriesSplit(5) на train(<=2020) + expanding LOYO 2020-2025 для БЛЕНДА."""
+    if weights is None:
+        weights = {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE}
     full = df_crop.dropna(subset=["yield_lag1", *feats]).reset_index(drop=True)
     train = full[full["year"] < HOLDOUT_FROM].reset_index(drop=True)
     if len(train) < MIN_TRAIN_ROWS:
@@ -242,8 +281,7 @@ def cv_report(df_crop: pd.DataFrame, crop: str, feats: list[str]) -> tuple[np.nd
     fold_rows = []
     for i, (tr, te) in enumerate(tss.split(X)):
         lgbm, ridge = _fit_pair(X.iloc[tr], pd.Series(y[tr]))
-        b = {"model": lgbm, "ridge_model": ridge,
-             "blend_weights": {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE}}
+        b = {"model": lgbm, "ridge_model": ridge, "blend_weights": weights}
         p = blend_predict(b, X.iloc[te])
         oof[te] = p
         fold_rows.append({
@@ -270,8 +308,7 @@ def cv_report(df_crop: pd.DataFrame, crop: str, feats: list[str]) -> tuple[np.nd
         if tr.empty or te.empty:
             raise ValueError(f"[{crop}] LOYO год {yr}: пустой train ({len(tr)}) или test ({len(te)})")
         lgbm, ridge = _fit_pair(tr[feats], tr[TARGET])
-        b = {"model": lgbm, "ridge_model": ridge,
-             "blend_weights": {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE}}
+        b = {"model": lgbm, "ridge_model": ridge, "blend_weights": weights}
         p = blend_predict(b, te[feats])
         yt = te[TARGET].to_numpy()
         # бейзлайн на тот же год (честный, только прошлое)
@@ -299,26 +336,26 @@ def cv_report(df_crop: pd.DataFrame, crop: str, feats: list[str]) -> tuple[np.nd
 def train_crop(df_crop: pd.DataFrame, crop: str) -> dict:
     df_train = df_crop[df_crop["year"] < HOLDOUT_FROM].reset_index(drop=True)
     feats, sel_meta = select_features(df_train, crop)
-    cv_report(df_crop, crop, feats)
     train = df_crop[(df_crop["year"] < HOLDOUT_FROM)].dropna(subset=["yield_lag1", *feats])
     X = train[feats]
     y = train[TARGET]
+    weights = select_blend_weights(X, y.to_numpy(), crop)
+    cv_report(df_crop, crop, feats, weights)
     lgbm, ridge = _fit_pair(X, y)
-    # ширина интервала: std OOF-остатков БЛЕНДА (честная, из CV)
+    # ширина интервала: std OOF-остатков БЛЕНДА (честная, из CV, с per-crop весами)
     tss = TimeSeriesSplit(n_splits=5)
     oof = np.full(len(train), np.nan)
     Xa, ya = X, y.to_numpy()
     for tr, te in tss.split(Xa):
         lgbm_f, ridge_f = _fit_pair(Xa.iloc[tr], pd.Series(ya[tr]))
-        b = {"model": lgbm_f, "ridge_model": ridge_f,
-             "blend_weights": {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE}}
+        b = {"model": lgbm_f, "ridge_model": ridge_f, "blend_weights": weights}
         oof[te] = blend_predict(b, Xa.iloc[te])
     resid_std = float(np.nanstd(ya - oof))
     bundle = {
         "model": lgbm,  # LGBM-компонент (TreeExplainer/SHAP-совместимость)
         "ridge_model": ridge,  # Ridge-компонент бленда
-        "blend_weights": {"lgbm": BLEND_W_LGBM, "ridge": BLEND_W_RIDGE},
-        "model_kind": "blend_lgbm_ridge_70_30",
+        "blend_weights": weights,
+        "model_kind": f"blend_lgbm_ridge_{int(weights['lgbm']*100)}_{int(weights['ridge']*100)}",
         "features": feats,
         "feature_selection": sel_meta,
         "target": TARGET,

@@ -1,31 +1,31 @@
 {
   "spring_wheat": {
     "n": 50,
-    "conformal_coverage": 0.62,
-    "conformal_width": 2.517,
-    "gauss_coverage": 0.6,
-    "gauss_width": 2.678
+    "conformal_coverage": 0.66,
+    "conformal_width": 2.629,
+    "gauss_coverage": 0.64,
+    "gauss_width": 2.702
   },
   "barley": {
     "n": 50,
-    "conformal_coverage": 0.62,
-    "conformal_width": 2.544,
-    "gauss_coverage": 0.6,
-    "gauss_width": 2.699
+    "conformal_coverage": 0.6,
+    "conformal_width": 2.605,
+    "gauss_coverage": 0.62,
+    "gauss_width": 2.696
   },
   "oats": {
     "n": 50,
-    "conformal_coverage": 0.6,
-    "conformal_width": 2.806,
-    "gauss_coverage": 0.58,
-    "gauss_width": 3.015
+    "conformal_coverage": 0.58,
+    "conformal_width": 2.872,
+    "gauss_coverage": 0.6,
+    "gauss_width": 3.11
   },
   "sunflower": {
     "n": 50,
-    "conformal_coverage": 0.58,
-    "conformal_width": 1.43,
-    "gauss_coverage": 0.54,
-    "gauss_width": 1.354
+    "conformal_coverage": 0.56,
+    "conformal_width": 1.449,
+    "gauss_coverage": 0.56,
+    "gauss_width": 1.449
   },
   "rapeseed": {
     "n": 50,
@@ -36,9 +36,9 @@
   },
   "flax": {
     "n": 50,
-    "conformal_coverage": 0.16,
-    "conformal_width": 1.051,
+    "conformal_coverage": 0.14,
+    "conformal_width": 1.024,
     "gauss_coverage": 0.26,
-    "gauss_width": 1.298
+    "gauss_width": 1.318
   }
 }

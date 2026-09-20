@@ -55,9 +55,11 @@ except ImportError:
                            blend_predict, make_model, make_ridge)
 
 ROOT = Path(__file__).resolve().parents[1]
+PANEL_V4 = ROOT / "data" / "processed" / "akmola_panel_v4.csv"
 PANEL_V3 = ROOT / "data" / "processed" / "akmola_panel_v3.csv"
 PANEL_V2 = ROOT / "data" / "processed" / "akmola_panel.csv"
-PANEL = PANEL_V3 if PANEL_V3.exists() else PANEL_V2
+PANEL = (PANEL_V4 if PANEL_V4.exists()
+         else PANEL_V3 if PANEL_V3.exists() else PANEL_V2)
 MODELS = ROOT / "models"
 METRICS = ROOT / "metrics"
 PLOTS = METRICS / "plots"

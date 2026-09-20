@@ -35,9 +35,11 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
+PANEL_V4 = ROOT / "data" / "processed" / "akmola_panel_v4.csv"
 PANEL_V3 = ROOT / "data" / "processed" / "akmola_panel_v3.csv"
 PANEL_V2 = ROOT / "data" / "processed" / "akmola_panel.csv"
-PANEL = PANEL_V3 if PANEL_V3.exists() else PANEL_V2
+PANEL = (PANEL_V4 if PANEL_V4.exists()
+         else PANEL_V3 if PANEL_V3.exists() else PANEL_V2)
 MODELS = ROOT / "models"
 METRICS = ROOT / "metrics" / "metrics.json"
 
@@ -272,6 +274,27 @@ def predict_yield(district_en: str, crop: str,
         row["year_trend"] = float(FORECAST_TREND)
     if "yield_roll3" in feats:
         row["yield_roll3"] = _yield_roll3(df, district_en, crop)
+    # v4 derivable-фичи при явной погоде (прошлое/статика, без выдумок):
+    # htc — из переданных tmean/precip; почва/площади — последние известные
+    # района (2025 год панели, т.е. строго прошлое относительно прогноза).
+    if "htc_mjja" in feats and "htc_mjja" not in row:
+        row["htc_mjja"] = round(10.0 * vals["precip_mjja"]
+                                / (vals["tmean_mjja"] * 123.0), 3)
+    _static_needed = [c for c in feats if c in (
+        "soil_N", "soil_pH", "soil_SOC", "soil_clay",
+        "oilseeds_area_ha", "sunflower_area_ha", "grain_area_ha",
+        "oilseeds_share", "area_filled") and c not in row]
+    if _static_needed:
+        d25 = df[df["district_en"] == district_en].sort_values("year").tail(1)
+        if d25.empty:
+            raise ValueError(f"Нет истории района {district_en!r} для "
+                             f"статичных фич {_static_needed}.")
+        for c in _static_needed:
+            v = float(d25[c].iloc[0])
+            if not np.isfinite(v):
+                raise ValueError(f"Статичная фича {c} района {district_en!r} "
+                                 f"не конечна ({v}). Заглушки запрещены.")
+            row[c] = v
     if "ndvi_flag" in feats and "ndvi_flag" not in row:
         row["ndvi_flag"] = 0.0  # сцен 2026 нет — честный флаг отсутствия
     if "ndvi_max" in feats and "ndvi_max" not in row:

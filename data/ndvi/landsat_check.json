@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-09-20",
+  "purpose": "Cross-check Sentinel-2 NDVI (data/ndvi/ndvi_timeseries.json) независимым сенсором Landsat 8/9. Ресурсы хакатона: USGS EarthExplorer / LandsatLook; технически — keyless PC STAC + PC TiTiler.",
+  "keyless_test": {
+    "request": "POST https://planetarycomputer.microsoft.com/api/stac/v1/search, collection=landsat-c2-l2, bbox Esil [66.39,51.94,66.41,51.96], datetime=2024-07-01/2024-07-31, cloud<20, limit=5",
+    "http": 200,
+    "features": 1,
+    "first_id": "LC09_L2SP_158024_20240710_02_T1",
+    "first_datetime": "2024-07-10T06:26:01.254815Z",
+    "first_cloud": 11.21,
+    "conclusion": "keyless STAC для landsat-c2-l2 РАБОТАЕТ без регистрации (STAC search + TiTiler statistics отдали 200)"
+  },
+  "method": "POST https://planetarycomputer.microsoft.com/api/data/v1/item/statistics, collection=landsat-c2-l2, assets=red,nir08, expression=(nir08-red)/(nir08+red), asset_as_band=true, GeoJSON bbox Esil 0.02deg [66.39,51.94,66.41,51.96] — тот же bbox что для Sentinel Esil. Landsat L2 assets: red=SR_B4, nir08=SR_B5.",
+  "bbox_used": [66.39, 51.94, 66.41, 51.96],
+  "results": [
+    {
+      "district": "Esil",
+      "sensor": "Landsat-9",
+      "date_landsat": "2024-07-10",
+      "scene_id": "LC09_L2SP_158024_20240710_02_T1",
+      "cloud": 11.21,
+      "ndvi_mean": 0.2368,
+      "median": 0.2327,
+      "std": 0.0767,
+      "valid_pixels": 3080,
+      "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (nir08-red)/(nir08+red) from real red/nir08 COGs, server-side; bbox=66.39,51.94,66.41,51.96",
+      "sentinel_reference": {
+        "date": "2024-07-31",
+        "scene_id": "S2B_MSIL2A_20240731T064629_R020_T41UQT_20240731T091612",
+        "ndvi_mean": 0.2325
+      },
+      "delta_landsat_minus_sentinel": 0.0043,
+      "verdict": "отличное согласие (+0.004 при разнице дат 21 день)"
+    },
+    {
+      "district": "Esil",
+      "sensor": "Landsat-9",
+      "date_landsat": "2024-08-02",
+      "scene_id": "LC09_L2SP_159024_20240802_02_T1",
+      "cloud": 7.62,
+      "ndvi_mean": 0.1912,
+      "median": 0.1858,
+      "std": 0.0406,
+      "valid_pixels": 3306,
+      "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (nir08-red)/(nir08+red) from real red/nir08 COGs, server-side; bbox=66.39,51.94,66.41,51.96",
+      "sentinel_reference": {
+        "date": "2024-08-12",
+        "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UUC_20240812T115053",
+        "ndvi_mean": 0.2635
+      },
+      "delta_landsat_minus_sentinel": -0.0723,
+      "verdict": "расхождение -0.072 при разнице дат 10 дней: разные сенсоры/разрешение (Landsat 30м ~3300 px vs Sentinel 10м ~27-29к px), phenology + дымка; не брак, честная разница"
+    }
+  ],
+  "conclusion": "Landsat keyless доступен (PC collection landsat-c2-l2, без регистрации). Июльский cross-check подтверждает Sentinel (0.2368 vs 0.2325). Августовский ниже на 0.07 — в пределах межсенсорной/фенологической изменчивости. Ручная сверка по картинке: EarthExplorer / LandsatLook на те же даты и координаты."
+}

@@ -14,11 +14,11 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 - Kairbek Ansar — data pipeline / ML / API
 - Samat Ablayhan (капитан) — бот / веб / интеграция / сдача
 
-## Ключевые числа v3 (источник правды)
-- Панель `akmola_panel_v3.csv`: 1260 строк (10×21×6), 23 колонки, 0 NaN
+## Ключевые числа v4 (источник правды)
+- Панель `akmola_panel_v4.csv`: 1260 строк (10×21×6), 33 колонки (v3 + площади stat.gov.kz, ГТК, SoilGrids)
 - Поля `akmola_osm_fields.geojson`: 115 полигонов (109 OSM real ODbL + 6 demo-fallback)
-- NDVI Sentinel-2 `ndvi_timeseries.json`: 22 real (Esil+Zerenda, June+July, июнь 2024) из 62 сцен
-- Метрики hold-out 2021–2025: пшеница 2.68/−0.26 → 1.18/0.68; ячмень 2.78/−0.26 → 1.25/0.67; овёс 3.59/−0.33 → 1.26/0.78; 5/6 strong, рапс experimental (3.79/−1.06, below_baseline)
+- NDVI Sentinel-2 `ndvi_timeseries.json`: 22 real (Esil+Zerenda, June+July, июнь 2024) из 62 сцен + Landsat cross-check
+- Метрики hold-out 2021–2025: пшеница 2.68/−0.26 → 1.20/0.66; ячмень 2.78/−0.26 → 1.27/0.65; овёс 3.59/−0.33 → 1.37/0.74; 5/6 strong, рапс experimental (3.79/−1.06, below_baseline)
 - Демо-якоря: Esil/пшеница 🟡 35.0, payout 1558 тг/га; Zerenda 🟢 28.5, 150 тг/га
 - Платформа v4: `src/myfields.py` + `src/journal.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py` + `src/platform_api.py` (`/myfields`, `/journal`, `/spray`, `/fertilizer`)
 
@@ -35,16 +35,16 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 - [x] Описание + стек + запуск (pip / API / бот / streamlit / docker)
 - [x] Источники данных с правами (БНС, FAOSTAT/USDA, NASA POWER, Open-Meteo, OSM ODbL, Sentinel-2 Copernicus, SoilGrids)
 - [x] Команда (Qagro, Kairbek Ansar, Samat Ablayhan — капитан)
-- [x] Что сделано на хакатоне 18–21.09.2026 (панель v3 1260×23 → бленд 5/6 strong → платформа v4)
+- [x] Что сделано на хакатоне 18–21.09.2026 (панель v4 1260×33 → бленд 5/6 strong → платформа v4)
 - [x] Сторонние OSS с ссылками и лицензиями (UniCrop MIT, gsanaev MIT, WeatherWatch-паттерн, CropBot MIT)
-- [x] Метрики таблицей v3 (пшеница 2.68/−0.26 → 1.18/0.68; ячмень 2.78/−0.26 → 1.25/0.67; овёс 3.59/−0.33 → 1.26/0.78; 5/6 strong, рапс experimental) + `metrics/plots/` + `metrics/METRICS.md`
-- [x] Ограничения честно (даунскейлинг район=область×коэф; рапс EXPERIMENTAL below_baseline, структурный сдвиг 2024–2025; страховка decision support; SoilGrids 5/10 → v4-панель не собирали; конформные интервалы покрытие 0.62 факт vs 0.80 номинал; NDVI 22 real из 62)
+- [x] Метрики таблицей v4 (пшеница 2.68/−0.26 → 1.20/0.66; ячмень 2.78/−0.26 → 1.27/0.65; овёс 3.59/−0.33 → 1.37/0.74; 5/6 strong, рапс experimental) + `metrics/plots/` + `metrics/METRICS.md`
+- [x] Ограничения честно (даунскейлинг район=область×коэф; рапс EXPERIMENTAL below_baseline, структурный сдвиг 2024–2025; страховка decision support; SoilGrids 10/10 в фичах v4; конформные интервалы покрытие 0.66 факт vs 0.80 номинал; NDVI 22 real из 62 + Landsat cross-check)
 - [x] Воспроизводимость (`src/fetch_all.py → train.py → evaluate.py`; поля `src/fields_osm.py`; NDVI `src/sentinel_ndvi.py`)
 - [x] Структура репо
 - [x] Токена нет в коде/README; только `TELEGRAM_BOT_TOKEN` из env (`.env.example`)
 - [x] `data/processed/data_card.md` в UTF-8 без кракозябр (FFFD=0)
 - [x] `docs/demo_script.md` v3 (2:30 по секундам, spray + Мои поля + NPK)
-- [x] `docs/presentation_outline.md` v3 (10 слайдов, 1260 / 115 / 22 NDVI / R2 0.68-0.78 / 5-6 strong / платформа v4)
+- [x] `docs/presentation_outline.md` v4 (10 слайдов, 1260 / 115 / 22 NDVI / R2 0.66-0.74 / 5-6 strong / платформа v4)
 - [x] Все .md UTF-8 без FFFD (проверено 19.09.2026: `read_bytes().decode('utf-8')`, count FFFD=0)
 - [ ] Видео записано и ссылка вставлена (ждёт TODO_VIDEO выше)
 - [ ] Деплой поднят и ссылки вставлены (ждёт TODO_DEPLOY выше)

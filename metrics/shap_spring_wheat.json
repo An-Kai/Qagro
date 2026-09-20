@@ -8,33 +8,33 @@
     "gdd5",
     "heat30",
     "et0",
-    "p30_anom",
     "dtr",
     "vpd_proxy",
     "spei_proxy",
+    "htc_mjja",
     "year_trend"
   ],
   "top3": [
     {
       "feature": "dtr",
-      "mean_abs_shap": 0.5529053419839028,
-      "mean_shap": 0.44963318735391694,
+      "mean_abs_shap": 0.5598378566137144,
+      "mean_shap": 0.4406839799830918,
       "mean_value": 25.733999999999998
     },
     {
       "feature": "year_trend",
-      "mean_abs_shap": 0.2647944980952134,
-      "mean_shap": -0.2647944980952134,
+      "mean_abs_shap": 0.30822929163802276,
+      "mean_shap": -0.30822929163802276,
       "mean_value": 20.0
     },
     {
       "feature": "vpd_proxy",
-      "mean_abs_shap": 0.24556984311701707,
-      "mean_shap": 0.24556984311701707,
+      "mean_abs_shap": 0.2552654048428301,
+      "mean_shap": 0.2552654048428301,
       "mean_value": 0.7276
     }
   ],
   "model": "blend_lgbm_ridge_70_30",
   "note": "SHAP по LGBM-компоненту бленда (Ridge линеен, без SHAP).",
-  "base_value": 12.084765084971927
+  "base_value": 12.083190527721984
 }
