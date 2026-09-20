@@ -1,0 +1,275 @@
+{
+  "district": "Burabay",
+  "dates": [
+    "2024-06-03",
+    "2024-06-13",
+    "2024-06-18",
+    "2024-07-23",
+    "2024-07-31",
+    "2024-08-12"
+  ],
+  "method": "OSM-поля (bbox<=0.02deg) + Sentinel-2 L2A NDVI=(B08-B04)/(B08+B04) через PC STAC (scene reuse) + PC TiTiler POST /item/statistics; пороги — эвристики агро-практики, не ГОСТ",
+  "sources": {
+    "fields": "OSM via Overpass (ODbL) + Geofabrik backup; demo:true — не OSM",
+    "sentinel2_stac": "https://planetarycomputer.microsoft.com/api/stac/v1",
+    "sentinel2_titiler": "https://planetarycomputer.microsoft.com/api/data/v1/item/statistics",
+    "copernicus_browser": "https://browser.dataspace.copernicus.eu/",
+    "sentinel_hub": "https://www.sentinel-hub.com/",
+    "landsat_look": "https://landsatlook.usgs.gov/",
+    "usgs_earthexplorer": "https://earthexplorer.usgs.gov/",
+    "earthmap": "https://www.earthmap.org/"
+  },
+  "limits": "bbox-приближение вместо попиксельной маски поля; облака отфильтрованы на уровне сцен (cloud<20% в STAC); нет сцены на дату -> None без выдумок",
+  "total_fields": 15,
+  "checked": 4,
+  "fields": [
+    {
+      "field_id": "Burabay_307614392",
+      "area_ha": 48.54,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        70.32202,
+        52.9028,
+        70.34048,
+        52.9103
+      ],
+      "bbox_squeezed_to_0_02": false,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-03 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-13 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-18 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-23",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-23 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-31",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-31 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": null,
+        "ndvi_min": null,
+        "amplitude": null,
+        "dead_share": null,
+        "status": "no_data",
+        "status_ru": "Нет данных NDVI (все запросы неуспешны)",
+        "status_kz": "NDVI дерегі жоқ",
+        "status_en": "No NDVI data",
+        "thresholds_note": "пороги — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Burabay_307614395",
+      "area_ha": 16.67,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        70.33366,
+        52.89873,
+        70.34413,
+        52.90271
+      ],
+      "bbox_squeezed_to_0_02": false,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-03 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-13 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-18 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-23",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-23 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-31",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-31 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": null,
+        "ndvi_min": null,
+        "amplitude": null,
+        "dead_share": null,
+        "status": "no_data",
+        "status_ru": "Нет данных NDVI (все запросы неуспешны)",
+        "status_kz": "NDVI дерегі жоқ",
+        "status_en": "No NDVI data",
+        "thresholds_note": "пороги — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Burabay_307614396",
+      "area_ha": 16.7,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        70.3439,
+        52.90061,
+        70.3532,
+        52.90532
+      ],
+      "bbox_squeezed_to_0_02": false,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-03 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-13 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-18 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-23",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-23 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-31",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-31 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": null,
+        "ndvi_min": null,
+        "amplitude": null,
+        "dead_share": null,
+        "status": "no_data",
+        "status_ru": "Нет данных NDVI (все запросы неуспешны)",
+        "status_kz": "NDVI дерегі жоқ",
+        "status_en": "No NDVI data",
+        "thresholds_note": "пороги — эвристики агро-практики, не ГОСТ"
+      }
+    },
+    {
+      "field_id": "Burabay_307614397",
+      "area_ha": 17.78,
+      "demo": false,
+      "source": "OSM ODbL",
+      "bbox_used": [
+        70.31821,
+        52.9111,
+        70.33067,
+        52.91412
+      ],
+      "bbox_squeezed_to_0_02": false,
+      "series": [
+        {
+          "date": "2024-06-03",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-03 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-13",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-13 — число не выдумываем"
+        },
+        {
+          "date": "2024-06-18",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-06-18 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-23",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-23 — число не выдумываем"
+        },
+        {
+          "date": "2024-07-31",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-07-31 — число не выдумываем"
+        },
+        {
+          "date": "2024-08-12",
+          "ndvi_mean": null,
+          "scene_id": null,
+          "note": "no scene: в ndvi_timeseries.json нет сцены Burabay на 2024-08-12 — число не выдумываем"
+        }
+      ],
+      "classification": {
+        "ndvi_max": null,
+        "ndvi_min": null,
+        "amplitude": null,
+        "dead_share": null,
+        "status": "no_data",
+        "status_ru": "Нет данных NDVI (все запросы неуспешны)",
+        "status_kz": "NDVI дерегі жоқ",
+        "status_en": "No NDVI data",
+        "thresholds_note": "пороги — эвристики агро-практики, не ГОСТ"
+      }
+    }
+  ]
+}

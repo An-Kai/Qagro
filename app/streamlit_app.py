@@ -574,35 +574,55 @@ def main() -> None:
 
     st.set_page_config(page_title="Qagro — farmer helper", layout="wide")
 
-    # Дизайн 50+: крупный шрифт, высокий контраст, большие кнопки/ответы.
+    # Дизайн: токены Qagro (см. DESIGN.md, skill swiss-web-design).
+    # Один акцент, шкала 8px, tabular-цифры, кнопки 60px.
     st.markdown(
         """<style>
-html, body, [data-testid="stAppViewContainer"] { font-size: 20px; }
+:root {
+  --qagro-accent: #1B7A3D; --qagro-ink: #111111; --qagro-muted: #333333;
+  --qagro-wash: #F2F5F1; --qagro-risk-red: #C0392B; --qagro-risk-amber: #D48806;
+  --qagro-radius: 12px;
+  --qagro-font: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+html, body, [data-testid="stAppViewContainer"] {
+  font-size: 20px; font-family: var(--qagro-font);
+}
 [data-testid="stAppViewContainer"] p, [data-testid="stAppViewContainer"] li,
 [data-testid="stAppViewContainer"] label, [data-testid="stMarkdownContainer"] p {
-  font-size: 20px; line-height: 1.55; color: #111111;
+  font-size: 20px; line-height: 1.55; color: var(--qagro-ink);
 }
-h1 { font-size: 36px !important; }
-h2 { font-size: 30px !important; }
+h1 { font-size: 36px !important; letter-spacing: -0.01em; }
+h2 { font-size: 30px !important; letter-spacing: -0.01em; margin-top: 24px !important; }
 h3 { font-size: 26px !important; }
 div[data-testid="stAlert"] p { font-size: 22px !important; }
 div[data-testid="stSuccess"] p, div[data-testid="stInfo"] p,
 div[data-testid="stWarning"] p { font-size: 24px !important; }
-.big-answer { font-size: 46px !important; font-weight: 800; line-height: 1.1; }
+.big-answer {
+  font-size: 46px !important; font-weight: 800; line-height: 1.1;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.qagro-card {
+  background: var(--qagro-wash); border-radius: var(--qagro-radius);
+  padding: 16px 24px; margin: 16px 0;
+}
+.qagro-accent { color: var(--qagro-accent); }
 div[data-testid="stButton"] > button,
 div[data-testid="stDownloadButton"] > button,
 div[data-testid="stFormSubmitButton"] > button {
   width: 100%; font-size: 22px !important; font-weight: 700;
-  padding: 16px 22px !important; min-height: 60px; border-radius: 12px;
+  padding: 16px 24px !important; min-height: 60px; border-radius: var(--qagro-radius);
 }
 div[data-testid="stSelectbox"] label, div[data-testid="stSlider"] label {
-  font-size: 21px !important; font-weight: 700; color: #111111;
+  font-size: 21px !important; font-weight: 700; color: var(--qagro-ink);
 }
 div[data-testid="stCaptionContainer"] small, div[data-testid="stCaptionContainer"] {
-  color: #333333 !important; font-size: 18px !important;
+  color: var(--qagro-muted) !important; font-size: 18px !important;
 }
 div[data-testid="stProgress"] > div > div > div { height: 22px !important; border-radius: 11px; }
-.district-code small { font-size: 17px !important; color: #333333; }
+div[data-testid="stProgress"] > div > div { background: var(--qagro-wash); }
+div[data-testid="stMetricValue"] { font-variant-numeric: tabular-nums; }
+.district-code small { font-size: 17px !important; color: var(--qagro-muted); }
+section[data-testid="stSidebar"] { background: var(--qagro-wash); }
 @media (max-width: 640px) {
   div[data-testid="stHorizontalBlock"] { flex-wrap: wrap !important; }
   div[data-testid="column"] { min-width: 100% !important; flex-basis: 100% !important; }
