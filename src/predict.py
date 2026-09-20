@@ -14,8 +14,10 @@ year_trend=21 (2026−2005), yield_roll3 — из истории района+к
 
 Выход: dict(y_pred, lo10, hi90, factors)
   y_pred  — точечный прогноз LGBM (ц/га)
-  lo10/hi90 — 80% интервал: y_pred ± 1.2816 * residual_std
-    (residual_std — std OOF-остатков из CV в train.py, хранится в модели)
+  lo10/hi90 — 80% интервал из эмпирических квантилей OOF-остатков
+    (metrics/conformal.json: lo=y_pred+q10, hi=y_pred+q90 — та же логика,
+    что src/intervals.py::conformal_interval; fallback на ±1.2816*resid_std,
+    если conformal.json отсутствует)
   factors — top-3 SHAP-вклада для ЭТОГО прогноза (feature, value, shap_value)
 
 Никаких моков: неизвестный район/культура, неполная погода, отсутствие
@@ -25,25 +27,6 @@ yield_lag1 (урожая 2025 для пары район+культура) ил�
 Референс подхода: UniCrop, MIT license.
 """
 from __future__ import annotations
-
-import os as _os
-import sys as _sys
-
-# BOOTSTRAP (первым, до import pandas): проектный src/calendar.py затеняет
-# stdlib `calendar` при `python src/*.py` и роняет импорт pandas через _strptime.
-try:
-    import calendar as _cal_probe  # noqa: F401
-    if not hasattr(_cal_probe, "day_abbr"):
-        raise ImportError("stdlib calendar shadowed by src/calendar.py")
-    del _cal_probe
-except Exception:
-    import importlib.util as _ilu
-    _stdlib_cal = _os.path.join(_os.path.dirname(_os.__file__), "calendar.py")
-    _spec = _ilu.spec_from_file_location("calendar", _stdlib_cal)
-    _mod = _ilu.module_from_spec(_spec)
-    _sys.modules["calendar"] = _mod
-    _spec.loader.exec_module(_mod)
-    del _ilu, _spec, _mod, _stdlib_cal
 
 from pathlib import Path
 from typing import Any
@@ -84,6 +67,34 @@ def _blend_predict(bundle: dict, X: pd.DataFrame) -> np.ndarray:
     w = bundle.get("blend_weights", {"lgbm": 0.7, "ridge": 0.3})
     ridge_pred = np.asarray(ridge.predict(X), dtype=float)
     return float(w.get("lgbm", 0.7)) * lgbm_pred + float(w.get("ridge", 0.3)) * ridge_pred
+
+
+def _conformal_bounds(y_pred: float, crop: str, resid_std: float,
+                      wide_factor: float = 1.0) -> tuple[float, float]:
+    """Эмпирический 80% интервал из metrics/conformal.json (q10/q90 OOF-остатков).
+
+    Та же логика, что src/intervals.py::conformal_interval: lo=y_pred+q10,
+    hi=y_pred+q90 (асимметрия сохраняется). wide_factor масштабирует квантили
+    (experimental: 1.5). Если conformal.json отсутствует — fallback на
+    симметричный ±1.2816*resid_std, чтобы ничего не ломалось офлайн.
+    """
+    import json
+
+    conf_path = ROOT / "metrics" / "conformal.json"
+    try:
+        if conf_path.exists():
+            table = json.loads(conf_path.read_text(encoding="utf-8"))
+            q = table.get(crop)
+            if q is not None:
+                q10 = float(q["q10"]) * wide_factor
+                q90 = float(q["q90"]) * wide_factor
+                return (round(float(y_pred) + q10, 2),
+                        round(float(y_pred) + q90, 2))
+    except Exception:
+        pass
+    w = float(resid_std * wide_factor)
+    return (round(float(y_pred) - Z80 * w, 2),
+            round(float(y_pred) + Z80 * w, 2))
 
 
 def _experimental_crops() -> set[str]:
@@ -223,10 +234,9 @@ def predict_yield(district_en: str, crop: str,
     if is_experimental(crop):
         mean5, years = _baseline_mean5(df, district_en, crop, BASELINE_WINDOW)
         wide = float(resid_std * WIDE_FACTOR)
-        lo10 = float(mean5 - Z80 * wide)
-        hi90 = float(mean5 + Z80 * wide)
-        return {"y_pred": round(mean5, 2), "lo10": round(lo10, 2),
-                "hi90": round(hi90, 2), "factors": [],
+        lo10, hi90 = _conformal_bounds(mean5, crop, resid_std, WIDE_FACTOR)
+        return {"y_pred": round(mean5, 2), "lo10": lo10,
+                "hi90": hi90, "factors": [],
                 "experimental": True,
                 "method": "baseline-5y mean (experimental: LGBM below baseline on hold-out)",
                 "meta": {"district_en": district_en, "crop": crop, "year": 2026,
@@ -271,8 +281,7 @@ def predict_yield(district_en: str, crop: str,
         raise ValueError(f"Модели нужны фичи {absent}, которых нет во входе.")
     X = pd.DataFrame([{c: row[c] for c in feats}])[feats]
     y_pred = float(_blend_predict(bundle, X)[0])
-    lo10 = float(y_pred - Z80 * resid_std)
-    hi90 = float(y_pred + Z80 * resid_std)
+    lo10, hi90 = _conformal_bounds(y_pred, crop, resid_std)
 
     # Per-row SHAP top-3 для этого прогноза
     try:

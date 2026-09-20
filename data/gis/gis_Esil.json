@@ -100,9 +100,9 @@
       "series": [
         {
           "date": "2024-06-03",
-          "ndvi_mean": 0.3208,
-          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332",
-          "note": "real via PC TiTiler (1 сцена(ы))"
+          "ndvi_mean": 0.3209,
+          "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332+S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
+          "note": "real via PC TiTiler (2 сцена(ы))"
         },
         {
           "date": "2024-06-13",
@@ -136,9 +136,9 @@
         }
       ],
       "classification": {
-        "ndvi_max": 0.3208,
+        "ndvi_max": 0.3209,
         "ndvi_min": 0.2084,
-        "amplitude": 0.1124,
+        "amplitude": 0.1125,
         "dead_share": 0.6,
         "status": "likely_fallow",
         "status_ru": "Возможно, поле не обрабатывается (NDVI ровный и низкий)",

@@ -172,23 +172,9 @@ def field_bbox(field: dict) -> tuple[list[float], bool]:
 
 # ------------------------------------------------------------ TiTiler
 def _import_requests():
-    """Импорт requests без тени stdlib `calendar` от src/calendar.py.
-
-    При запуске `python src/gis_monitor.py` каталог src/ первым в sys.path,
-    и http.cookiejar внутри requests находит src/calendar.py вместо stdlib.
-    Временно убираем src-директории из пути на время импорта.
-    """
-    import sys as _sys
-    saved = list(_sys.path)
-    try:
-        me = Path(__file__).resolve()
-        src_dir = str(me.parents[0])
-        _sys.path = [p for p in _sys.path
-                     if p not in ("", src_dir) and not p.replace("\\", "/").endswith("/src")]
-        import requests as _rq
-        return _rq
-    finally:
-        _sys.path = saved
+    """Импорт requests (конфликта имён больше нет после переименования)."""
+    import requests as _rq
+    return _rq
 
 
 def _titiler_ndvi(scene_id: str, bbox: list[float]) -> tuple[float | None, str]:

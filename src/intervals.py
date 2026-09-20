@@ -25,25 +25,6 @@
 from __future__ import annotations
 
 import json
-import os as _os
-import sys as _sys
-
-# BOOTSTRAP (первым, до import pandas): проектный src/calendar.py затеняет
-# stdlib `calendar` при `python src/*.py` и роняет импорт pandas через _strptime.
-try:
-    import calendar as _cal_probe  # noqa: F401
-    if not hasattr(_cal_probe, "day_abbr"):
-        raise ImportError("stdlib calendar shadowed by src/calendar.py")
-    del _cal_probe
-except Exception:
-    import importlib.util as _ilu
-    _stdlib_cal = _os.path.join(_os.path.dirname(_os.__file__), "calendar.py")
-    _spec = _ilu.spec_from_file_location("calendar", _stdlib_cal)
-    _mod = _ilu.module_from_spec(_spec)
-    _sys.modules["calendar"] = _mod
-    _spec.loader.exec_module(_mod)
-    del _ilu, _spec, _mod, _stdlib_cal
-
 import pickle
 import sys
 from functools import lru_cache

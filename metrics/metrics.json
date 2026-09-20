@@ -37,7 +37,7 @@
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_spring_wheat.png"
+    "scatter": "metrics/plots/scatter_spring_wheat.png"
   },
   "barley": {
     "model": "blend_lgbm_ridge_70_30",
@@ -77,7 +77,7 @@
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_barley.png"
+    "scatter": "metrics/plots/scatter_barley.png"
   },
   "oats": {
     "model": "blend_lgbm_ridge_70_30",
@@ -117,7 +117,7 @@
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_oats.png"
+    "scatter": "metrics/plots/scatter_oats.png"
   },
   "sunflower": {
     "model": "blend_lgbm_ridge_70_30",
@@ -157,7 +157,7 @@
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_sunflower.png"
+    "scatter": "metrics/plots/scatter_sunflower.png"
   },
   "rapeseed": {
     "model": "blend_lgbm_ridge_70_30",
@@ -197,7 +197,7 @@
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_rapeseed.png",
+    "scatter": "metrics/plots/scatter_rapeseed.png",
     "below_baseline": true,
     "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; см. fetch_stat.py / data_card). Metrics are honest, no tuning."
   },
@@ -239,6 +239,6 @@
       2021,
       2025
     ],
-    "scatter": "C:/Users/ansar/Documents/Default Project/Qagro/metrics/plots/scatter_flax.png"
+    "scatter": "metrics/plots/scatter_flax.png"
   }
 }

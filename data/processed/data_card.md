@@ -45,12 +45,13 @@
    hourly soil_moisture_3_9cm; timezone Asia/Almaty. Сырое: `data/raw/openmeteo_*_daily.json`;
    агрегаты: `data/raw/openmeteo_summary.csv`.
 7. **Координаты районов** — `config/districts.yaml` (центроиды WGS84).
-8. **v2 NDVI Sentinel-2 (пилот, только список сцен, БЕЗ выдуманных чисел)**:
+8. **NDVI Sentinel-2 (июнь+июль, 22 реальных из 62)**:
    `data/ndvi/ndvi_timeseries.json` (Esil/Zerenda, июнь–август 2024–2025,
    cloud<20%, collection sentinel-2-l2a, Planetary Computer STAC без ключа;
-   `python src/sentinel_ndvi.py`); все `ndvi_mean=None` (MISSING).
+   `python src/sentinel_ndvi.py`); 22 записи с реальным `ndvi_mean`
+   (PC TiTiler), остальные 40 — None (MISSING, сцены нет).
    Ручной источник: Copernicus Browser https://browser.dataspace.copernicus.eu/
-   + Sentinel Hub https://www.sentinel-hub.com/. Модель работает без NDVI
+   + Sentinel Hub https://www.sentinel-hub.com/. Модель работает и без NDVI
    (optional join `src/features_ndvi.py`: `ndvi_max` только при настоящих NDVI).
 
 ## Честные ограничения (прочитай перед моделированием)
@@ -122,4 +123,4 @@ Get-ChildItem data/raw, data/processed
 - `data/raw/stat_yield.csv` (year,district,crop,yield_c_ha,source)
 - `data/raw/nasa_<EN>.json` ×10, `data/raw/nasa_summary.csv`
 - `data/raw/openmeteo_<EN>_daily.json` ×10, `data/raw/openmeteo_summary.csv`
-- `data/ndvi/ndvi_timeseries.json` (v2: список сцен Sentinel-2, ndvi_mean=MISSING)
+- `data/ndvi/ndvi_timeseries.json` (62 сцены Sentinel-2, 22 с реальным ndvi_mean)

@@ -33,7 +33,7 @@ try:  # пакетный запуск (uvicorn src.api:app из корня)
     from src.alerts import check_alerts
     from src.approx_crops import ALL_CROPS, is_approx
     from src.approx_crops import predict_approx
-    from src.calendar import sowing_calendar
+    from src.sowing_calendar import sowing_calendar
     from src.insurance import insurance_quote
     from src.predict import predict_yield
     from src.recommend import recommend_sowing
@@ -42,7 +42,7 @@ except ImportError:  # прямое использование из папки s
     from alerts import check_alerts  # type: ignore
     from approx_crops import ALL_CROPS, is_approx  # type: ignore
     from approx_crops import predict_approx  # type: ignore
-    from calendar import sowing_calendar  # type: ignore
+    from sowing_calendar import sowing_calendar  # type: ignore
     from insurance import insurance_quote  # type: ignore
     from predict import predict_yield  # type: ignore
     from recommend import recommend_sowing  # type: ignore

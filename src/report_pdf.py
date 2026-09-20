@@ -259,9 +259,9 @@ def build_report_pdf(
     if cal is None:  # офлайн-фолбэк без сети
         try:
             try:
-                from src.calendar import sowing_calendar as _cal
+                from src.sowing_calendar import sowing_calendar as _cal
             except ImportError:
-                from calendar import sowing_calendar as _cal  # type: ignore
+                from sowing_calendar import sowing_calendar as _cal  # type: ignore
             cal = _cal(crop, lang if lang in ("ru", "kz", "en") else "ru")
         except Exception:
             cal = None

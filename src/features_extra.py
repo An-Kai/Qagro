@@ -53,34 +53,12 @@ ndvi_max (с флагом) и yield_roll3 за 2005–2007 (нет 3 лет ис
 from __future__ import annotations
 
 import json
-import os as _os
-import sys as _sys
-
-# BOOTSTRAP (обязательно первым, до import pandas): при запуске
-# `python src/*.py` каталог src/ — первый в sys.path, и проектный
-# src/calendar.py затеняет stdlib `calendar`, отчего `import pandas`
-# падает через _strptime. Предзагружаем настоящий stdlib-calendar.
-# Проектный календарь этому скрипту не нужен.
-try:
-    import calendar as _cal_probe  # noqa: F401
-    if not hasattr(_cal_probe, "day_abbr"):
-        raise ImportError("stdlib calendar shadowed by src/calendar.py")
-    del _cal_probe
-except Exception:
-    import importlib.util as _ilu
-    _stdlib_cal = _os.path.join(_os.path.dirname(_os.__file__), "calendar.py")
-    _spec = _ilu.spec_from_file_location("calendar", _stdlib_cal)
-    _mod = _ilu.module_from_spec(_spec)
-    _sys.modules["calendar"] = _mod
-    _spec.loader.exec_module(_mod)
-    del _ilu, _spec, _mod, _stdlib_cal
 import sys
 from pathlib import Path
 
 import pandas as pd
 
-# NOTE: `import calendar` запрещён здесь — в src/ лежит calendar.py проекта,
-# который затеняет stdlib при запуске `python src/*.py`. Дни месяца — вручную.
+# NOTE: дни месяца — вручную (без import calendar, чтобы не зависеть от cwd).
 _DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 

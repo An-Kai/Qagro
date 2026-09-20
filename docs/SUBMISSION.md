@@ -38,13 +38,13 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 - [x] Что сделано на хакатоне 18–21.09.2026 (панель v3 1260×23 → бленд 5/6 strong → платформа v4)
 - [x] Сторонние OSS с ссылками и лицензиями (UniCrop MIT, gsanaev MIT, WeatherWatch-паттерн, CropBot MIT)
 - [x] Метрики таблицей v3 (пшеница 2.68/−0.26 → 1.18/0.68; ячмень 2.78/−0.26 → 1.25/0.67; овёс 3.59/−0.33 → 1.26/0.78; 5/6 strong, рапс experimental) + `metrics/plots/` + `metrics/METRICS.md`
-- [x] Ограничения честно (даунскейлинг район=область×коэф; рапс EXPERIMENTAL below_baseline, структурный сдвиг 2024–2025; страховка decision support; SoilGrids 5/10 → v4-панель не собирали; конформные интервалы покрытие 0.62 факт vs 0.80 номинал; NDVI 5 real из 62)
+- [x] Ограничения честно (даунскейлинг район=область×коэф; рапс EXPERIMENTAL below_baseline, структурный сдвиг 2024–2025; страховка decision support; SoilGrids 5/10 → v4-панель не собирали; конформные интервалы покрытие 0.62 факт vs 0.80 номинал; NDVI 22 real из 62)
 - [x] Воспроизводимость (`src/fetch_all.py → train.py → evaluate.py`; поля `src/fields_osm.py`; NDVI `src/sentinel_ndvi.py`)
 - [x] Структура репо
 - [x] Токена нет в коде/README; только `TELEGRAM_BOT_TOKEN` из env (`.env.example`)
 - [x] `data/processed/data_card.md` в UTF-8 без кракозябр (FFFD=0)
 - [x] `docs/demo_script.md` v3 (2:30 по секундам, spray + Мои поля + NPK)
-- [x] `docs/presentation_outline.md` v3 (10 слайдов, 1260 / 115 / 5 NDVI / R2 0.68-0.78 / 5-6 strong / платформа v4)
+- [x] `docs/presentation_outline.md` v3 (10 слайдов, 1260 / 115 / 22 NDVI / R2 0.68-0.78 / 5-6 strong / платформа v4)
 - [x] Все .md UTF-8 без FFFD (проверено 19.09.2026: `read_bytes().decode('utf-8')`, count FFFD=0)
 - [ ] Видео записано и ссылка вставлена (ждёт TODO_VIDEO выше)
 - [ ] Деплой поднят и ссылки вставлены (ждёт TODO_DEPLOY выше)
