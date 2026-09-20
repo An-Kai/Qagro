@@ -10,7 +10,7 @@ Qagro — MVP decision-support системы для фермеров и агр�
 индексное страхование (P_loss, ожидаемая выплата) и рекомендации по севу — на 3 языках (RU/KZ/EN).
 
 Покрытие MVP: **10 районов** Акмолинской области × **6 культур**
-(модель v3: бленд LightGBM+Ridge 0.7/0.3, R² пшеница 0.68 / ячмень 0.67 / овёс 0.78;
+(модель v4: бленд LightGBM+Ridge, веса per-crop по train-CV, R² пшеница 0.66 / ячмень 0.65 / овёс 0.74;
 5/6 strong (пшеница, ячмень, овёс, подсолнечник, лён), рапс — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
 годы панели 2005–2025, прогноз — 2026.
 
@@ -208,12 +208,16 @@ Esil/пшеница — expected payout **1558 тг/га** (p_loss 0.23); Zerend
 ```powershell
 pip install -q pandas numpy requests pyyaml openmeteo-requests requests-cache retry-requests
 python src/fetch_all.py   # тянет NASA + Open-Meteo + БНС-якоря -> data/raw + data/processed/akmola_panel.csv
+python src/fetch_area.py  # площади stat.gov.kz -> data/raw/sown_area.csv
+python src/features_extra.py  # v3-фичи -> akmola_panel_v3.csv
+python src/features_v4.py     # площади + ГТК + SoilGrids -> akmola_panel_v4.csv
 python src/train.py       # -> models/lgbm_*.pkl + models/baseline.json
 python src/evaluate.py    # -> metrics/metrics.json + metrics/plots/*.png + metrics/shap_*.json
-python -c "import pandas as pd; df=pd.read_csv('data/processed/akmola_panel.csv'); print(df.shape, df['yield_c_ha'].isna().sum())"
+python src/intervals.py   # -> metrics/conformal.json + metrics/intervals.json
+python -c "import pandas as pd; df=pd.read_csv('data/processed/akmola_panel_v4.csv'); print(df.shape, df['yield_c_ha'].isna().sum())"
 ```
 
-Ожидается: `(420, 14)`, NaN в yield — 0.
+Ожидается: `(1260, 33)`, NaN в yield — 0.
 
 ## Структура репо
 

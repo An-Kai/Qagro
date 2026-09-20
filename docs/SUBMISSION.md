@@ -27,7 +27,7 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 - Video (2:30): TODO_VIDEO — ИНСТРУКЦИЯ: запишите экран (бот + веб) по `docs/demo_script.md` v3 (Esil 1558 тг/га vs Zerenda 150 тг/га + spray-окно + Мои поля + NPK), залейте на YouTube/RuTube, замените эту строку ссылкой вида `https://...`
 - Deploy: TODO_DEPLOY — ИНСТРУКЦИЯ: поднимите `docker compose up --build`, вставьте сюда 3 строки: `API health http://.../health`, `Streamlit http://...`, `Telegram @username_бота`; токен только из `TELEGRAM_BOT_TOKEN`, в код не класть
 - PDF-пример: `reports/risk_example.json` + генерация через `POST /report` (раздел 6 Farm&money: NPK + экономика + spray)
-- Презентация: `docs/presentation_outline.md` v3 (10 слайдов, числа выше) — актуальный текст; `docs/Qagro_presentation_v2.pdf` (10 слайдов, ~349 КБ, ReportLab) — бинарь ЗАМОРОЖЕН, не пересобирать в C9; `docs/Qagro_presentation.pdf` — старая ASCII-версия без кириллицы
+- Презентация: `docs/Qagro_presentation.pdf` — ФИНАЛ (10 слайдов, кириллица, числа v4, 2 графика); текст — `docs/presentation_outline.md` v4
 - Демо-сценарий: `docs/demo_script.md` v3 (2:30 по секундам, со spray + Мои поля + NPK)
 
 ## Чек-лист ТЗ (отметить перед отправкой)

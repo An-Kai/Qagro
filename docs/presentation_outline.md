@@ -1,8 +1,8 @@
-# Qagro — outline презентации v3 (10 слайдов, 19.09.2026)
+# Qagro — outline презентации v4 (10 слайдов, 20.09.2026)
 
 Источник правды: `metrics/metrics.json` (hold-out 2021–2025, n=50), `metrics/METRICS.md`,
-`data/processed/akmola_panel_v3.csv` (1260×23), `data/fields/akmola_osm_fields.geojson` (115),
-`data/ndvi/ndvi_timeseries.json` (22 real: June+July 2024-2025), `src/platform_api.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py`.
+`data/processed/akmola_panel_v4.csv` (1260×33), `data/fields/akmola_osm_fields.geojson` (115),
+`data/ndvi/ndvi_timeseries.json` (41 real: June+July+Aug), `src/platform_api.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py`.
 PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирается в этом цикле (заморожен, отдельный цикл шрифтов).
 
 ## Слайд 1. Проблема
@@ -26,24 +26,24 @@ PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирает�
 - Картинка: скриншоты бота (язык/район/карточка прогноза/spray) + `reports/risk_example.json`.
 
 ## Слайд 4. Данные
-- Панель v3 `akmola_panel_v3.csv`: **1260 строк** (10 районов × 21 год × 6 культур), **23 колонки**, 0 NaN; БНС-якоря + NASA POWER + Open-Meteo ERA5.
-- Фичи MJJA: tmean/precip/GDD5/heat30/dry_max/ET0/p30_anom + lat/lon/yield_lag1 + v3 (dtr/vpd_proxy/spei_proxy/year_trend/yield_roll3) + ndvi_max/ndvi_flag (optional join).
-- Поля: **115 полигонов** (`akmola_osm_fields.geojson`): **109 OSM real** (ODbL, Overpass `landuse=farmland`) + 6 demo-fallback `demo:true` (Esil 3, Kokshetau 3, Zhaksy 4 OSM).
-- NDVI Sentinel-2: **22 NDVI real (June+July)** (Esil 3 + Zerenda 2, июнь 2024, PC TiTiler per-pixel B08/B04, 0.21–0.30) из 62 сцен списка; остальное `ndvi_mean=None` (MISSING, без выдумок).
+- Панель v4 `akmola_panel_v4.csv`: **1260 строк** (10 районов × 21 год × 6 культур), **33 колонки** (v3 + площади stat.gov.kz + ГТК + SoilGrids); БНС-якоря + NASA POWER + Open-Meteo ERA5.
+- Фичи MJJA: tmean/precip/GDD5/heat30/dry_max/ET0/p30_anom + lat/lon/yield_lag1 + v3 (dtr/vpd_proxy/spei_proxy/year_trend/yield_roll3) + v4 (oilseeds_share/площади/htc_mjja/soil_N/pH/SOC/clay) + ndvi_max/ndvi_flag (optional join).
+- Поля: **115 полигонов** (`akmola_osm_fields.geojson`): **109 OSM real** (ODbL, Overpass `landuse=farmland`) + 6 demo-fallback `demo:true` (Esil 3, Kokshetau 3).
+- NDVI Sentinel-2: **22 NDVI real (June+July)** + 19 августовских (стало 41/62; PC TiTiler B08/B04) + Landsat cross-check (июль delta +0.004); остальное `ndvi_mean=None` (MISSING, без выдумок).
 - Честно: район = даунскейлинг области на центроиды `config/districts.yaml`.
 - Картинка: схема панели + таблица первых строк из `data/processed/data_card.md` + мини-карта полей.
 
 ## Слайд 5. Модель
-- Бейзлайн = среднее 5 лет; модель v3 = бленд LightGBM+Ridge 0.7/0.3 per-crop (hold-out 2021–2025, n=50, ключ `lgbm` сохранён для совместимости).
-- Прогноз 2026: y_pred + 80% интервал (residual_std; experimental ×1.5) + топ-3 SHAP; конформные интервалы из OOF train (факт. покрытие wheat 0.62, см. `metrics/MODEL_V4.md`).
-- **5/6 strong + 1 experimental (рапс)**: честный EXPERIMENTAL baseline-5y только при `below_baseline=true`; APPROX — только если модели нет вообще (legacy, в v3 не используется для 6 культур).
-- SoilGrids v4: покрытие 5/10 → панель v4 НЕ собирали, модели НЕ переобучали (импутация = моки). Подэксперимент wheat+soil: MAE 1.27→1.09, но это district-intercept на 5 районах — в прод не пошёл.
+- Бейзлайн = среднее 5 лет; модель v4 = бленд LightGBM+Ridge, веса per-crop по train-CV (hold-out 2021–2025, n=50, ключ `lgbm` сохранён для совместимости).
+- Прогноз 2026: y_pred + 80% интервал из эмпирических квантилей OOF (conformal q10/q90; experimental ×1.5) + топ-3 SHAP; факт. покрытие wheat 0.66 (номинал 0.80 не заявляем).
+- **5/6 strong + 1 experimental (рапс)**: честный EXPERIMENTAL baseline-5y только при `below_baseline=true`; APPROX — только если модели нет вообще (legacy, не используется для 6 культур).
+- SoilGrids: retry по точкам пашни закрыл 10/10 → soil-фичи в модели v4 (вклад малый, климат+тренд несут сигнал).
 - Картинка: блок-схема `src/train.py → src/predict.py` + SHAP топ-3 (`metrics/shap_*.json`).
 
 ## Слайд 6. Метрики
-- Пшеница v3: бейзлайн MAE 2.68 / R² −0.26 → бленд **MAE 1.18 / R² 0.68**.
-- Ячмень v3: бейзлайн 2.78 / −0.26 → бленд **1.25 / 0.67**; овёс: 3.59 / −0.33 → **1.26 / 0.78** (hold-out 2021–2025, n=50).
-- 5/6 strong (пшеница, ячмень, овёс, подсолнечник MAE 2.15<2.52 при R² −0.02, лён MAE 1.15<1.22); только рапс — EXPERIMENTAL baseline (MAE 3.79, R² −1.06, `below_baseline:true`, структурный сдвиг 2024–2025).
+- Пшеница v4: бейзлайн MAE 2.68 / R² −0.26 → бленд **MAE 1.20 / R² 0.66**.
+- Ячмень v4: бейзлайн 2.78 / −0.26 → бленд **1.27 / 0.65**; овёс: 3.59 / −0.33 → **1.37 / 0.74** (hold-out 2021–2025, n=50).
+- 5/6 strong (пшеница, ячмень, овёс, подсолнечник MAE 2.09<2.52 при R² 0.08, лён MAE 1.18<1.22); только рапс — EXPERIMENTAL baseline (MAE 3.79, R² −1.06, `below_baseline:true`, структурный сдвиг 2024–2025).
 - Картинка: `metrics/plots/scatter_spring_wheat.png` + `metrics/plots/scatter_barley.png` + `metrics/plots/scatter_oats.png` + таблица метрик.
 
 ## Слайд 7. Эффект (тг/га)
@@ -67,7 +67,7 @@ PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирает�
 
 ## Слайд 9. Команда
 - Команда **Qagro**: Kairbek Ansar (data/ML/API) + Samat Ablayhan, капитан (бот/веб/сдача).
-- Хакатон 18–21.09.2026: панель v3 (1260×23) → бленд 5/6 strong → риски → страховка → платформа v4 (поля/журнал/spray/NPK/экономика) → 3 интерфейса → доки.
+- Хакатон 18–21.09.2026: панель v4 (1260×33) → бленд 5/6 strong → риски → страховка → платформа v4 (поля/журнал/spray/NPK/экономика) → 3 интерфейса → доки.
 - OSS-подход: UniCrop, gsanaev, WeatherWatch-паттерн, CropBot — с атрибуцией, код свой; данные OSM ODbL, Sentinel-2 Copernicus.
 - Картинка: фото/аватары + логотип Qagro + таймлайн хакатона.
 
