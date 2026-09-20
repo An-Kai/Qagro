@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 data/cache.db
+data/myfields.db
 data/raw/openmeteo_*.json
 data/raw/nasa_*.json
 *.log

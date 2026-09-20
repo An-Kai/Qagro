@@ -92,3 +92,26 @@ Agmet EO Indicators — https://cropmonitortools.org/tools/agmet/.
 - МСХ сверх БНС ничего машиночитаемого не даёт — даунскейлинг область→район остаётся честным ограничением (см. README).
 
 *Проверено: 20.09.2026, веб-просмотр. Цитаты GEOGLAM — перевод не требуется, оставлен оригинал для точности.*
+
+## 6. AgroData API — живая интеграция (NEW_DATA #2, внедрено 20.09.2026)
+
+**Доступ:** открыт, без ключа. Все проверены кодом 200 20.09.2026:
+
+| Endpoint | n | Что отдаёт |
+|---|---|---|
+| `/api/calendar/towns` | 400 | города `{success, result{count, entities}}` |
+| `/api/weather/actual/towns` | 197 | метеостанции |
+| `/api/forecasts/drought` | 288 | `{town{district{region}}, value}` — сырой индекс засухи |
+| `/api/forecasts/moisture` | 120 | влажность почв по типам (`types[]`) |
+| `/api/forecasts/productivity` | 118 | `{nameRu, valueFrom, valueTo, color}` — диапазоны ц/га |
+
+**Покрытие 10 районов Qagro:** drought — 8/10 (нет Целиноградского, Кокшетау);
+productivity — 9/10 (нет Кокшетау; Есильский — 2 зоны). Пример: Esil —
+drought точка Есиль value −0.14 (08.2026), productivity 9.3–11.3 и 16.3–18.3;
+Qagro пшеница 11.39 — внутри объединённого диапазона.
+
+**Код:** `src/fetch_agrodata.py` (`drought_by_district`, `productivity_by_district`,
+`compare_agrodata`) + `GET /agrodata?district_en=&crop=&lang=` (`src/api.py`).
+Правила: drought.value показываем как есть (шкалу Казгидромета не интерпретируем);
+сверка с y_pred — только арифметика внутри/ниже/выше; сеть упала — error-строки,
+модель/панель НЕ тронуты. Тест: `t_agrodata` в `tests/test_api.py`.

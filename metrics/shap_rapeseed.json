@@ -6,35 +6,35 @@
     "tmean_mjja",
     "gdd5",
     "heat30",
-    "et0",
     "yield_lag1",
-    "dtr",
     "vpd_proxy",
-    "spei_proxy",
     "year_trend",
-    "yield_roll3"
+    "yield_roll3",
+    "trend_sq",
+    "trend_recent",
+    "oilshare_trend"
   ],
   "top3": [
     {
       "feature": "year_trend",
-      "mean_abs_shap": 1.6696780682718284,
-      "mean_shap": 1.6696780682718284,
+      "mean_abs_shap": 1.5475524339756348,
+      "mean_shap": 1.5475524339756348,
       "mean_value": 20.0
     },
     {
       "feature": "yield_roll3",
-      "mean_abs_shap": 0.8040389050625094,
-      "mean_shap": 0.8040389050625094,
+      "mean_abs_shap": 0.7389322028162774,
+      "mean_shap": 0.7389322028162774,
       "mean_value": 15.519
     },
     {
       "feature": "yield_lag1",
-      "mean_abs_shap": 0.4861007764806423,
-      "mean_shap": 0.4861007764806423,
+      "mean_abs_shap": 0.41448233349297176,
+      "mean_shap": 0.41448233349297176,
       "mean_value": 19.162
     }
   ],
   "model": "blend_lgbm_ridge_70_30",
   "note": "SHAP по LGBM-компоненту бленда (Ridge линеен, без SHAP).",
-  "base_value": 8.22539420075025
+  "base_value": 8.232696727002793
 }

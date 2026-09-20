@@ -130,6 +130,9 @@ T: dict[str, dict[str, str]] = {
     # C2: окно опрыскивания (кнопка в ответе прогноза) — локализовано
     "btn_spray": {"ru": "🧴 Опрыскивание", "kz": "🧴 Бүрку",
                   "en": "🧴 Spray"},
+    "spray_hours": {"ru": "Хороших часов: {good} из {checked}.",
+                    "kz": "Жақсы сағаттар: {checked} ішінен {good}.",
+                    "en": "Good hours: {good} of {checked}."},
     "btn_sat": {"ru": "🛰 Спутник", "kz": "🛰 Серік",
                 "en": "🛰 Satellite"},
     "btn_location": {"ru": "📍 Отправить местоположение",
@@ -162,51 +165,63 @@ HELP_TEXT: dict[str, str] = {
     "ru": ("🌾 Как получить прогноз:\n"
            "1. /start → выбери язык\n"
            "2. Выбери район кнопкой 👇 (10 районов Акмолы)\n"
-           "3. Выбери культуру (пшеница, ячмень, овёс, подсолнечник🧪, рапс🧪, лён🧪)\n"
+           "3. Выбери культуру (пшеница, ячмень, овёс, подсолнечник, рапс, лён🧪)\n"
            "4. Получи прогноз + риск 🟢🟡🔴 + кнопки 📄 PDF отчет / 🔄 Новый прогноз\n"
            "\nПримеры:\n"
            "• Есильский → Пшеница яровая\n"
            "• Отправь 📍 геолокацию — сам найду ближайший район\n"
-            "• /about — о команде и источниках\n"
-            "• /gis — поля со спутника (NDVI, залежи)\n"
+           "• /about — о команде и источниках\n"
+           "\nЕщё команды: /more\n"
+           "\n🧪 — пробный прогноз (мало данных), ориентируйся на среднее."),
+    "kz": ("🌾 Болжамды қалай алуға болады:\n"
+           "1. /start → тілді таңдаңыз\n"
+           "2. Ауданды батырмамен таңдаңыз 👇 (Ақмоланың 10 ауданы)\n"
+           "3. Дақылды таңдаңыз (бидай, арпа, сұлы, күнбағыс, рапс, зығыр🧪)\n"
+           "4. Болжам + тәуекел 🟢🟡🔴 + 📄 PDF есеп / 🔄 Жаңа болжам батырмаларын алыңыз\n"
+           "\nМысалдар:\n"
+           "• Есіл → Жаздық бидай\n"
+           "• 📍 Геолокация жіберіңіз — жақын ауданды өзім табамын\n"
+           "• /about — команда мен дереккөздер туралы\n"
+           "\nҚосымша командалар: /more\n"
+           "\n🧪 — сынақ болжам (дерек аз), орташа мәнге қараңыз."),
+    "en": ("🌾 How to get a forecast:\n"
+           "1. /start → choose language\n"
+           "2. Choose district with a button 👇 (10 Akmola districts)\n"
+           "3. Choose crop (wheat, barley, oats, sunflower, rapeseed, flax🧪)\n"
+           "4. Get forecast + risk 🟢🟡🔴 + 📄 PDF report / 🔄 New forecast buttons\n"
+           "\nExamples:\n"
+           "• Esil → Spring wheat\n"
+           "• Send 📍 location — I'll find the nearest district\n"
+           "• /about — team & sources\n"
+           "\nMore commands: /more\n"
+           "\n🧪 — trial forecast (little data), rely on the average."),
+}
+
+MORE_TEXT: dict[str, str] = {
+    "ru": ("🛠 Ещё команды:\n"
+           "• /gis — поля со спутника (NDVI, залежи)\n"
            "• /spray — окно опрыскивания (ветер/дождь, 48ч)\n"
            "• /guide — болезни и вредители культуры\n"
            "• /fields — мои поля, /elevators — элеваторы\n"
            "• /alerts — угрозы 7 дней (заморозки/жара/ливни)\n"
            "• /compare — сравнить 2 культуры в районе\n"
-           "\n🧪 — пробный прогноз (мало данных), ориентируйся на среднее."),
-    "kz": ("🌾 Болжамды қалай алуға болады:\n"
-           "1. /start → тілді таңдаңыз\n"
-           "2. Ауданды батырмамен таңдаңыз 👇 (Ақмоланың 10 ауданы)\n"
-           "3. Дақылды таңдаңыз (бидай, арпа, сұлы, күнбағыс🧪, рапс🧪, зығыр🧪)\n"
-           "4. Болжам + тәуекел 🟢🟡🔴 + 📄 PDF есеп / 🔄 Жаңа болжам батырмаларын алыңыз\n"
-           "\nМысалдар:\n"
-           "• Есіл → Жаздық бидай\n"
-           "• 📍 Геолокация жіберіңіз — жақын ауданды өзім табамын\n"
-            "• /about — команда мен дереккөздер туралы\n"
-            "• /gis — серіктен егістіктер (NDVI, тыңайған жер)\n"
-            "• /spray — бүрку терезесі (жел/жаңбыр, 48с)\n"
+           "• /about — о команде и источниках"),
+    "kz": ("🛠 Қосымша командалар:\n"
+           "• /gis — серіктен егістіктер (NDVI, тыңайған жер)\n"
+           "• /spray — бүрку терезесі (жел/жаңбыр, 48с)\n"
            "• /guide — дақыл аурулары мен зиянкестері\n"
            "• /fields — менің егістіктерім, /elevators — элеваторлар\n"
            "• /alerts — 7 күндік қауіптер (үсік/ыстық/нөсер)\n"
            "• /compare — ауданда 2 дақылды салыстыру\n"
-           "\n🧪 — сынақ болжам (дерек аз), орташа мәнге қараңыз."),
-    "en": ("🌾 How to get a forecast:\n"
-           "1. /start → choose language\n"
-           "2. Choose district with a button 👇 (10 Akmola districts)\n"
-           "3. Choose crop (wheat, barley, oats, sunflower🧪, rapeseed🧪, flax🧪)\n"
-           "4. Get forecast + risk 🟢🟡🔴 + 📄 PDF report / 🔄 New forecast buttons\n"
-           "\nExamples:\n"
-           "• Esil → Spring wheat\n"
-           "• Send 📍 location — I'll find the nearest district\n"
-            "• /about — team & sources\n"
-            "• /gis — satellite fields (NDVI, fallow)\n"
-            "• /spray — spray window (wind/rain, 48h)\n"
+           "• /about — команда мен дереккөздер туралы"),
+    "en": ("🛠 More commands:\n"
+           "• /gis — satellite fields (NDVI, fallow)\n"
+           "• /spray — spray window (wind/rain, 48h)\n"
            "• /guide — crop diseases & pests\n"
            "• /fields — my fields, /elevators — elevators\n"
            "• /alerts — 7-day threats (frost/heat/downpour)\n"
            "• /compare — compare 2 crops in the district\n"
-           "\n🧪 — trial forecast (little data), rely on the average."),
+           "• /about — team & sources"),
 }
 
 ABOUT_TEXT: dict[str, str] = {
@@ -476,7 +491,7 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"{'📡 Интернет нашар — ескі дерекпен есептедім.' if offline else ''}",
             "",
             f"🛡 Сақтандыру: 80% өнім жинай алмау қаупі — {_ploss_word(p_loss, lang)} "
-            f"({round(p_loss * 100)}/100).",
+            f"(100-ден {round(p_loss * 100)} жағдай шамамен).",
             f"Осындай жағдайда төлем шамамен {payout} теңге/га. Бұл бағдар, тариф емес.",
             "",
             f"🌱 Себу: {rec['window']}. {rec['message']}",
@@ -493,7 +508,7 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"{'📡 Weak internet — used saved data.' if offline else ''}",
             "",
             f"🛡 Insurance: risk of falling below 80% of average — {_ploss_word(p_loss, lang)} "
-            f"({round(p_loss * 100)} in 100 years).",
+            f"(about {round(p_loss * 100)} in 100).",
             f"If it happens, payout ≈ {payout} tenge/ha. Estimate, not a tariff.",
             "",
             f"🌱 Sowing: {rec['window']}. {rec['message']}",
@@ -510,7 +525,7 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"{'📡 Интернет слабый — посчитал по сохранённым данным.' if offline else ''}",
             "",
             f"🛡 Страховка: риск не добрать 80% среднего — {_ploss_word(p_loss, lang)} "
-            f"({round(p_loss * 100)} лет из 100).",
+            f"(около {round(p_loss * 100)} случаев из 100).",
             f"Если случится — выплата примерно {payout} тенге/га. Это ориентир, не тариф.",
             "",
             f"🌱 Сев: {rec['window']}. {rec['message']}",
@@ -559,12 +574,16 @@ def create_dispatcher():
         b.adjust(3)
         return b.as_markup()
 
-    def _kb_districts():
+    def _kb_districts(lang: str = "ru"):
+        # UX: только имя на языке пользователя, 2 колонки (10 районов).
+        if lang not in ("ru", "kz", "en"):
+            lang = "ru"
+        key = f"name_{lang}"
         b = InlineKeyboardBuilder()
         for d in _districts():
-            b.button(text=f"{d['name_ru']} ({d['name_en']})",
+            b.button(text=str(d.get(key) or d.get("name_ru") or d.get("name_en")),
                      callback_data=f"dist:{d['name_en']}")
-        b.adjust(1)
+        b.adjust(2)
         return b.as_markup()
 
     def _kb_crops(lang: str):
@@ -616,6 +635,29 @@ def create_dispatcher():
         b.adjust(1)
         return b.as_markup()
 
+    def _ndvi_verdict(n: float | None, lang: str) -> str:
+        """Слово-вердикт к голому NDVI (аудит #10): число без вывода — не ответ."""
+        if n is None:
+            return {"ru": "нет данных", "kz": "дерек жоқ",
+                    "en": "no data"}.get(lang, "нет данных")
+        if n >= 0.5:
+            return {"ru": "хорошо — проверять не надо",
+                    "kz": "жақсы — тексеру қажет емес",
+                    "en": "good — no need to check"}.get(lang, "")
+        if n >= 0.35:
+            return {"ru": "средне — посмотрите при случае",
+                    "kz": "орташа — мүмкіндік болса қараңыз",
+                    "en": "average — check if passing by"}.get(lang, "")
+        return {"ru": "слабо — стоит съездить",
+                "kz": "нашар — барған жөн",
+                "en": "poor — worth a visit"}.get(lang, "")
+
+    def _demo_mark(fl: dict, lang: str) -> str:
+        if fl.get("demo"):
+            return {"ru": " (пример)", "kz": " (үлгі)",
+                    "en": " (sample)"}.get(lang, "")
+        return ""
+
     def _render_gis(district_en: str, lang: str, g: dict, top_n: int = 3) -> str:
         """Общий текст топ-полей для /gis и кнопки 🛰 Спутник (max_fields=3)."""
         fields = sorted(g.get("fields", []),
@@ -630,18 +672,26 @@ def create_dispatcher():
                 s = c.get("status_en", c.get("status"))
             else:
                 s = c.get("status_ru", c.get("status"))
-            return (fl.get("field_id"), fl.get("area_ha"), s, c.get("ndvi_max"))
+            n = c.get("ndvi_max")
+            v = _ndvi_verdict(n, lang)
+            mark = _demo_mark(fl, lang)
+            nn = "—" if n is None else round(float(n), 2)
+            return (fl.get("field_id"), fl.get("area_ha"), s, nn, v, mark)
+        dname = _district_name(district_en, lang)
         if lang == "kz":
-            head = f"🛰 {district_en}: {g.get('checked', 0)} егістік тексерілді."
-            worst = [f"• {i} ({a} га): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:top_n])]
+            head = f"🛰 {dname}: {g.get('checked', 0)} егістік тексерілді."
+            worst = [f"• {i}{dm} ({a} га): {s}, NDVI {n} — {v}"
+                     for i, a, s, n, v, dm in (_nm(fl) for fl in fields[:top_n])]
             tail = "Толығырақ — қосымшада «Карталар»."
         elif lang == "en":
-            head = f"🛰 {district_en}: {g.get('checked', 0)} fields checked."
-            worst = [f"• {i} ({a} ha): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:top_n])]
+            head = f"🛰 {dname}: {g.get('checked', 0)} fields checked."
+            worst = [f"• {i}{dm} ({a} ha): {s}, NDVI {n} — {v}"
+                     for i, a, s, n, v, dm in (_nm(fl) for fl in fields[:top_n])]
             tail = "More — in the app Maps tab."
         else:
-            head = f"🛰 {district_en}: проверено полей — {g.get('checked', 0)}."
-            worst = [f"• {i} ({a} га): {s}, NDVI {n}" for i, a, s, n in (_nm(fl) for fl in fields[:top_n])]
+            head = f"🛰 {dname}: проверено полей — {g.get('checked', 0)}."
+            worst = [f"• {i}{dm} ({a} га): {s}, NDVI {n} — {v}"
+                     for i, a, s, n, v, dm in (_nm(fl) for fl in fields[:top_n])]
             tail = "Подробнее — во вкладке «Карты» приложения."
         return "\n".join([head, "", *worst, "", tail])
 
@@ -674,6 +724,15 @@ def create_dispatcher():
         if lang not in ABOUT_TEXT:
             lang = "ru"
         await m.answer(ABOUT_TEXT[lang])
+
+    @dp.message(Command("more"))
+    async def on_more(m: Message, state: FSMContext):
+        # UX #7: полный список команд — отдельно, HELP остаётся коротким.
+        data = await state.get_data()
+        lang = data.get("lang", "ru")
+        if lang not in MORE_TEXT:
+            lang = "ru"
+        await m.answer(MORE_TEXT[lang])
 
     @dp.message(Command("fields"))
     async def on_fields(m: Message, state: FSMContext):
@@ -718,11 +777,13 @@ def create_dispatcher():
         district = data.get("district")
         if not district:
             await m.answer(T["alerts_need"][lang],
-                           reply_markup=_kb_districts())
+                           reply_markup=_kb_districts(lang))
             return
         try:
             items = await asyncio.to_thread(check_alerts, district)
-            await m.answer(f"⚠️ {district} (7d):\n{format_alerts(items, lang)}")
+            dname = _district_name(district, lang)
+            days = {"ru": "7 дней", "kz": "7 күн", "en": "7 days"}[lang]
+            await m.answer(f"⚠️ {dname} ({days}):\n{format_alerts(items, lang)}")
         except Exception:
             log.exception("on_alerts failed")
             await m.answer(f"{T['err_generic'][lang]} (код: E3)")
@@ -762,7 +823,7 @@ def create_dispatcher():
         await state.update_data(lang=lang)
         await state.set_state(Form.district)
         await cb.message.answer(T["choose_district"][lang],
-                                reply_markup=_kb_districts())
+                                reply_markup=_kb_districts(lang))
         await cb.answer()
 
     @dp.callback_query(F.data.startswith("dist:"))
@@ -785,7 +846,7 @@ def create_dispatcher():
         if not district:
             # C3: дружелюбно — район не выбран
             await cb.message.answer(f"{T['err_no_district'][lang]}",
-                                    reply_markup=_kb_districts())
+                                    reply_markup=_kb_districts(lang))
             await cb.answer()
             return
         try:
@@ -813,7 +874,9 @@ def create_dispatcher():
             lang = "ru"
         try:
             items = await asyncio.to_thread(check_alerts, district)
-            await cb.message.answer(f"⚠️ {district} (7d):\n{format_alerts(items, lang)}")
+            dname = _district_name(district, lang)
+            days = {"ru": "7 дней", "kz": "7 күн", "en": "7 days"}[lang]
+            await cb.message.answer(f"⚠️ {dname} ({days}):\n{format_alerts(items, lang)}")
         except Exception:
             log.exception("on_alerts_cb failed")
             await cb.message.answer(f"{T['err_generic'][lang]} (код: E6)")
@@ -836,8 +899,10 @@ def create_dispatcher():
                 from spray import check_spray_window  # type: ignore
             r = await asyncio.to_thread(check_spray_window, district)
             key = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
-            await cb.message.answer(f"🧴 {district}: {r.get(key)}\n"
-                                    f"good {r.get('good_hours', '?')}/{r.get('total_hours', 48)}h")
+            dname = _district_name(district, lang)
+            hours = T["spray_hours"][lang].format(
+                good=r.get("good_count", "?"), checked=r.get("hours_checked", "?"))
+            await cb.message.answer(f"🧴 {dname}: {r.get(key)}\n{hours}")
         except Exception:
             log.exception("on_spray_cb failed")
             await cb.message.answer(f"{T['err_generic'][lang]} (код: E7)")
@@ -874,7 +939,7 @@ def create_dispatcher():
             lang = "ru"
         await state.set_state(Form.district)
         await cb.message.answer(T["choose_district"][lang],
-                                reply_markup=_kb_districts())
+                                reply_markup=_kb_districts(lang))
         await cb.answer()
 
     @dp.callback_query(F.data.startswith("pdf:"))
@@ -931,7 +996,7 @@ def create_dispatcher():
             lang = "ru"
         district = data.get("district")
         if not district:
-            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts())
+            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts(lang))
             return
         try:
             try:
@@ -940,8 +1005,10 @@ def create_dispatcher():
                 from spray import check_spray_window  # type: ignore
             r = await asyncio.to_thread(check_spray_window, district)
             key = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
-            await m.answer(f"🧴 {district}: {r.get(key)}\n"
-                           f"good {r.get('good_hours', '?')}/{r.get('total_hours', 48)}h")
+            dname = _district_name(district, lang)
+            hours = T["spray_hours"][lang].format(
+                good=r.get("good_count", "?"), checked=r.get("hours_checked", "?"))
+            await m.answer(f"🧴 {dname}: {r.get(key)}\n{hours}")
         except Exception:
             log.exception("on_spray failed")
             await m.answer(f"{T['err_generic'][lang]} (код: E9)")
@@ -979,7 +1046,7 @@ def create_dispatcher():
             lang = "ru"
         district = data.get("district")
         if not district:
-            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts())
+            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts(lang))
             return
         try:
             try:
@@ -1002,7 +1069,7 @@ def create_dispatcher():
             lang = "ru"
         district = data.get("district")
         if not district:
-            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts())
+            await m.answer(T["alerts_need"][lang], reply_markup=_kb_districts(lang))
             return
         aliases: dict[str, list[str]] = {
             "spring_wheat": ["spring_wheat", "пшеница", "пшеница яровая", "бидай",
@@ -1073,7 +1140,7 @@ def create_dispatcher():
         if lang not in ("ru", "kz", "en"):
             lang = "ru"
         await m.answer(f"{T['err_no_district'][lang]}",
-                       reply_markup=_kb_districts())
+                       reply_markup=_kb_districts(lang))
 
     return dp
 

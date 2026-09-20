@@ -94,8 +94,15 @@ V4_FEATURES = [
     "oilseeds_share", "htc_mjja",
     "soil_N", "soil_pH", "soil_SOC", "soil_clay",
 ]
+# NEW_DATA #1 (regime, см. features_v4.py): календарные фичи сдвига,
+# идентифицируемые на train<=2020 (post2020-dummy сознательно исключён —
+# константа на train, см. features_v4.py). Отбор — train-only SelectKBest.
+REGIME_FEATURES = [
+    "trend_sq", "trend_recent", "oilshare_trend",
+]
 OPTIONAL_NDVI = ["ndvi_max", "ndvi_flag"]
-CANDIDATE_FEATURES = BASE_FEATURES + EXTRA_FEATURES + V4_FEATURES + OPTIONAL_NDVI
+CANDIDATE_FEATURES = (BASE_FEATURES + EXTRA_FEATURES + V4_FEATURES
+                      + REGIME_FEATURES + OPTIONAL_NDVI)
 TARGET = "yield_c_ha"
 
 SELECT_K = 10  # per-crop top-K по SelectKBest(f_regression) на train

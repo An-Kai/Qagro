@@ -22,23 +22,23 @@
   },
   "sunflower": {
     "n": 50,
-    "conformal_coverage": 0.56,
-    "conformal_width": 1.449,
-    "gauss_coverage": 0.56,
-    "gauss_width": 1.449
+    "conformal_coverage": 0.48,
+    "conformal_width": 1.575,
+    "gauss_coverage": 0.48,
+    "gauss_width": 1.56
   },
   "rapeseed": {
     "n": 50,
-    "conformal_coverage": 0.0,
-    "conformal_width": 1.049,
-    "gauss_coverage": 0.0,
-    "gauss_width": 1.285
+    "conformal_coverage": 0.04,
+    "conformal_width": 1.117,
+    "gauss_coverage": 0.08,
+    "gauss_width": 1.333
   },
   "flax": {
     "n": 50,
-    "conformal_coverage": 0.14,
-    "conformal_width": 1.024,
+    "conformal_coverage": 0.24,
+    "conformal_width": 1.042,
     "gauss_coverage": 0.26,
-    "gauss_width": 1.318
+    "gauss_width": 1.149
   }
 }

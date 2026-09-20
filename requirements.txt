@@ -22,5 +22,7 @@ scipy==1.14.1
 # v2 NDVI (optional, модель работает без них): STAC-поиск сцен Sentinel-2
 pystac-client==0.8.6
 planetary-computer==1.0.0
+# площади stat.gov.kz (.xls БНС, src/fetch_area.py):
+xlrd==2.0.1
 # rasterio — ТОЛЬКО для ручного расчёта NDVI из B04/B08 (пилот, опционально):
 # rasterio==1.4.3

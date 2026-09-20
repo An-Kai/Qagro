@@ -1,0 +1,12 @@
+# Qagro .dockerignore — не тащим в образ мусор и секреты
+.git/
+__pycache__/
+*.pyc
+.venv/
+.env
+data/cache.db
+data/myfields.db
+*.log
+.opencode/node_modules/
+.opencode/skills/*/node_modules/
+docs/Qagro_presentation.pdf

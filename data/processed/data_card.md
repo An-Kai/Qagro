@@ -47,11 +47,11 @@
    hourly soil_moisture_3_9cm; timezone Asia/Almaty. Сырое: `data/raw/openmeteo_*_daily.json`;
    агрегаты: `data/raw/openmeteo_summary.csv`.
 7. **Координаты районов** — `config/districts.yaml` (центроиды WGS84).
-8. **NDVI Sentinel-2 (июнь+июль, 22 реальных из 62)**:
+8. **NDVI Sentinel-2 (июнь–август, 41 реальный из 62)**:
    `data/ndvi/ndvi_timeseries.json` (Esil/Zerenda, июнь–август 2024–2025,
    cloud<20%, collection sentinel-2-l2a, Planetary Computer STAC без ключа;
-   `python src/sentinel_ndvi.py`); 22 записи с реальным `ndvi_mean`
-   (PC TiTiler), остальные 40 — None (MISSING, сцены нет).
+   `python src/sentinel_ndvi.py`); 41 запись с реальным `ndvi_mean`
+   (PC TiTiler), остальная 21 — None (MISSING, сцены нет).
    Ручной источник: Copernicus Browser https://browser.dataspace.copernicus.eu/
    + Sentinel Hub https://www.sentinel-hub.com/. Модель работает и без NDVI
    (optional join `src/features_ndvi.py`: `ndvi_max` только при настоящих NDVI).
@@ -62,8 +62,12 @@
   Район = областной якорь × агрокоэф.; в модели 2025 лучше держать флагом.
 - **Подсолнечник/рапс/лён 2024–2025 — структурный сдвиг** (гибриды, площади:
   подсолнечник 1.5 т/га в 2024 vs 0.8 в 2014 — GAIN KZ2025-0010; рапс 19+ ц/га).
-  LGBM, обученный на <=2020, на hold-out 2021–2025 для этих культур ХУЖЕ бейзлайна
-  (см. metrics/metrics.json: below_baseline=true) — фиксируем честно, без подгонки.
+  Режимные календарные фичи v4 (`trend_sq`, `trend_recent`, `oilshare_trend`,
+  см. `src/features_v4.py`; post2020-dummy сознательно исключён —
+  константа на train<=2020) выбраны train-only CV для подсолнечника/рапса/льна.
+  На hold-out 2021–2025: подсолнечник и рапс теперь лучше бейзлайна по MAE,
+  лён — хуже (`below_baseline:true` только у льна, см. metrics/metrics.json).
+  Оговорка: у рапса R² −0.79 и покрытие интервала 0.04 — фиксируем честно.
 - **Районная урожайность = областной якорь × агрозональный коэффициент**
   (север 1.02–1.06, юг 0.92–0.98; среднее ~1.0). Районные длинные ряды БНС
   публично не разбиты — это задокументированный даунскейлинг, НЕ наблюдение.

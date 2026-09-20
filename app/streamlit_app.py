@@ -102,11 +102,16 @@ UI = {
            "step1_hint": "Если не знаете район — отправьте геолокацию в Telegram-боте, он подскажет район.",
            "step2_hint": "Значок 🧪 — пробный прогноз: ориентируйтесь на среднее за 5 лет.",
            "district_help": "Выберите район хозяйства. От него зависят прогноз, риски и элеватор.",
+           "pick_district": "— выберите район —",
+           "calc_error": "😔 Не получилось посчитать. Попробуйте позже или выберите другой район.",
+           "price_na": "Цена влияет только на пшеницу и ячмень — для этой культуры слайдер отключён.",
+           "ndvi_good": "хорошо — проверять не надо", "ndvi_mid": "средне — посмотрите при случае",
+           "ndvi_low": "слабо — стоит съездить",
            "crop_help": "Выберите культуру. Страховка считается для пшеницы и ячменя.",
            "price_help": "Влияет только на расчёт страховки и прибыли, прогноз урожая не меняет.",
            "farm": "🚜 Моё хозяйство", "plus": "🔬 Справочник и деньги",
            "risk_tab": "Риски", "fields_tab": "Поля и элеваторы",
-           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (июнь 2024).",
+           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (2024–2025).",
            "my_fields": "моих полей", "my_empty": "Полей пока нет — добавьте первое ниже 👇",
            "field_name": "Название поля", "field_name_help": "Например: Поле у речки. Видно только вам.",
            "field_area": "Площадь (га)", "field_area_help": "От 1 до 2000 га. Нужно для выплат на всё поле.",
@@ -182,11 +187,16 @@ UI = {
            "step1_hint": "Ауданды білмесеңіз — Telegram-ботқа геолокация жіберіңіз, ауданды айтады.",
            "step2_hint": "🧪 белгісі — сынақ болжам: 5 жылдық орташаға қараңыз.",
            "district_help": "Шаруашылық ауданын таңдаңыз. Болжам, қауіп және элеватор соған байланысты.",
+           "pick_district": "— ауданды таңдаңыз —",
+           "calc_error": "😔 Есептеу сәтсіз болды. Кейінірек көріңіз немесе басқа аудан таңдаңыз.",
+           "price_na": "Баға тек бидай мен арпаға әсер етеді — бұл дақылға сырғытпа өшірулі.",
+           "ndvi_good": "жақсы — тексеру қажет емес", "ndvi_mid": "орташа — мүмкіндік болса қараңыз",
+           "ndvi_low": "нашар — барған жөн",
            "crop_help": "Дақылды таңдаңыз. Сақтандыру бидай мен арпаға есептеледі.",
            "price_help": "Тек сақтандыру мен пайдаға әсер етеді, өнім болжамын өзгертпейді.",
            "farm": "🚜 Менің шаруашылығым", "plus": "🔬 Анықтама және ақша",
            "risk_tab": "Қауіптер", "fields_tab": "Егістік және элеваторлар",
-           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (маусым 2024).",
+           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (2024–2025).",
            "my_fields": "менің егістігім", "my_empty": "Егістік әзірге жоқ — төменнен біріншісін қосыңыз 👇",
            "field_name": "Егістік атауы", "field_name_help": "Мысалы: Өзен жанындағы егіс. Тек сізге көрінеді.",
            "field_area": "Ауданы (га)", "field_area_help": "1–2000 га. Төлемді бүкіл егіске есептеуге керек.",
@@ -262,11 +272,16 @@ UI = {
            "step1_hint": "Don't know your district? Send geolocation to the Telegram bot, it will tell you.",
            "step2_hint": "🧪 means experimental forecast: rely on the 5-year average.",
            "district_help": "Pick your farm district. Forecast, risks and elevator depend on it.",
+           "pick_district": "— pick a district —",
+           "calc_error": "😔 Could not calculate. Try later or pick another district.",
+           "price_na": "Price affects only wheat and barley — slider off for this crop.",
+           "ndvi_good": "good — no need to check", "ndvi_mid": "average — check if passing by",
+           "ndvi_low": "poor — worth a visit",
            "crop_help": "Pick a crop. Insurance is calculated for wheat and barley.",
            "price_help": "Affects only insurance and profit, not the yield forecast.",
            "farm": "🚜 My farm", "plus": "🔬 Guide & money",
            "risk_tab": "Risks", "fields_tab": "Fields & elevators",
-           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (June 2024).",
+           "legend": "🟢<35 🟡35–60 🔴>60 | 🟣 NDVI Sentinel-2 (2024–2025).",
            "my_fields": "my fields", "my_empty": "No fields yet — add the first one below 👇",
            "field_name": "Field name", "field_name_help": "E.g. Field by the river. Visible only to you.",
            "field_area": "Area (ha)", "field_area_help": "1 to 2000 ha. Needed for whole-field payout.",
@@ -640,10 +655,6 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     lang = st.sidebar.selectbox(UI["ru"]["lang_label"],
                                 options=["ru", "kz", "en"], index=0)
     T = UI[lang]
-    wheat_price = st.sidebar.slider(T["price"], min_value=WHEAT_PRICE_MIN,
-                                    max_value=WHEAT_PRICE_MAX,
-                                    value=WHEAT_PRICE_DEFAULT, step=1000,
-                                    help=T["price_help"])
 
     st.title(T["title"])
     st.write(T["sub"])
@@ -654,12 +665,15 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
 
     st.header(T["step1"])
     st.caption(T["step1_hint"])
-    district_en = st.selectbox("📍", options=list(dlabel.keys()),
-                               format_func=lambda k: dlabel[k],
-                               index=list(dlabel.keys()).index("Esil")
-                               if "Esil" in dlabel else 0,
+    _NONE = "—"
+    district_en = st.selectbox("📍", options=[_NONE, *dlabel.keys()],
+                               format_func=lambda k: T["pick_district"] if k == _NONE else dlabel[k],
+                               index=0,
                                label_visibility="collapsed",
                                help=T["district_help"])
+    if district_en == _NONE:
+        st.info(T["pick_district"])
+        st.stop()
     st.markdown(f"<div class='district-code'><small>{T['dcode']}: <b>{district_en}</b></small></div>",
                 unsafe_allow_html=True)
     st.header(T["step2"])
@@ -668,6 +682,14 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                         format_func=lambda k: clabel[k],
                         label_visibility="collapsed",
                         help=T["crop_help"])
+    # Цена — после выбора культуры: для не-пшеницы/ячменя слайдер молча не работал.
+    price_on = crop in ("spring_wheat", "barley")
+    wheat_price = st.sidebar.slider(T["price"], min_value=WHEAT_PRICE_MIN,
+                                    max_value=WHEAT_PRICE_MAX,
+                                    value=WHEAT_PRICE_DEFAULT, step=1000,
+                                    help=T["price_help"], disabled=not price_on)
+    if not price_on:
+        st.sidebar.caption(T["price_na"])
 
     try:
         pred = cached_predict(district_en, crop)
@@ -675,10 +697,12 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
         rec = recommend_sowing(district_en, crop, lang)
         err = None
     except Exception as e:
+        import logging as _logging
+        _logging.exception("streamlit calc failed for %s/%s", district_en, crop)
         pred = ins_raw = rec = None
         err = f"{type(e).__name__}: {e}"
     if err:
-        st.error(f"⚠️ {err}")
+        st.error(T["calc_error"])
         st.stop()
 
     ins = recalc_payout_live(ins_raw, wheat_price) if crop in ("spring_wheat", "barley") else ins_raw
@@ -906,8 +930,22 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                     g = _gis_run(district_en, max_fields=4)
             for fl in g.get("fields", []):
                 c = fl.get("classification") or {}
-                st.write(f"**{fl.get('field_id')}** ({fl.get('area_ha')} {T['ha']}): "
-                         f"{c.get(skey, c.get('status_ru', c.get('status')))} — NDVI max {c.get('ndvi_max')}, "
+                _nv = c.get("ndvi_max")
+                try:
+                    _nvf = None if _nv is None else float(_nv)
+                except (TypeError, ValueError):
+                    _nvf = None
+                if _nvf is None:
+                    _verdict, _nvs = "—", "—"
+                else:
+                    _nvs = round(_nvf, 2)
+                    _verdict = (T["ndvi_good"] if _nvf >= 0.5
+                                else (T["ndvi_mid"] if _nvf >= 0.35 else T["ndvi_low"]))
+                _demo = {"ru": " (пример)", "kz": " (үлгі)",
+                         "en": " (sample)"}[lang] if fl.get("demo") else ""
+                st.write(f"**{fl.get('field_id')}**{_demo} ({fl.get('area_ha')} {T['ha']}): "
+                         f"{c.get(skey, c.get('status_ru', c.get('status')))} — NDVI max {_nvs} "
+                         f"({_verdict}), "
                          f"{T['gis_dead']} {round(float(c.get('dead_share') or 0) * 100)}%.")
                 series = [(p.get("date"), p.get("ndvi_mean")) for p in fl.get("series", [])
                           if p.get("ndvi_mean") is not None]
@@ -1144,7 +1182,7 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
             st.caption(f"{T['spray_offline']}: {e}")
         al = cached_alerts(district_en)
         if al.get("error"):
-            st.caption(al["error"])
+            st.caption(T["offline"])
         elif not al.get("alerts"):
             st.success(T["no_threat"])
         else:

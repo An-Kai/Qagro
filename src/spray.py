@@ -97,9 +97,13 @@ def _windows(times: list[str]) -> list[tuple[str, str]]:
     return out
 
 
-def _fmt_window(start: str, end: str) -> str:
+def _fmt_window(start: str, end: str, lang: str = "ru") -> str:
     s = datetime.strptime(start, "%Y-%m-%dT%H:%M")
     e = datetime.strptime(end, "%Y-%m-%dT%H:%M")
+    if s == e:  # окно в один час: "с X до X" — бессмыслица, показываем факт
+        one = {"ru": "час", "kz": "сағат", "en": "hour"}.get(lang, "час")
+        at = {"ru": "в", "kz": "сағ.", "en": "at"}.get(lang, "в")
+        return f"{s.strftime('%d.%m')} {at} {s.strftime('%H:%M')} (1 {one})"
     if s.date() == e.date():
         return f"{s.strftime('%d.%m')} с {s.strftime('%H:%M')} до {e.strftime('%H:%M')}"
     return f"с {s.strftime('%d.%m %H:%M')} до {e.strftime('%d.%m %H:%M')}"
@@ -174,19 +178,21 @@ def check_spray_window(district_en: str, hours: int = 48) -> dict:
     wins = _windows(good_times)
 
     if good:
-        w0 = _fmt_window(*wins[0])
+        w0_ru = _fmt_window(*wins[0], lang="ru")
+        w0_kz = _fmt_window(*wins[0], lang="kz")
+        w0_en = _fmt_window(*wins[0], lang="en")
         verdict_ru = (
-            f"{w0} — хорошо "
+            f"{w0_ru} — хорошо "
             f"(ветер <5 м/с, без дождя, 10–25°C). "
             f"Всего хороших часов: {len(good)} из {checked}."
         )
         verdict_kz = (
-            f"{w0} — жақсы "
+            f"{w0_kz} — жақсы "
             f"(жел <5 м/с, жауынсыз, 10–25°C). "
             f"Жақсы сағаттар: {checked} ішінен {len(good)}."
         )
         verdict_en = (
-            f"{w0} — good "
+            f"{w0_en} — good "
             f"(wind <5 m/s, no rain, 10–25°C). "
             f"Good hours: {len(good)} of {checked}."
         )

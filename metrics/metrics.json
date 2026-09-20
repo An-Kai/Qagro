@@ -132,26 +132,26 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 2.093363778674281,
-      "rmse": 3.058081084034109,
-      "r2": 0.07534599865478331,
+      "mae": 2.0120415624188217,
+      "rmse": 2.831173273357009,
+      "r2": 0.2074728294310022,
       "n": 50
     },
     "residuals": {
-      "mean": 1.7176376726575504,
-      "std": 2.5558218339574172
+      "mean": 1.3937553568258876,
+      "std": 2.489362697946757
     },
     "features_used": [
       "tmean_mjja",
-      "gdd5",
       "heat30",
-      "et0",
       "yield_lag1",
       "dtr",
       "vpd_proxy",
       "year_trend",
       "yield_roll3",
-      "oilseeds_share"
+      "trend_sq",
+      "trend_recent",
+      "oilshare_trend"
     ],
     "holdout_years": [
       2021,
@@ -172,34 +172,32 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 3.785587286277983,
-      "rmse": 4.488746105207582,
-      "r2": -1.058962216945777,
+      "mae": 3.3132174979417357,
+      "rmse": 4.18220801535426,
+      "r2": -0.7873497940248462,
       "n": 50
     },
     "residuals": {
-      "mean": 3.785587286277983,
-      "std": 2.4365772444874003
+      "mean": 3.3132174979417357,
+      "std": 2.5780576644938
     },
     "features_used": [
       "tmean_mjja",
       "gdd5",
       "heat30",
-      "et0",
       "yield_lag1",
-      "dtr",
       "vpd_proxy",
-      "spei_proxy",
       "year_trend",
-      "yield_roll3"
+      "yield_roll3",
+      "trend_sq",
+      "trend_recent",
+      "oilshare_trend"
     ],
     "holdout_years": [
       2021,
       2025
     ],
-    "scatter": "metrics/plots/scatter_rapeseed.png",
-    "below_baseline": true,
-    "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; see fetch_stat.py / data_card). Metrics are honest, no tuning."
+    "scatter": "metrics/plots/scatter_rapeseed.png"
   },
   "flax": {
     "model": "blend_lgbm_ridge_70_30",
@@ -214,31 +212,33 @@
       "n": 50
     },
     "lgbm": {
-      "mae": 1.182893342456112,
-      "rmse": 1.376150592689524,
-      "r2": 0.03937141553838419,
+      "mae": 1.3246986213538616,
+      "rmse": 1.672121637268813,
+      "r2": -0.4182713034855843,
       "n": 50
     },
     "residuals": {
-      "mean": -0.48827157009103217,
-      "std": 1.2996786602851407
+      "mean": -1.2534538488538793,
+      "std": 1.1179628971499955
     },
     "features_used": [
       "tmean_mjja",
       "gdd5",
       "heat30",
       "et0",
-      "dtr",
       "vpd_proxy",
-      "spei_proxy",
       "year_trend",
       "yield_roll3",
-      "htc_mjja"
+      "trend_sq",
+      "trend_recent",
+      "oilshare_trend"
     ],
     "holdout_years": [
       2021,
       2025
     ],
-    "scatter": "metrics/plots/scatter_flax.png"
+    "scatter": "metrics/plots/scatter_flax.png",
+    "below_baseline": true,
+    "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; see fetch_stat.py / data_card). Metrics are honest, no tuning."
   }
 }

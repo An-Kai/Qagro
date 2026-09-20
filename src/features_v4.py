@@ -25,6 +25,16 @@
 Выход: data/processed/akmola_panel_v4.csv (v3 + 9 колонок).
 Честность: площади/почва года Y (площади известны к севу, почва статична);
 будущее не используется.
+
+NEW_DATA #1 (regime): структурный сдвиг 2024–2025 ловим ТОЛЬКО идентифицируемыми
+на train (<=2020) календарными фичами:
+  trend_sq — year_trend^2 (ускорение тренда; year_trend = year−2005 из v3);
+  trend_recent — max(0, year−2015) (излом темпа с 2015, экстраполируется на 2021+);
+  oilshare_trend — oilseeds_share × year_trend (доля масличных × время).
+А dummy post2020=(year>=2021) СОЗНАТЕЛЬНО НЕ добавляем: на train<=2020 он
+тождественный 0 (константа, _usable_candidates его исключит), коэффициент
+неидентифицируем без подглядывания в hold-out. Отбор — train-only SelectKBest
+в src/train.py; evaluate.py hold-out не трогает.
 """
 from __future__ import annotations
 
@@ -88,6 +98,13 @@ def main() -> None:
     df["htc_mjja"] = (10.0 * df["precip_mjja"]
                       / (df["tmean_mjja"] * MJJA_DAYS)).round(3)
 
+    # --- NEW_DATA #1: режимные календарные фичи (без утечек) ---
+    if "year_trend" not in df.columns:  # fallback для панели v2
+        df["year_trend"] = (df["year"] - 2005).astype(int)
+    df["trend_sq"] = (df["year_trend"] ** 2).astype(int)
+    df["trend_recent"] = (df["year"] - 2015).clip(lower=0).astype(int)
+    df["oilshare_trend"] = (df["oilseeds_share"] * df["year_trend"]).round(4)
+
     # --- почва (статика района) ---
     soil = pd.read_csv(SOIL_CSV)
     colmap = {}
@@ -111,8 +128,9 @@ def main() -> None:
     df.to_csv(OUT, index=False)
     print(f"[v4] saved {OUT}: {df.shape}")
     print(f"[v4] new cols: oilseeds_area_ha, sunflower_area_ha, grain_area_ha, "
-          f"area_filled, oilseeds_share, htc_mjja, "
-          f"{[c for c in keep if c != 'district_en']}")
+           f"area_filled, oilseeds_share, htc_mjja, trend_sq, trend_recent, "
+           f"oilshare_trend, "
+           f"{[c for c in keep if c != 'district_en']}")
 
 
 if __name__ == "__main__":

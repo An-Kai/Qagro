@@ -321,6 +321,38 @@ def calendar(crop: str = "spring_wheat", lang: str = "ru") -> dict:
         raise HTTPException(status_code=422, detail=_err422(e)) from e
 
 
+@app.get("/agrodata")
+def agrodata(district_en: str = "Esil", crop: str = "spring_wheat",
+             lang: str = "ru") -> dict:
+    """NEW_DATA #2: сверка с Казгидромет AgroData (best-effort, без моков).
+
+    drought (сырой индекс, без вердикта) + productivity (ц/га) +
+    арифметика согласия с Qagro-прогнозом. При недоступности сети —
+    200 с error-строками в рубриках, а не выдумка.
+    """
+    lang = (lang or "ru").lower()
+    try:
+        _validate_inputs(district_en, crop, lang)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=_err422(e)) from e
+    try:
+        try:
+            from src.fetch_agrodata import compare_agrodata
+        except ImportError:
+            from fetch_agrodata import compare_agrodata  # type: ignore
+        pred = _predict(district_en, crop, None)
+        q = {"y_pred": pred.get("y_pred"), "lo10": pred.get("lo10"),
+             "hi90": pred.get("hi90")}
+        return compare_agrodata(district_en, q, lang)
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=_err422(e)) from e
+    except Exception as e:
+        return {"district_en": district_en, "source": "agrodata.kazhydromet.kz",
+                "drought": {"count": 0, "entries": [], "error": f"{type(e).__name__}: {e}"},
+                "productivity": {"count": 0, "entries": [], "error": f"{type(e).__name__}: {e}"},
+                "qagro": None, "agreement": f"{type(e).__name__}: {e}"}
+
+
 @app.get("/alerts")
 def alerts(district_en: str = "Esil", days: int = 7) -> dict:
     """C8: агроалерты по прогнозу Open-Meteo (best-effort, без моков).

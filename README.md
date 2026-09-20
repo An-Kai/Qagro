@@ -11,7 +11,7 @@ Qagro — MVP decision-support системы для фермеров и агр�
 
 Покрытие MVP: **10 районов** Акмолинской области × **6 культур**
 (модель v4: бленд LightGBM+Ridge, веса per-crop по train-CV, R² пшеница 0.66 / ячмень 0.65 / овёс 0.74;
-5/6 strong (пшеница, ячмень, овёс, подсолнечник, лён), рапс — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
+5/6 strong (пшеница, ячмень, овёс, подсолнечник, рапс), лён — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
 годы панели 2005–2025, прогноз — 2026.
 
 Интерфейсы: **FastAPI** (`POST /predict`, `POST /report` → PDF), **Telegram-бот** (aiogram 3.x),
@@ -68,7 +68,7 @@ python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
 # GET  http://127.0.0.1:8000/health
 # POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"spring_wheat"}
 # POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"oats"}  # strong v3
-# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"rapeseed"}  # EXPERIMENTAL
+# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"flax"}  # EXPERIMENTAL
 # POST http://127.0.0.1:8000/report   {"district_en":"Esil","crop":"spring_wheat"} -> PDF
 ```
 
@@ -122,7 +122,7 @@ docker compose up --build
 
 Панель: `data/processed/akmola_panel.csv` — 1260 строк (10 районов × 21 год × 6 культур), 0 NaN в `yield_c_ha`. Детали и честные оговорки — `data/processed/data_card.md`.
 
-Гео: `data/fields/akmola_osm_fields.geojson` — 78 полигонов (60 реальных OSM через Overpass, ODbL + 18 честных демо 1×2 км с `demo:true`); `data/fields/granaries.json` — 12 элеваторов (Qoldau, координаты оценочные).
+Гео: `data/fields/akmola_osm_fields.geojson` — 115 полигонов (109 реальных OSM через Overpass, ODbL + 6 честных демо 1×2 км с `demo:true`); `data/fields/granaries.json` — 12 элеваторов (Qoldau, координаты оценочные).
 
 ### Sentinel-2 NDVI (v2, пилот — честно, без выдуманных NDVI)
 
@@ -175,32 +175,32 @@ python src/sentinel_ndvi.py
 
 ## Метрики v3 (hold-out 2021–2025, n=50 на культуру; 6 культур, см. metrics/metrics.json)
 
-Модель v4: бленд LightGBM+Ridge (веса per-crop по train-CV, см. `src/train.py`) на панели v4 (площади stat.gov.kz, ГТК Селянинова, SoilGrids). 5/6 strong, 1 experimental (рапс).
+Модель v4: бленд LightGBM+Ridge (веса per-crop по train-CV, см. `src/train.py`) на панели v4 (площади stat.gov.kz, ГТК Селянинова, SoilGrids, режимные календарные фичи trend_sq/trend_recent/oilshare_trend). 5/6 strong, 1 experimental (лён).
 
 | Культура | Бейзлайн (среднее 5 лет) | Бленд (Qagro) | Статус |
 |---|---|---|---|
 | Пшеница яровая | MAE **2.68**, RMSE 2.89, R² **-0.26** | MAE **1.20**, RMSE 1.49, R² **0.66** | ✅ strong |
 | Ячмень | MAE **2.78**, RMSE 3.00, R² **-0.26** | MAE **1.27**, RMSE 1.58, R² **0.65** | ✅ strong |
 | Овёс | MAE **3.59**, RMSE 4.00, R² **-0.33** | MAE **1.37**, RMSE 1.79, R² **0.74** | ✅ strong |
-| Подсолнечник | MAE **2.52**, RMSE 3.69, R² **-0.35** | MAE **2.09**, RMSE 3.06, R² **0.08** | ✅ strong (лучше бейзлайна по MAE) |
-| Рапс | MAE **3.70**, RMSE 4.26, R² **-0.85** | MAE 3.79, RMSE 4.49, R² -1.06 | 🧪 EXPERIMENTAL baseline |
-| Лён | MAE **1.22**, RMSE 1.44, R² **-0.05** | MAE **1.18**, RMSE 1.38, R² **0.04** | ✅ strong |
+| Подсолнечник | MAE **2.52**, RMSE 3.69, R² **-0.35** | MAE **2.01**, RMSE 2.83, R² **0.21** | ✅ strong (лучше бейзлайна по MAE) |
+| Рапс | MAE **3.70**, RMSE 4.26, R² **-0.85** | MAE **3.31**, RMSE 4.18, R² **-0.79** | ✅ strong (лучше бейзлайна по MAE; R² слабый, покрытие 0.04 — см. оговорку) |
+| Лён | MAE **1.22**, RMSE 1.44, R² **-0.05** | MAE 1.33, RMSE 1.67, R² -0.42 | 🧪 EXPERIMENTAL baseline |
 
-Источники: `metrics/metrics.json` (`below_baseline:true` только у рапса), графики `metrics/plots/scatter_*.png`, SHAP `metrics/shap_*.json`.
+Источники: `metrics/metrics.json` (`below_baseline:true` только у льна), графики `metrics/plots/scatter_*.png`, SHAP `metrics/shap_*.json`.
 Честный fallback: для культур с `below_baseline=true` прогноз = baseline mean5 за 5 лет, интервал шире (residual×1.5), флаг `experimental:true` в `src/predict.py` / `src/insurance.py` (без подгонки метрик).
 
 Пример эффекта (нейтральный сценарий MJJA 2016–2025, `reports/risk_example.json`):
-Esil/пшеница — expected payout **1558 тг/га** (p_loss 0.23); Zerenda/пшеница — **150 тг/га** (p_loss 0.03).
+Esil/пшеница — expected payout **51 тг/га** (p_loss 0.02); Zerenda/пшеница — **52 тг/га** (p_loss 0.02).
 
 ## Ограничения (честно)
 
 - **Район = даунскейлинг области.** Районных длинных рядов БНС в открытом доступе нет; районная урожайность = областной якорь × агрозональный коэффициент (север 1.02–1.06, юг 0.92–0.98). Центроиды из `config/districts.yaml` — не границы и не поля.
-- **6 культур: 5 strong + 1 experimental baseline.** Пшеница/ячмень/овёс/подсолнечник/лён — бленд v4 лучше бейзлайна (R² 0.66/0.65/0.74; подсолнечник MAE 2.09<2.52; лён MAE 1.18<1.22). Только рапс 2024–2025 — структурный сдвиг (гибриды, площади), бленд хуже бейзлайна на hold-out 2021–2025 (`below_baseline:true` только у рапса): прогноз = mean5, интервал ×1.5, флаг `experimental:true`. APPROX-масштаб от пшеницы — только если модели нет вообще (флаг `approx`).
+- **6 культур: 5 strong + 1 experimental baseline.** Пшеница/ячмень/овёс/подсолнечник/рапс — бленд v4 лучше бейзлайна (R² 0.66/0.65/0.74; подсолнечник MAE 2.01<2.52; рапс MAE 3.31<3.70). Только лён 2024–2025 — структурный сдвиг, бленд хуже бейзлайна на hold-out 2021–2025 (`below_baseline:true` только у льна): прогноз = mean5, интервал ×1.5, флаг `experimental:true`. Оговорка по рапсу: MAE-критерий пройден, но R² −0.79 и покрытие интервала 0.04 — модель систематически недопредсказывает (+3.3), интервалы занижены, цифры честно показаны в `metrics/`. APPROX-масштаб от пшеницы — только если модели нет вообще (флаг `approx`).
 - **Поля — 115, честно подписаны.** 109 реальных OSM-полигонов (Overpass, ODbL) + 6 демо-прямоугольников 1×2 км (`demo:true`, НЕ OSM). Официальный источник для пилота — map.iaqmola.kz (Smart GeoHub, нужна авторизация).
 - **Элеваторы — 12, координаты оценочные.** Перечень по карте Qoldau granaries-map (публичного API нет), подлежат уточнению по официальному реестру ХПП.
-- **NDVI: 22 реальных из 62 сцен.** В `data/ndvi/ndvi_timeseries.json` 22 записи с `ndvi_mean` (июнь+июль 2024–2025, Esil+Zerenda, PC TiTiler), остальные 40 — None (MISSING, сцены нет — число не выдумываем); модель работает и без NDVI (optional join). Ручной NDVI для пилота — Copernicus Browser / Sentinel Hub (см. блок выше).
+- **NDVI: 41 реальный из 62 сцен.** В `data/ndvi/ndvi_timeseries.json` 41 запись с `ndvi_mean` (июнь–август 2024–2025, Esil+Zerenda, PC TiTiler), остальная 21 — None (MISSING, сцены нет — число не выдумываем); модель работает и без NDVI (optional join). Ручной NDVI для пилота — Copernicus Browser / Sentinel Hub (см. блок выше).
 - **Страховка — decision support, не тариф.** Цена 95 000 тг/т (пшеница/ячмень) и ориентиры 70/180/200/220 тыс. тг/т (овёс/подсолнечник/рапс/лён — см. `src/approx_crops.py`); subsidy 0.8 из конфига; формула `max(0, 0.8*mean5 - y_pred)/10*price*subsidy`. Для experimental-культур цена индикативная, интервал шире — выплата честно неопределённее.
-- **Покрытие интервала честно ниже номинала.** Интервал в прогнозе называется «80%», но фактическое покрытие на hold-out 2021–2025 (`metrics/intervals.json`, n=50): пшеница conformal 0.66 / gauss 0.64, ячмень 0.60/0.62, овёс 0.58/0.60, подсолнечник 0.56/0.56, лён 0.14/0.26, рапс 0.00/0.00. Номинал 0.80 не заявляем — показываем только факт; калибровка до 0.80 — в планах (e-АПК пилот).
+- **Покрытие интервала честно ниже номинала.** Интервал в прогнозе называется «80%», но фактическое покрытие на hold-out 2021–2025 (`metrics/intervals.json`, n=50): пшеница conformal 0.66 / gauss 0.64, ячмень 0.60/0.62, овёс 0.58/0.60, подсолнечник 0.48/0.48, лён 0.24/0.26, рапс 0.04/0.08. Номинал 0.80 не заявляем — показываем только факт; калибровка до 0.80 — в планах (e-АПК пилот).
 - **2025 yield — предварительный** (якорь 15.8/16.8 ц/га); soil_moisture ERA5 для Акмолы в Archive API = null (проверено 18.09.2026) — в панель не входит, риск от soil не зависит.
 - Офлайн-демо: прогноз по умолчанию — нейтральный сценарий (средний MJJA 2016–2025 района); живой Open-Meteo — best-effort.
 
@@ -218,7 +218,7 @@ python src/intervals.py   # -> metrics/conformal.json + metrics/intervals.json
 python -c "import pandas as pd; df=pd.read_csv('data/processed/akmola_panel_v4.csv'); print(df.shape, df['yield_c_ha'].isna().sum())"
 ```
 
-Ожидается: `(1260, 33)`, NaN в yield — 0.
+Ожидается: `(1260, 36)`, NaN в yield — 0.
 
 ## Структура репо
 
@@ -241,6 +241,6 @@ Qagro (Track 2: 2.1/2.2/2.4) — Akmola district-level 2026 yield forecast (Ligh
 decade drought-risk traffic light (Open-Meteo), index-insurance decision support + sowing advice (RU/KZ/EN)
 via FastAPI, Telegram bot (`TELEGRAM_BOT_TOKEN` from env only, never hardcoded) and Streamlit.
 Wheat: baseline MAE 2.68/R² -0.26 → blend MAE 1.20/R² 0.66; barley: 2.78/-0.26 → 1.27/0.65; oats: 3.59/-0.33 → 1.37/0.74 (5/6 strong).
-Sunflower (MAE 2.09<2.52) / flax (MAE 1.18<1.22): strong; rapeseed only: blend below baseline on hold-out → honest EXPERIMENTAL baseline-5y fallback (flag experimental:true, interval x1.5).
+Sunflower (MAE 2.01<2.52) / rapeseed (MAE 3.31<3.70): strong; flax only: blend below baseline on hold-out → honest EXPERIMENTAL baseline-5y fallback (flag experimental:true, interval x1.5).
 Limits: districts = downscaled oblast stats (centroids, not fields); 115 fields (109 OSM + 6 demo), 12 elevators (coords estimated);
 insurance is decision support, not a tariff.

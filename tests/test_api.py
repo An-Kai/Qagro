@@ -227,6 +227,31 @@ def t_gis():
     assert "fields" in j, j
 
 
+def t_report_pdf():
+    # POST /report: байты PDF с кириллицей (DejaVu/Arial), без сети тоже 200.
+    r = client.post("/report", json={"district_en": "Esil",
+                                     "crop": "spring_wheat", "lang": "ru"})
+    assert r.status_code == 200, r.text
+    assert r.headers.get("content-type", "").startswith("application/pdf"), r.headers
+    assert r.content[:5] == b"%PDF-", r.content[:20]
+    assert len(r.content) > 10000, len(r.content)
+
+
+def t_agrodata():    # NEW_DATA #2: сверка с Казгидрометом. Офлайн-safe: либо рубрики
+    # с данными, либо честные error-строки — в обоих случаях 200.
+    r = client.get("/agrodata", params={"district_en": "Esil"})
+    assert r.status_code == 200, r.text
+    j = r.json()
+    assert j.get("district_en") == "Esil", j
+    assert "drought" in j and "productivity" in j and "agreement" in j, j
+    for key in ("drought", "productivity"):
+        sec = j[key]
+        assert "count" in sec and "entries" in sec and "error" in sec, sec
+        assert isinstance(sec["entries"], list), sec
+    rb = client.get("/agrodata", params={"district_en": "Nope"})
+    assert rb.status_code == 422, rb.text
+
+
 if __name__ == "__main__":
     check("health 200 + counts", t_health)
     check("predict Esil wheat 200", t_predict_wheat)
@@ -246,4 +271,6 @@ if __name__ == "__main__":
     check("soil 200 + rows", t_soil)
     check("intervals 200 + crops", t_intervals)
     check("gis Esil 200 + fields", t_gis)
+    check("agrodata Esil 200 + bad district 422", t_agrodata)
+    check("report Esil/wheat PDF bytes", t_report_pdf)
     print(f"\nOK: {len(passed)}/{len(passed)} passed")

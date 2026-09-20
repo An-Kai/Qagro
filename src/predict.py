@@ -305,6 +305,25 @@ def predict_yield(district_en: str, crop: str,
             row[c] = v
     if "ndvi_flag" in feats and "ndvi_flag" not in row:
         row["ndvi_flag"] = 0.0  # сцен 2026 нет — честный флаг отсутствия
+    # NEW_DATA #1 (regime): календарные фичи сдвига на год прогноза.
+    # oilshare_trend — последняя известная доля масличных (2025, прошлое)
+    # × тренд 2026: будущего не выдумываем, только прошлое × календарь.
+    if "trend_sq" in feats and "trend_sq" not in row:
+        row["trend_sq"] = float(FORECAST_TREND ** 2)
+    if "trend_recent" in feats and "trend_recent" not in row:
+        row["trend_recent"] = float(max(0, FORECAST_YEAR - 2015))
+    if "oilshare_trend" in feats and "oilshare_trend" not in row:
+        share = row.get("oilseeds_share")
+        if share is None:  # доли нет в feats бандла — берём 2025 год панели
+            d25 = df[df["district_en"] == district_en].sort_values("year").tail(1)
+            if d25.empty or "oilseeds_share" not in d25.columns:
+                raise ValueError(f"Нет oilseeds_share района {district_en!r} для "
+                                 f"oilshare_trend. Заглушки запрещены.")
+            share = float(d25["oilseeds_share"].iloc[0])
+        if not np.isfinite(float(share)):
+            raise ValueError(f"oilseeds_share района {district_en!r} не конечна "
+                             f"({share}). Заглушки запрещены.")
+        row["oilshare_trend"] = float(share * FORECAST_TREND)
     if "ndvi_max" in feats and "ndvi_max" not in row:
         row["ndvi_max"] = float("nan")  # Ridge импутит медианой, LGBM держит NaN
     absent = [c for c in feats if c not in row]

@@ -68,6 +68,87 @@ PDF_TXT: dict[str, dict[str, str]] = {
            "no_data": "No data.", "disc": "Advice only, not a guarantee. Check with your agronomist."},
 }
 
+# Человеческие подписи строк таблиц (аудит #9): техно-id убран из подписей,
+# коды district_en/crop остаются только в заголовке мелким текстом.
+PDF_LBL: dict[str, dict[str, str]] = {
+    "ru": {"y": "Прогноз (ц/га)", "interval": "Интервал 80% [низ – верх]",
+           "lag": "Урожай прошлого года (2025)", "spread": "Разброс модели",
+           "weather": "Погода", "method": "Метод",
+           "f_factor": "Фактор", "f_value": "Значение", "f_effect": "Влияние",
+           "mean5": "Среднее за 5 лет (ц/га)", "strike": "Порог 80% от среднего",
+           "ploss": "Риск недобора P(Y<порог)", "payout": "Ожидаемая выплата/га (тенге)",
+           "payout_at": "Выплата при прогнозе/га (тенге)", "price": "Цена (тенге/т)",
+           "formula": "Формула",
+           "window": "Окно", "message": "Совет", "actions": "Действия", "reason": "Почему",
+           "sow": "Окно сева", "harvest": "Окно уборки", "gdd": "Норма тепла (GDD)",
+           "note": "Заметка", "source": "Источник",
+           "elev": "Ближайший элеватор", "dist": "Расстояние",
+           "coords": "Координаты",
+           "npk_goal": "Цель NPK (ц/га)",
+           "eco_yield": "Урожай (ц/га)", "eco_price": "Цена (тенге/т)",
+           "eco_rev": "Выручка (тенге/га)", "eco_profit": "Прибыль (тенге/га)",
+           "eco_pct": "Рентабельность %", "eco_cost": "Про затраты"},
+    "kz": {"y": "Болжам (ц/га)", "interval": "80% аралық [төмен – жоғары]",
+           "lag": "Өткен жылғы өнім (2025)", "spread": "Модель шашырауы",
+           "weather": "Ауа райы", "method": "Әдіс",
+           "f_factor": "Фактор", "f_value": "Мәні", "f_effect": "Әсері",
+           "mean5": "5 жылдық орташа (ц/га)", "strike": "Орташаның 80% шегі",
+           "ploss": "Жетпеу қаупі P(Y<шег)", "payout": "Күтілетін төлем/га (теңге)",
+           "payout_at": "Болжамдағы төлем/га (теңге)", "price": "Баға (теңге/т)",
+           "formula": "Формула",
+           "window": "Терезе", "message": "Кеңес", "actions": "Әрекеттер", "reason": "Неге",
+           "sow": "Себу терезесі", "harvest": "Жинау терезесі", "gdd": "Жылу нормасы (GDD)",
+           "note": "Ескертпе", "source": "Дереккөз",
+           "elev": "Жақын элеватор", "dist": "Қашықтық",
+           "coords": "Координаттар",
+           "npk_goal": "NPK мақсаты (ц/га)",
+           "eco_yield": "Өнім (ц/га)", "eco_price": "Баға (теңге/т)",
+           "eco_rev": "Түсім (теңге/га)", "eco_profit": "Пайда (теңге/га)",
+           "eco_pct": "Рентабельділік %", "eco_cost": "Шығын туралы"},
+    "en": {"y": "Forecast (c/ha)", "interval": "80% interval [low – high]",
+           "lag": "Last year yield (2025)", "spread": "Model spread",
+           "weather": "Weather", "method": "Method",
+           "f_factor": "Factor", "f_value": "Value", "f_effect": "Effect",
+           "mean5": "5-year average (c/ha)", "strike": "80%-of-average trigger",
+           "ploss": "Shortfall risk P(Y<trigger)", "payout": "Expected payout/ha (tenge)",
+           "payout_at": "Payout at forecast/ha (tenge)", "price": "Price (tenge/t)",
+           "formula": "Formula",
+           "window": "Window", "message": "Advice", "actions": "Actions", "reason": "Why",
+           "sow": "Sowing window", "harvest": "Harvest window", "gdd": "Heat norm (GDD)",
+           "note": "Note", "source": "Source",
+           "elev": "Nearest elevator", "dist": "Distance",
+           "coords": "Coordinates",
+           "npk_goal": "NPK target (c/ha)",
+           "eco_yield": "Yield (c/ha)", "eco_price": "Price (tenge/t)",
+           "eco_rev": "Revenue (tenge/ha)", "eco_profit": "Profit (tenge/ha)",
+           "eco_pct": "Profitability %", "eco_cost": "About costs"},
+}
+
+
+def _names(district_en: str, crop: str, lang: str) -> tuple[str, str]:
+    """Локализованные имена района/культуры из config/districts.yaml (офлайн).
+
+    Фолбэк — tech-id, если конфига нет: заголовок всё равно собирается.
+    """
+    dname, cname = district_en, crop
+    try:
+        import yaml
+
+        cfg_path = Path(__file__).resolve().parents[1] / "config" / "districts.yaml"
+        with open(cfg_path, encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+        for d in cfg.get("districts", []):
+            if d.get("name_en") == district_en:
+                dname = str(d.get(f"name_{lang}") or d.get("name_ru") or district_en)
+                break
+        for c in cfg.get("crops", []):
+            if c.get("id") == crop:
+                cname = str(c.get(f"name_{lang}") or c.get("name_ru") or crop)
+                break
+    except Exception:
+        pass
+    return dname, cname
+
 
 def _farmer_summary(lang: str, pred: dict | None, ins: dict | None,
                     risk: dict | None, rec: dict | None) -> str:
@@ -131,9 +212,19 @@ def build_report_pdf(
         s.leading = 14
     story = []
 
-    title = f"Qagro — {district_ru or district_en} / {crop} (2026)"
+    lang = lang if lang in PDF_TXT else "ru"
+    B = PDF_LBL.get(lang, PDF_LBL["ru"])
+    dname, cname = _names(district_en, crop, lang)
+    title = f"Qagro — {dname} / {cname} ({district_en}/{crop}, 2026)"
     story.append(Paragraph(_esc(title), styles["Title"]))
     story.append(Spacer(1, 8))
+    if font == "Helvetica":
+        # Честно предупреждаем: без DejaVu/Arial кириллица превращается в точки.
+        story.append(Paragraph(_esc(
+            "⚠ Нет шрифта с кириллицей — русский/казахский текст может "
+            "отображаться неверно (Windows: Arial/DejaVu, Docker: fonts-dejavu)."),
+            styles["Normal"]))
+        story.append(Spacer(1, 4))
     L = PDF_TXT.get(lang, PDF_TXT["ru"])
     story.append(Paragraph(_esc(L["summary"]), styles["Heading2"]))
     story.append(Paragraph(_esc(_farmer_summary(lang, pred, ins, risk, rec)),
@@ -163,19 +254,19 @@ def build_report_pdf(
     story.append(Paragraph(_esc(L["yield"]), styles["Heading2"]))
     if pred:
         story.append(_kv_table([
-            ("y_pred", pred.get("y_pred")),
-            ("80% interval [lo10, hi90]", f"{pred.get('lo10')} .. {pred.get('hi90')}"),
-            ("yield_lag1 (2025)", (pred.get("meta") or {}).get("yield_lag1")),
-            ("residual_std", (pred.get("meta") or {}).get("residual_std")),
-            ("weather", (pred.get("meta") or {}).get("weather_source", "provided")),
-            ("APPROX", (pred.get("meta") or {}).get("method", pred.get("approx", False))),
+            (B["y"], pred.get("y_pred")),
+            (B["interval"], f"{pred.get('lo10')} .. {pred.get('hi90')}"),
+            (B["lag"], (pred.get("meta") or {}).get("yield_lag1")),
+            (B["spread"], (pred.get("meta") or {}).get("residual_std")),
+            (B["weather"], (pred.get("meta") or {}).get("weather_source", "provided")),
+            (B["method"], (pred.get("meta") or {}).get("method", pred.get("approx", False))),
         ]))
         story.append(Spacer(1, 6))
         factors = pred.get("factors") or []
         if factors:
-            fdata = [[Paragraph("<b>feature</b>", styles["Normal"]),
-                      Paragraph("<b>value</b>", styles["Normal"]),
-                      Paragraph("<b>SHAP</b>", styles["Normal"])]]
+            fdata = [[Paragraph(f"<b>{_esc(B['f_factor'])}</b>", styles["Normal"]),
+                      Paragraph(f"<b>{_esc(B['f_value'])}</b>", styles["Normal"]),
+                      Paragraph(f"<b>{_esc(B['f_effect'])}</b>", styles["Normal"])]]
             for f in factors[:3]:
                 fdata.append([Paragraph(_esc(str(f.get("feature"))), styles["Normal"]),
                               Paragraph(_esc(str(f.get("value"))), styles["Normal"]),
@@ -192,13 +283,13 @@ def build_report_pdf(
     story.append(Paragraph(_esc(L["ins"]), styles["Heading2"]))
     if ins:
         story.append(_kv_table([
-            ("mean5 (ц/га)", f"{ins.get('mean5_c_ha')} {ins.get('mean5_years')}"),
-            ("strike 0.8*mean5", ins.get("strike_c_ha")),
-            ("P_loss P(Y<strike)", ins.get("p_loss")),
-            ("expected payout/ha (KZT)", ins.get("expected_payout_ha")),
-            ("payout at y_pred/ha (KZT)", ins.get("payout_at_pred_ha")),
-            ("price KZT/t", ins.get("price_kzt_per_t")),
-            ("formula", ins.get("payout_formula", "")),
+            (B["mean5"], f"{ins.get('mean5_c_ha')} {ins.get('mean5_years')}"),
+            (B["strike"], ins.get("strike_c_ha")),
+            (B["ploss"], ins.get("p_loss")),
+            (B["payout"], ins.get("expected_payout_ha")),
+            (B["payout_at"], ins.get("payout_at_pred_ha")),
+            (B["price"], ins.get("price_kzt_per_t")),
+            (B["formula"], ins.get("payout_formula", "")),
         ]))
         story.append(Spacer(1, 4))
         story.append(Paragraph(_esc(str(ins.get("disclaimer", ""))), styles["Normal"]))
@@ -243,10 +334,10 @@ def build_report_pdf(
     story.append(Paragraph(_esc(L["rec"]), styles["Heading2"]))
     if rec:
         story.append(_kv_table([
-            ("window", rec.get("window")),
-            ("message", rec.get("message")),
-            ("actions", "; ".join(rec.get("actions") or [])),
-            ("reason", rec.get("reason")),
+            (B["window"], rec.get("window")),
+            (B["message"], rec.get("message")),
+            (B["actions"], "; ".join(rec.get("actions") or [])),
+            (B["reason"], rec.get("reason")),
             ("lang/branch", f"{rec.get('lang')}/{rec.get('branch')}"),
         ]))
     else:
@@ -268,12 +359,12 @@ def build_report_pdf(
     if cal:
         gdd = cal.get("gdd_norm") or []
         story.append(_kv_table([
-            ("sowing window", cal.get("sowing_window")),
-            ("harvest window", cal.get("harvest_window")),
-            ("GDD norm", f"{gdd} (base {cal.get('gdd_base_temp')} °C)"
+            (B["sow"], cal.get("sowing_window")),
+            (B["harvest"], cal.get("harvest_window")),
+            (B["gdd"], f"{gdd} (base {cal.get('gdd_base_temp')} °C)"
              if gdd else str(cal.get("gdd_base_temp"))),
-            ("note", cal.get("note")),
-            ("source", cal.get("source", "agro-practice")),
+            (B["note"], cal.get("note")),
+            (B["source"], cal.get("source", "agro-practice")),
         ]))
     else:
         story.append(Paragraph("No calendar data.", styles["Normal"]))
@@ -312,9 +403,9 @@ def build_report_pdf(
             elev = None
     if elev:
         story.append(_kv_table([
-            ("nearest elevator", f"{elev.get('name_ru')} ({elev.get('name')})"),
-            ("distance", f"{elev.get('dist_km')} km"),
-            ("coords note", "оценочные (Qoldau granaries-map, уточнить)"),
+            (B["elev"], f"{elev.get('name_ru')} ({elev.get('name')})"),
+            (B["dist"], f"{elev.get('dist_km')} km"),
+            (B["coords"], "оценочные (Qoldau granaries-map, уточнить)"),
         ]))
     else:
         story.append(Paragraph("No elevator data.", styles["Normal"]))
@@ -339,11 +430,11 @@ def build_report_pdf(
                 from fertilizer import calc_npk as _calc_npk  # type: ignore
             _npk = _calc_npk(crop, _y_goal)
             story.append(_kv_table([
-                ("NPK goal (c/ha)", _npk.get("yield_goal_c_ha")),
+                (B["npk_goal"], _npk.get("yield_goal_c_ha")),
                 ("N kg/ha", _npk.get("N_kg_ha")),
                 ("P kg/ha", _npk.get("P_kg_ha")),
                 ("K kg/ha", _npk.get("K_kg_ha")),
-                ("soil / source", f"{_npk.get('soil_level')} / {_npk.get('source')}"),
+                (B["source"], f"{_npk.get('soil_level')} / {_npk.get('source')}"),
             ]))
             story.append(Spacer(1, 4))
             story.append(Paragraph(
@@ -366,12 +457,12 @@ def build_report_pdf(
                 from economics import profit_ha as _profit_ha  # type: ignore
             _eco = _profit_ha(float(_y_goal), float(_price))
             story.append(_kv_table([
-                ("yield (c/ha)", _eco.get("yield_c_ha")),
-                ("price KZT/t", _eco.get("price_kzt_t")),
-                ("revenue KZT/ha", _eco.get("revenue_kzt_ha")),
-                ("profit KZT/ha", _eco.get("profit_kzt_ha")),
-                ("profitability %", _eco.get("profitability_pct")),
-                ("cost note", _eco.get("assumption", "")),
+                (B["eco_yield"], _eco.get("yield_c_ha")),
+                (B["eco_price"], _eco.get("price_kzt_t")),
+                (B["eco_rev"], _eco.get("revenue_kzt_ha")),
+                (B["eco_profit"], _eco.get("profit_kzt_ha")),
+                (B["eco_pct"], _eco.get("profitability_pct")),
+                (B["eco_cost"], _eco.get("assumption", "")),
             ]))
             story.append(Spacer(1, 4))
             _e_msg = _eco.get(_msg_key)  # будущие message_ru/kz/en, если появятся
