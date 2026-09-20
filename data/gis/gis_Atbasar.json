@@ -1,12 +1,27 @@
 {
   "district": "Atbasar",
+  "dates": [
+    "2024-06-03",
+    "2024-06-13",
+    "2024-06-18",
+    "2024-07-23",
+    "2024-07-31",
+    "2024-08-12"
+  ],
+  "method": "OSM-поля (bbox<=0.02deg) + Sentinel-2 L2A NDVI=(B08-B04)/(B08+B04) через PC STAC (scene reuse) + PC TiTiler POST /item/statistics; пороги — эвристики агро-практики, не ГОСТ",
+  "sources": {
+    "fields": "OSM via Overpass (ODbL) + Geofabrik backup; demo:true — не OSM",
+    "sentinel2_stac": "https://planetarycomputer.microsoft.com/api/stac/v1",
+    "sentinel2_titiler": "https://planetarycomputer.microsoft.com/api/data/v1/item/statistics",
+    "copernicus_browser": "https://browser.dataspace.copernicus.eu/",
+    "sentinel_hub": "https://www.sentinel-hub.com/",
+    "landsat_look": "https://landsatlook.usgs.gov/",
+    "usgs_earthexplorer": "https://earthexplorer.usgs.gov/",
+    "earthmap": "https://www.earthmap.org/"
+  },
+  "limits": "bbox-приближение вместо попиксельной маски поля; облака отфильтрованы на уровне сцен (cloud<20% в STAC); нет сцены на дату -> None без выдумок",
   "total_fields": 15,
   "checked": 4,
-  "cultivated": 0,
-  "sparse": 0,
-  "likely_fallow": 0,
-  "no_data": 4,
-  "avg_ndvi_max": null,
   "fields": [
     {
       "field_id": "Atbasar_206543108",
