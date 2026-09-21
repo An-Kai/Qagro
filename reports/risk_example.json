@@ -3,7 +3,7 @@
   "year": 2026,
   "price_note": "wheat/barley 95000 KZT/t from config; APPROX prices indicative",
   "disclaimer": "decision support, не тариф",
-  "generated_at": "2026-09-20T18:40:14.900845+00:00",
+  "generated_at": "2026-09-21T16:00:12.274767+00:00",
   "generated_by": "scripts/regen_risk_example.py (model entries only)"
  },
  "Esil_risk": {
@@ -907,8 +907,8 @@
    "district_en": "Esil",
    "crop": "rapeseed",
    "approx": false,
-   "experimental": false,
-   "method": "LGBM + baseline-5y + OOF residual_std",
+   "experimental": true,
+   "method": "baseline-5y mean (experimental: LGBM below baseline on hold-out 2021-2025; interval x1.5)",
    "mean5_c_ha": 14.6,
    "mean5_years": [
     2021,
@@ -917,17 +917,17 @@
     2024,
     2025
    ],
-   "y_pred_c_ha": 12.99,
-   "residual_std": 0.52,
+   "y_pred_c_ha": 14.6,
+   "residual_std": 0.78,
    "strike_c_ha": 11.68,
    "threshold": 0.8,
-   "p_loss": 0.0059,
+   "p_loss": 0.0001,
    "shortfall_c_ha": 0.0,
    "expected_shortfall_c_ha": 0.0,
-   "expected_payout_ha": 7.0,
+   "expected_payout_ha": 0.0,
    "payout_at_pred_ha": 0.0,
    "payout_literal_no_div10": 0.0,
-   "price_kzt_per_t": 95000.0,
+   "price_kzt_per_t": 200000.0,
    "subsidy_rate": 0.8,
    "weather_scenario": {
     "kind": "neutral district MJJA mean 2016-2025",

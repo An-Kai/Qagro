@@ -36,14 +36,14 @@ PDF `docs/Qagro_presentation.pdf` собирается из кода: `python sc
 ## Слайд 5. Модель
 - Бейзлайн = среднее 5 лет; модель v4 = бленд LightGBM+Ridge, веса per-crop по train-CV (hold-out 2021–2025, n=50, ключ `lgbm` сохранён для совместимости).
 - Прогноз 2026: y_pred + 80% интервал из эмпирических квантилей OOF (conformal q10/q90; experimental ×1.5) + топ-3 SHAP; факт. покрытие wheat 0.66 (номинал 0.80 не заявляем).
-- **5/6 strong + 1 experimental (лён)**: честный EXPERIMENTAL baseline-5y только при `below_baseline=true`; APPROX — только если модели нет вообще (legacy, не используется для 6 культур).
+- **4/6 strong + 2 experimental (рапс, лён)**: честный EXPERIMENTAL baseline-5y только при `below_baseline=true` (gate: MAE win + R²>0); APPROX — только если модели нет вообще (legacy, не используется для 6 культур).
 - SoilGrids: retry по точкам пашни закрыл 10/10 → soil-фичи в модели v4 (вклад малый, климат+тренд несут сигнал).
 - Картинка: блок-схема `src/train.py → src/predict.py` + SHAP топ-3 (`metrics/shap_*.json`).
 
 ## Слайд 6. Метрики
 - Пшеница v4: бейзлайн MAE 2.68 / R² −0.26 → бленд **MAE 1.20 / R² 0.66**.
 - Ячмень v4: бейзлайн 2.78 / −0.26 → бленд **1.27 / 0.65**; овёс: 3.59 / −0.33 → **1.37 / 0.74** (hold-out 2021–2025, n=50).
-- 5/6 strong (пшеница, ячмень, овёс, подсолнечник MAE 2.01<2.52 при R² 0.21, рапс MAE 3.31<3.70 при R² −0.79 с оговоркой); только лён — EXPERIMENTAL baseline (MAE 1.33, R² −0.42, `below_baseline:true`, структурный сдвиг 2024–2025).
+- 5/6 strong (пшеница, ячмень, овёс, подсолнечник MAE 2.01<2.52 при R² 0.21); рапс и лён — EXPERIMENTAL baseline (рапс: MAE 3.31, R² −0.79, провал G2; лён: `below_baseline:true`, структурный сдвиг 2024–2025).
 - Картинка: `metrics/plots/scatter_spring_wheat.png` + `metrics/plots/scatter_barley.png` + `metrics/plots/scatter_oats.png` + таблица метрик.
 
 ## Слайд 7. Эффект (тг/га)

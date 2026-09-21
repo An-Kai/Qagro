@@ -9,18 +9,22 @@
 """
 from __future__ import annotations
 
+import os
 import sys
 import tempfile
 from pathlib import Path
 
-# Windows-консоль (cp1251) не кодирует казахские буквы — не роняем тест
-# на print-вердиктах, показываем их максимально читаемо.
-try:
-    import io as _io
-    sys.stdout = _io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8",
-                                   errors="backslashreplace")
-except Exception:
-    pass
+
+def _fix_console() -> None:
+    """UTF-8 для кириллицы в cp1251-консоли. Только для прямого запуска;
+    под pytest (PYTEST_CURRENT_TEST) — no-op, capture и так UTF-8."""
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return
+    try:
+        if getattr(sys.stdout, "encoding", "utf-8").lower() != "utf-8":
+            sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
+    except Exception:
+        pass
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -227,6 +231,7 @@ def t_router():
 
 
 if __name__ == "__main__":
+    _fix_console()
     check("myfields add/list/delete", t_field_crud)
     check("myfields validation Akmola", t_field_validation)
     check("default DB path data/myfields.db", t_default_db_path)

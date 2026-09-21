@@ -3,9 +3,22 @@
 # Без ломки логики: только последовательный прогон зафиксированных шагов.
 # Шаги: deps -> fetch_all -> features_extra -> train -> evaluate -> metrics-check -> py_compile -> predict smoke -> tests.
 # Запуск из корня репо:  bash scripts/reproduce.sh
+# Безопасный режим (НИЧЕГО не перезаписывает):  bash scripts/reproduce.sh --verify-only
+#   VerifyOnly = scripts/verify.py (read-only сверка артефактов) + pytest -q.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 echo "ROOT=$(pwd)"
+
+if [ "${1:-}" = "--verify-only" ]; then
+  echo "=== VERIFY-ONLY (read-only, дерево не меняется) ==="
+  echo "--- python scripts/verify.py ---"
+  python3 scripts/verify.py
+  echo "--- python -m pytest -q ---"
+  python3 -m pytest -q
+  echo "REPRODUCE VERIFY OK"
+  exit 0
+fi
+echo "ВНИМАНИЕ: полный режим ПЕРЕЗАПИСЫВАЕТ data/processed, models/, metrics/."
 
 echo "=== 1/9 pip install -r requirements.txt ==="
 pip install -r requirements.txt

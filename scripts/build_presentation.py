@@ -54,8 +54,8 @@ def _load_numbers() -> dict:
         "sun_mae": round(m["sunflower"]["lgbm"]["mae"], 2),
         "sun_r2": round(m["sunflower"]["lgbm"]["r2"], 2),
         "cov_wheat": round(iv["spring_wheat"]["conformal_coverage"], 2),
-        "exp_crop": next(c for c, v in m.items()
-                         if isinstance(v, dict) and v.get("below_baseline") is True),
+        "exp_crops": [c for c, v in m.items()
+                      if isinstance(v, dict) and v.get("below_baseline") is True],
         "esil_ploss": round(ew["p_loss"] * 100),
         "esil_pay": int(ew["expected_payout_ha"]),
         "zer_pay": int(zw["expected_payout_ha"]),
@@ -76,11 +76,11 @@ def main() -> None:
 
     n = _load_numbers()
     font = _register_font()
-    # экспериментальная культура для слайдов 3/5/6 (имя по-русски из конфига)
+    # экспериментальные культуры для слайдов (имена по-русски из конфига)
     import yaml
     cfg = yaml.safe_load((ROOT / "config" / "districts.yaml").read_text(encoding="utf-8"))
-    exp_ru = next((c.get("name_ru", n["exp_crop"]) for c in cfg.get("crops", [])
-                   if c.get("id") == n["exp_crop"]), n["exp_crop"])
+    _ru = {c.get("id"): c.get("name_ru", c.get("id")) for c in cfg.get("crops", [])}
+    exp_ru = ", ".join(_ru.get(c, c) for c in n["exp_crops"]) or "—"
 
     doc = SimpleDocTemplate(str(OUT), pagesize=landscape(A4),
                             leftMargin=22 * mm, rightMargin=22 * mm,
@@ -138,7 +138,7 @@ def main() -> None:
         Paragraph("5. Модель: бленд с объяснением", title_st),
         bullet("Бейзлайн = среднее 5 лет; модель = LightGBM+Ridge (веса по train-CV)."),
         bullet("Прогноз + эмпирический интервал (конформные квантили) + топ-3 SHAP."),
-        bullet(f"{exp_ru} — честный experimental baseline (ниже бейзлайна)."),
+        bullet(f"{exp_ru} — честный experimental baseline (не прошли gate)."),
         *footer(5), PageBreak(),
     ])
     chart = ([Image(str(CHART), width=230, height=170)] if CHART.exists() else [])
@@ -149,7 +149,7 @@ def main() -> None:
                f"ячмень {n['barley_mae']:.2f}/{n['barley_r2']:.2f}; "
                f"овёс {n['oats_mae']:.2f}/{n['oats_r2']:.2f}."),
         bullet(f"Подсолнечник MAE 2.52→{n['sun_mae']:.2f}/R² {n['sun_r2']:.2f} "
-               f"бьёт бейзлайн; 5/6 strong, {exp_ru} — experimental."),
+               f"бьёт бейзлайн; 4/6 strong, {exp_ru} — experimental."),
         bullet(f"Покрытие интервала wheat {n['cov_wheat']:.2f} (номинал 0.80 не заявляем)."),
         *chart,
         *footer(6), PageBreak(),

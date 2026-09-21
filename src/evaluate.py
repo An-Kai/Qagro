@@ -27,6 +27,7 @@ from __future__ import annotations
 import json
 
 import pickle
+import os
 import sys
 from pathlib import Path
 
@@ -38,10 +39,11 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:  # pragma: no cover
-    pass
+if "PYTEST_CURRENT_TEST" not in os.environ:  # не трогаем capture pytest
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:  # pragma: no cover
+        pass
 
 try:
     from src.train import (BLEND_W_LGBM, BLEND_W_RIDGE, TARGET as _T,
@@ -242,21 +244,30 @@ def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
     print(f"  blend    MAE={blend_m['mae']:.3f} RMSE={blend_m['rmse']:.3f} R2={blend_m['r2']:.3f}")
     print(f"  residuals mean={resid_stats['mean']:.3f} std={resid_stats['std']:.3f}")
 
-    # Требование ТЗ (строго для wheat/barley): модель лучше бейзлайна, иначе подбор фич.
-    # Остальные: структурный сдвиг 2024-2025 может делать hold-out хуже бейзлайна —
-    # честно фиксируем флагом below_baseline БЕЗ подгонки и БЕЗ падения пайплайна.
+    # Требование ТЗ (строго для wheat/barley): модель лучше бейзлайна, иначе стоп.
+    # Multi-metric gate (принципиальные пороги, НЕ подогнанные под цифры):
+    #   G1: MAE(blend) < MAE(baseline-5y) — лучше наивного прогноза (старое правило);
+    #   G2: R²(blend) > 0 — лучше константного среднего (R²=0 по определению).
+    # Покрытие интервала — НЕ ворота (нестабильный порог у границы), а обязательная
+    # отчётность: metrics/intervals.json + warning в API/UI/PDF при coverage<0.5.
+    # Провал любого ворота -> below_baseline БЕЗ подгонки и БЕЗ падения пайплайна
+    # (кроме STRICT_CROPS: там провал = громкая ошибка).
     STRICT_CROPS = {"spring_wheat", "barley"}
+    GATE_MIN_R2 = 0.0
     chosen = {"name": "selected", "features": feats, "metrics": blend_m}
+    gate_fail = []
     if blend_m["mae"] >= bl_m["mae"]:
+        gate_fail.append(f"G1 MAE {blend_m['mae']:.3f}>=baseline {bl_m['mae']:.3f}")
+    if not blend_m["r2"] > GATE_MIN_R2:
+        gate_fail.append(f"G2 R2 {blend_m['r2']:.3f}<=0 (хуже среднего)")
+    if gate_fail:
         # Честно фиксируем без подбора на hold-out: любой рефит по метрикам
         # hold-out был бы подгонкой (tuning on hold-out). Подбор фич/весов —
         # только по train-CV в src/train.py. Здесь только флаг.
         if crop in STRICT_CROPS:
             raise RuntimeError(
-                f"[{crop}] blend ({blend_m['mae']:.3f}) not better than baseline "
-                f"({bl_m['mae']:.3f}). Stop honestly.")
-        print(f"[{crop}] WARNING: blend worse than baseline "
-              f"({blend_m['mae']:.3f} vs {bl_m['mae']:.3f}) — honest "
+                f"[{crop}] gate failed ({'; '.join(gate_fail)}). Stop honestly.")
+        print(f"[{crop}] WARNING: gate failed ({'; '.join(gate_fail)}) — honest "
               f"below_baseline flag (2024-2025 structural break, see data_card).")
         plot_path = scatter_plot(m.rename(columns={"y_lgbm": "y_lgbm"}), crop)
         shap_top3(bundle, df_crop, crop)
@@ -268,7 +279,10 @@ def evaluate_crop(df: pd.DataFrame, crop: str) -> tuple[dict, pd.DataFrame]:
                  "holdout_years": [HOLDOUT_FROM, LAST_YEAR],
                  "scatter": str(plot_path.as_posix()),
                  "below_baseline": True,
-                 "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out "
+                 "gate": {"G1_MAE_win": bool(blend_m["mae"] < bl_m["mae"]),
+                          "G2_R2_pos": bool(blend_m["r2"] > GATE_MIN_R2),
+                          "failed": gate_fail},
+                 "note": "Gate failed on 2021-2025 hold-out "
                          "(rapeseed 2024-2025 structural break: hybrids/area; "
                          "see fetch_stat.py / data_card). Metrics are honest, no tuning."}
         return entry, m

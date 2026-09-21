@@ -57,13 +57,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
+import os
 import sys
 from pathlib import Path
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:  # pragma: no cover
-    pass
+if "PYTEST_CURRENT_TEST" not in os.environ:  # не трогаем capture pytest
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:  # pragma: no cover
+        pass
+
+log = logging.getLogger("qagro.gis")
 
 ROOT = Path(__file__).resolve().parents[1]
 FIELDS_GEOJSON = ROOT / "data" / "fields" / "akmola_osm_fields.geojson"
@@ -118,7 +123,8 @@ def _load_scenes_index() -> dict[tuple[str, str], list[str]]:
     """(district, date) -> до 2 scene_id из ndvi_timeseries.json (порядок файла)."""
     try:
         raw = json.loads(NDVI_TS.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        log.warning("ndvi_timeseries.json unreadable: %s", e)
         return {}
     idx: dict[tuple[str, str], list[str]] = {}
     for r in raw:
@@ -155,6 +161,7 @@ def field_bbox(field: dict) -> tuple[list[float], bool]:
         coords = []
     if len(coords) < 3:
         # запасной вариант: центр района Esil (честно помечаем)
+        log.warning("field without geometry, using Esil fallback bbox")
         return [66.39, 51.94, 66.41, 51.96], False
     lons = [c[0] for c in coords]
     lats = [c[1] for c in coords]

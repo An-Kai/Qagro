@@ -168,7 +168,7 @@ HELP_TEXT: dict[str, str] = {
     "ru": ("🌾 Как получить прогноз:\n"
            "1. /start → выбери язык\n"
            "2. Выбери район кнопкой 👇 (10 районов Акмолы)\n"
-           "3. Выбери культуру (пшеница, ячмень, овёс, подсолнечник, рапс, лён🧪)\n"
+           "3. Выбери культуру (пшеница, ячмень, овёс, подсолнечник, рапс🧪, лён🧪)\n"
            "4. Получи прогноз + риск 🟢🟡🔴 + кнопки 📄 PDF отчет / 🔄 Новый прогноз\n"
            "\nПримеры:\n"
            "• Есильский → Пшеница яровая\n"
@@ -179,7 +179,7 @@ HELP_TEXT: dict[str, str] = {
     "kz": ("🌾 Болжамды қалай алуға болады:\n"
            "1. /start → тілді таңдаңыз\n"
            "2. Ауданды батырмамен таңдаңыз 👇 (Ақмоланың 10 ауданы)\n"
-           "3. Дақылды таңдаңыз (бидай, арпа, сұлы, күнбағыс, рапс, зығыр🧪)\n"
+           "3. Дақылды таңдаңыз (бидай, арпа, сұлы, күнбағыс, рапс🧪, зығыр🧪)\n"
            "4. Болжам + тәуекел 🟢🟡🔴 + 📄 PDF есеп / 🔄 Жаңа болжам батырмаларын алыңыз\n"
            "\nМысалдар:\n"
            "• Есіл → Жаздық бидай\n"
@@ -190,7 +190,7 @@ HELP_TEXT: dict[str, str] = {
     "en": ("🌾 How to get a forecast:\n"
            "1. /start → choose language\n"
            "2. Choose district with a button 👇 (10 Akmola districts)\n"
-           "3. Choose crop (wheat, barley, oats, sunflower, rapeseed, flax🧪)\n"
+           "3. Choose crop (wheat, barley, oats, sunflower, rapeseed🧪, flax🧪)\n"
            "4. Get forecast + risk 🟢🟡🔴 + 📄 PDF report / 🔄 New forecast buttons\n"
            "\nExamples:\n"
            "• Esil → Spring wheat\n"
@@ -272,7 +272,8 @@ def cache_get(key: str, ttl: float = CACHE_TTL) -> Any | None:
         if time.time() - float(ts) > ttl:
             return None
         return json.loads(val)
-    except Exception:
+    except Exception as e:
+        log.debug("cache_get failed for %s: %s", key, e)
         return None
 
 
@@ -296,8 +297,8 @@ def _example_risk(district_en: str) -> dict | None:
         r = data.get(f"{district_en}_risk")
         if r:
             return {**r, "cached": "risk_example.json"}
-    except Exception:
-        pass
+    except Exception as e:
+        log.debug("example_risk failed for %s: %s", district_en, e)
     return None
 
 
@@ -337,6 +338,42 @@ def _light_from_ploss(p_loss: float) -> str:
     if p_loss > 0.2:
         return "🟡"
     return "🟢"
+
+
+_COV: dict | None = None
+
+
+def _coverage(crop: str) -> float | None:
+    """Фактическое покрытие conformal-интервала (metrics/intervals.json, n=50)."""
+    global _COV
+    if _COV is None:
+        try:
+            _COV = json.loads((ROOT / "metrics" / "intervals.json").read_text(encoding="utf-8"))
+        except Exception:
+            _COV = {}
+    try:
+        return float(_COV.get(crop, {}).get("conformal_coverage"))
+    except (TypeError, ValueError):
+        return None
+
+
+def _cov_line(crop: str, lang: str) -> str:
+    cov = _coverage(crop)
+    c = "—" if cov is None else f"{cov:.2f}"
+    warn = ""
+    if cov is not None and cov < 0.5:
+        warn = {"ru": " Ориентируйтесь на среднее.",
+                "kz": " Орташа мәнге сүйеніңіз.",
+                "en": " Rely on the average."}.get(lang, "")
+    return {"ru": f"Интервал «80%» — номинал; факт. покрытие {c} (n=50).{warn}",
+            "kz": f"«80%» аралық — номинал; іс жүзінде {c} (n=50).{warn}",
+            "en": f"“80%” interval is nominal; actual coverage {c} (n=50).{warn}"}.get(lang, "")
+
+
+def _downscale_line(lang: str) -> str:
+    return {"ru": "Район — даунскейлинг области на центроиды, не замеры полей.",
+            "kz": "Аудан — облыстың центроидтарға даунскейлингі.",
+            "en": "District downscales oblast stats onto centroids."}.get(lang, "")
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -487,6 +524,7 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"🌾 {dname} — {cname}, 2026",
             "",
             f"📈 Өнім: шамамен {y} ц/га (әдетте {lo}–{hi}).",
+            f"{_cov_line(crop, lang)}",
             f"Соңғы 5 жылда орташа: {mean5} ц/га.",
             f"{'⚠️ Бұл әзірше тәжірибелік болжам — орташа мәнге сүйеніңіз.' if experimental else ''}",
             "",
@@ -498,12 +536,14 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"Осындай жағдайда төлем шамамен {payout} теңге/га. Бұл бағдар, тариф емес.",
             "",
             f"🌱 Себу: {rec['window']}. {rec['message']}",
+            f"{_downscale_line(lang)}",
         ]
     elif lang == "en":
         lines = [
             f"🌾 {dname} — {cname}, 2026",
             "",
             f"📈 Yield: about {y} c/ha (usually {lo}–{hi}).",
+            f"{_cov_line(crop, lang)}",
             f"5-year average: {mean5} c/ha.",
             f"{'⚠️ Experimental forecast — rely on the average.' if experimental else ''}",
             "",
@@ -515,12 +555,14 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"If it happens, payout ≈ {payout} tenge/ha. Estimate, not a tariff.",
             "",
             f"🌱 Sowing: {rec['window']}. {rec['message']}",
+            f"{_downscale_line(lang)}",
         ]
     else:
         lines = [
             f"🌾 {dname} — {cname}, 2026",
             "",
             f"📈 Урожай: ждите около {y} ц/га (обычно бывает {lo}–{hi}).",
+            f"{_cov_line(crop, lang)}",
             f"Среднее за 5 лет: {mean5} ц/га.",
             f"{'⚠️ Пока это пробный прогноз — ориентируйтесь на среднее.' if experimental else ''}",
             "",
@@ -532,6 +574,7 @@ def format_answer(district_en: str, crop: str, lang: str, full: dict) -> str:
             f"Если случится — выплата примерно {payout} тенге/га. Это ориентир, не тариф.",
             "",
             f"🌱 Сев: {rec['window']}. {rec['message']}",
+            f"{_downscale_line(lang)}",
         ]
     return "\n".join([ln for ln in lines if ln != ""]).strip()
 
@@ -821,9 +864,12 @@ def create_dispatcher():
             dname = _district_name(hit["district_en"], lang)
             ename = elev.get("name_ru") if lang in ("ru", "kz") else elev.get("name_en")
             ename = ename or elev.get("name_en")
+            _eest = {"ru": " (координаты примерные, Qoldau)",
+                     "kz": " (координаттар шамамен, Qoldau)",
+                     "en": " (coords approximate, Qoldau)"}[lang]
             await m.answer(
                 f"{T['loc_district'][lang].format(name=dname, km=hit['dist_km'])}\n"
-                f"{T['loc_elev'][lang].format(name=ename, km=elev['dist_km'])}",
+                f"{T['loc_elev'][lang].format(name=ename, km=elev['dist_km'])}{_eest}",
                 reply_markup=_kb_crops(lang))
         except Exception:
             log.exception("on_location failed")

@@ -38,13 +38,15 @@ NEW_DATA #1 (regime): структурный сдвиг 2024–2025 ловим �
 """
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:
-    pass
+if "PYTEST_CURRENT_TEST" not in os.environ:  # не трогаем capture pytest
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 import pandas as pd
 

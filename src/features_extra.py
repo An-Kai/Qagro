@@ -53,6 +53,7 @@ ndvi_max (с флагом) и yield_roll3 за 2005–2007 (нет 3 лет ис
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -67,10 +68,11 @@ def _days_in_month(year: int, month: int) -> int:
         return 29
     return _DAYS_IN_MONTH[month - 1]
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:  # pragma: no cover
-    pass
+if "PYTEST_CURRENT_TEST" not in os.environ:  # не трогаем capture pytest
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:  # pragma: no cover
+        pass
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"

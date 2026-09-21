@@ -8,10 +8,10 @@
 | barley | 2.782 / 3.002 / -0.257 | 1.268 / 1.577 / 0.653 | 50 | 0.568 / 1.486 | ✅ strong |
 | oats | 3.589 / 4.004 / -0.332 | 1.375 / 1.785 / 0.735 | 50 | 0.135 / 1.798 | ✅ strong |
 | sunflower | 2.524 / 3.691 / -0.347 | 2.012 / 2.831 / 0.207 | 50 | 1.394 / 2.489 | ✅ strong |
-| rapeseed | 3.699 / 4.260 / -0.855 | 3.313 / 4.182 / -0.787 | 50 | 3.313 / 2.578 | ✅ strong |
+| rapeseed | 3.699 / 4.260 / -0.855 | 3.313 / 4.182 / -0.787 | 50 | 3.313 / 2.578 | 🧪 experimental |
 | flax | 1.218 / 1.440 / -0.051 | 1.325 / 1.672 / -0.418 | 50 | -1.254 / 1.118 | 🧪 experimental |
 
-Вывод: 5 strong (spring_wheat, barley, oats, sunflower, rapeseed), 1 experimental (flax — below_baseline, структурный сдвиг 2024–2025, метрики честные без подгонки).
+Вывод: 4 strong (spring_wheat, barley, oats, sunflower), 2 experimental (rapeseed, flax — below_baseline, структурный сдвиг 2024–2025, метрики честные без подгонки).
 
 ## FAOSTAT-национальный sanity-check (не фичи модели, утечки нет)
 

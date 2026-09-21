@@ -10,14 +10,21 @@
 """
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:
-    pass
+
+def _fix_console() -> None:
+    """UTF-8 для кириллицы в cp1251-консоли. Только прямой запуск (no-op под pytest)."""
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return
+    try:
+        if getattr(sys.stdout, "encoding", "utf-8").lower() != "utf-8":
+            sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
+    except Exception:
+        pass
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -113,6 +120,7 @@ def t_guide_no_none():
 
 
 if __name__ == "__main__":
+    _fix_console()
     check("T ru/kz/en parity", t_t_parity)
     check("HELP short + MORE full", t_help_more_parity)
     check("MORE cmds have handlers", t_more_cmds_exist)

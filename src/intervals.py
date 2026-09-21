@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 import pickle
+import os
 import sys
 from functools import lru_cache
 from pathlib import Path
@@ -34,10 +35,11 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import TimeSeriesSplit
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:  # pragma: no cover
-    pass
+if "PYTEST_CURRENT_TEST" not in os.environ:  # не трогаем capture pytest
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:  # pragma: no cover
+        pass
 
 try:
     from src.train import blend_predict, make_model, make_ridge

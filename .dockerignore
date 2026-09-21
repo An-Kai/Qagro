@@ -4,9 +4,16 @@ __pycache__/
 *.pyc
 .venv/
 .env
+.env.example
 data/cache.db
 data/myfields.db
+data/*.db
+data/*.sqlite
+*.sqlite
 *.log
+.pytest_cache/
 .opencode/node_modules/
 .opencode/skills/*/node_modules/
 docs/Qagro_presentation.pdf
+data/raw/
+metrics/plots/

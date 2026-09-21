@@ -237,8 +237,7 @@ def t_report_pdf():
     assert len(r.content) > 10000, len(r.content)
 
 
-def t_guide_search():
-    # Жалоба словами: релевантный совет, а не первые N справочника.
+def t_guide_search():    # Жалоба словами: релевантный совет, а не первые N справочника.
     r = client.get("/guide", params={"q": "саранча", "lang": "ru"})
     assert r.status_code == 200, r.text
     items = r.json().get("items", [])
@@ -250,6 +249,37 @@ def t_guide_search():
     r = client.get("/guide", params={"q": "абракадабра"})
     assert r.status_code == 200, r.text
     assert r.json().get("items") == [], r.text
+
+
+def t_experimental_gate():
+    # Multi-metric gate (G1 MAE + G2 R2>0, src/evaluate.py): рапс и лён —
+    # experimental fallback, пшеница — модель. Без подгонки hold-out.
+    for crop, exp in (("rapeseed", True), ("flax", True), ("spring_wheat", False),
+                      ("barley", False), ("oats", False), ("sunflower", False)):
+        r = client.post("/predict", json={"district_en": "Esil", "crop": crop,
+                                          "include_risk": False})
+        assert r.status_code == 200, (crop, r.text)
+        j = r.json()
+        top = j.get("experimental")
+        sub = (j.get("pred") or {}).get("experimental")
+        assert top is exp and sub is exp, (crop, top, sub)
+
+
+def t_coverage_meta():
+    # Интервал не называется 80% без evidence: meta несёт покрытие + пометки.
+    r = client.post("/predict", json={"district_en": "Esil", "crop": "spring_wheat",
+                                      "include_risk": False})
+    assert r.status_code == 200, r.text
+    meta = r.json().get("meta", {})
+    assert meta.get("interval_nominal") == "80%", meta
+    assert meta.get("interval_coverage") == 0.66, meta
+    assert "0.66" in meta.get("coverage_note", ""), meta
+    assert "даунскейлинг" in meta.get("downscaling", ""), meta
+    r = client.post("/predict", json={"district_en": "Esil", "crop": "rapeseed",
+                                      "include_risk": False})
+    meta = r.json().get("meta", {})
+    assert meta.get("interval_coverage") == 0.04, meta
+    assert "среднее" in meta.get("coverage_note", ""), meta  # warning при <0.5
 
 
 def t_agrodata():    # NEW_DATA #2: сверка с Казгидрометом. Офлайн-safe: либо рубрики
@@ -279,6 +309,8 @@ if __name__ == "__main__":
     check("version git sha", t_version)
     check("guide spring_wheat 200 + names", t_guide)
     check("guide search locust/drought/gibberish", t_guide_search)
+    check("experimental gate rapeseed/flax", t_experimental_gate)
+    check("coverage meta in predict", t_coverage_meta)
     check("fertilizer spring_wheat 200 + N>0", t_fertilizer)
     check("economy 200 + profit", t_economy)
     check("spray Esil 200/offline-error", t_spray)

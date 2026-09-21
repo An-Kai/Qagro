@@ -11,11 +11,11 @@ Qagro — MVP decision-support системы для фермеров и агр�
 
 Покрытие MVP: **10 районов** Акмолинской области × **6 культур**
 (модель v4: бленд LightGBM+Ridge, веса per-crop по train-CV, R² пшеница 0.66 / ячмень 0.65 / овёс 0.74;
-5/6 strong (пшеница, ячмень, овёс, подсолнечник, рапс), лён — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
+4/6 strong (пшеница, ячмень, овёс, подсолнечник), рапс и лён — честный EXPERIMENTAL baseline mean5 с флагом `experimental:true`),
 годы панели 2005–2025, прогноз — 2026.
 
-Интерфейсы: **FastAPI** (`POST /predict`, `POST /report` → PDF), **Telegram-бот** (aiogram 3.x),
-**Streamlit-дашборд** (Plotly + Folium, выгрузка CSV/GeoJSON/PDF).
+Интерфейсы: **FastAPI** (`POST /predict`, `POST /report` → PDF; `GET /gis`, `/agrodata`, `/compare`, `/season` и др. — см. `src/api.py`),
+**Telegram-бот** (aiogram 3.x), **Streamlit-дашборд** (Plotly + Folium, выгрузка CSV/GeoJSON/PDF).
 
 ## Стек
 
@@ -67,10 +67,21 @@ python src/evaluate.py
 python -m uvicorn src.api:app --host 127.0.0.1 --port 8000
 # GET  http://127.0.0.1:8000/health
 # POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"spring_wheat"}
-# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"oats"}  # strong v3
-# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"flax"}  # EXPERIMENTAL
+# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"oats"}  # strong
+# POST http://127.0.0.1:8000/predict  {"district_en":"Esil","crop":"rapeseed"}  # EXPERIMENTAL
 # POST http://127.0.0.1:8000/report   {"district_en":"Esil","crop":"spring_wheat"} -> PDF
+# GET  /metrics /version /districts /fields /granaries /calendar /agrodata
+# GET  /alerts /guide?q=саранча /fertilizer /economy /soil /intervals /gis /compare /season
+#      + platform: /myfields /journal /spray (см. src/api.py, src/platform_api.py)
 ```
+
+Кэш: API `/predict` — in-memory 5 мин (`X-Qagro-Cache`); бот — SQLite `data/cache.db` TTL 24 ч.
+
+Режимы: `QAGRO_ENV=local` (дефолт: CORS `*`, без лимитов — демо/CLI/тесты) vs
+`QAGRO_ENV=production` (требует `QAGRO_CORS_ORIGINS`, включает rate-limit
+`QAGRO_RATE_LIMIT_PER_MIN` и лимит тела `QAGRO_MAX_BODY_BYTES`; см. `.env.example`).
+`meta` каждого `/predict`: `interval_coverage` (факт hold-out, n=50) +
+`coverage_note`/`downscaling`/`insurance_note` на языке запроса.
 
 ### Telegram-бот (токен ТОЛЬКО из env!)
 
@@ -79,8 +90,8 @@ Copy-Item .env.example .env  # вписать токен от BotFather в .env
 $env:TELEGRAM_BOT_TOKEN="вставь_токен_сюда"  # или export в shell; в коде токена нет
 python -m src.bot
 # /start -> язык (RU/KZ/EN) -> район (10) -> культура (6) -> ответ словами + PDF
-# /gis — поля со спутника; /spray — окно опрыскивания; /guide — болезни;
-# /compare — 2 культуры рядом; /fields — 115 полей (109 OSM + 6 demo); /elevators — 12
+# /gis — поля со спутника; /spray — окно опрыскивания; /guide <жалоба> — совет (напр. /guide саранча);
+# /more — все команды; /compare — 2 культуры рядом; /fields — 115 полей (109 OSM + 6 demo); /elevators — 12
 # Кнопка геолокации -> ближайший район по haversine
 ```
 
@@ -90,8 +101,8 @@ python -m src.bot
 
 ```powershell
 python -m streamlit run app/streamlit_app.py
-# 3 шага словами + сравнение культур + сезонный календарь + карты (риски/поля/NDVI),
-# CSV / GeoJSON / PDF, техдетали только в "Подробно для агронома"
+# Обучение за 1 минуту + 3 шага словами + сравнение культур + сезонный календарь + карты (риски/поля/NDVI),
+# CSV / GeoJSON / PDF, техдетали только в "Подробно для агронома", "Как это работает" — во вкладке "О проекте"
 ```
 
 ### Docker
@@ -113,14 +124,14 @@ docker compose up --build
 | NASA POWER Monthly Point (MERRA-2, community=AG), 2005–2025 | T2M/T2M_MAX/T2M_MIN/PRECTOTCORR/RH2M/ALLSKY_SFC_SW_DWN/WS2M/GWETTOP; сырое `data/raw/nasa_*.json` | Открытый API NASA; некоммерческое/исследовательское использование |
 | Open-Meteo Archive (ERA5) + Forecast 16d, timezone Asia/Almaty | Daily tmax/tmin/precip/ET0 FAO 2005-01-01–2025-08-31, hourly soil_moisture_3_9cm; сырое `data/raw/openmeteo_*` | Открытый API Open-Meteo (CC-BY 4.0, требуется атрибуция) |
 | `config/districts.yaml` (центроиды WGS84, OpenStreetMap) | Координаты 10 районов, 6 культур, пороги страховки/рекомендаций | ODbL (OSM) — указаны центроиды, не границы |
-| Microsoft Planetary Computer STAC (Sentinel-2 L2A, без ключа) | Поиск сцен для 2 демо-полей (Esil/Zerenda, июнь–август 2024–2025, cloud<20%) → `data/ndvi/ndvi_timeseries.json` (62 сцены, только список сцен, NDVI=MISSING) | Открытый STAC API; атрибуция Copernicus/Sentinel |
+| Microsoft Planetary Computer STAC (Sentinel-2 L2A, без ключа) | Поиск сцен 10 районов (июнь–август 2024–2025, cloud<20%) + настоящий NDVI через PC TiTiler → `data/ndvi/ndvi_timeseries.json` (148 сцен, 132 real) | Открытый STAC API; атрибуция Copernicus/Sentinel |
 | Geofabrik Kazakhstan (запасной офлайн-дамп) | Замена Overpass при лимитах: `kazakhstan-latest.osm.pbf`, фильтр `landuse=farmland` → GeoJSON | ODbL, https://download.geofabrik.de/asia/kazakhstan.html |
 | map.iaqmola.kz (Smart GeoHub) | Официальный источник границ полей Акмолы для пилота (требует авторизации; импорт — см. `data/fields/FIELDS_README.md`) | Данные акимата/оператора; OSM — открытая замена на хакатон |
 | Qoldau granaries-map | Перечень 12 элеваторов Акмолы → `data/fields/granaries.json` (координаты оценочные по OSM, подлежат уточнению) | https://p-grain-receipt.qoldau.kz/ru/gr-info/granaries-map |
 | Copernicus Browser | Ручной источник Sentinel-2 L2A для пилота (скачать B04/B08, NDVI=(B08−B04)/(B08+B04) самим) | https://browser.dataspace.copernicus.eu/ (бесплатная регистрация для скачивания) |
 | Sentinel Hub | EO Browser / API для превью и батчей Sentinel-2 | https://www.sentinel-hub.com/ |
 
-Панель: `data/processed/akmola_panel.csv` — 1260 строк (10 районов × 21 год × 6 культур), 0 NaN в `yield_c_ha`. Детали и честные оговорки — `data/processed/data_card.md`.
+Панель: `data/processed/akmola_panel.csv` — 1260 строк (10 районов × 21 год × 6 культур), 0 NaN в `yield_c_ha`; рабочая — `akmola_panel_v4.csv` (1260×36: площади, ГТК, SoilGrids, режимные фичи). Детали и честные оговорки — `data/processed/data_card.md`.
 
 Гео: `data/fields/akmola_osm_fields.geojson` — 115 полигонов (109 реальных OSM через Overpass, ODbL + 6 честных демо 1×2 км с `demo:true`); `data/fields/granaries.json` — 12 элеваторов (Qoldau, координаты оценочные).
 
@@ -131,8 +142,9 @@ docker compose up --build
 ```powershell
 python src/sentinel_ndvi.py
 # -> data/ndvi/ndvi_timeseries.json [{district, date, ndvi_mean|None, scene_id, status}]
-# 22/62 записей с реальным ndvi_mean (июнь+июль, PC TiTiler); остальные None (MISSING) — число не выдумываем;
+# 132/148 записей с реальным ndvi_mean (все 10 районов, PC TiTiler); остальные None (MISSING) — число не выдумываем;
 # status = "listed ..." (сцена найдена) или "error: ..." (STAC недоступен).
+# Добор района: python scripts/fetch_ndvi_district.py --district <En> (крупнейшее OSM-поле, keep по (district, scene_id)).
 # Модель обязана работать без NDVI: src/features_ndvi.py делает optional join
 # (ndvi_max добавляется только при настоящих NDVI без NaN, иначе пропускается).
 ```
@@ -162,7 +174,12 @@ python src/sentinel_ndvi.py
 - [x] APPROX для культур без модели (масштаб от пшеницы + цены-индикаторы, флаг `approx`), `src/approx_crops.py`; честный EXPERIMENTAL baseline-5y (интервал ×1.5, флаг `experimental:true`) для культур с `below_baseline=true`, `src/predict.py` + `src/insurance.py`.
 - [x] FastAPI `/predict` + `/report` (PDF ReportLab с кириллицей), Telegram-бот (язык→район→культура→карточки+PDF), Streamlit (Plotly+Folium+CSV/GeoJSON/PDF).
 - [x] Кэш SQLite 24 ч, Docker (api+bot+streamlit), `reports/risk_example.json` (Esil/Zerenda × риски/страховка/рекомендации).
-- [x] Доки: README, `data/processed/data_card.md`, `docs/demo_script.md`, `docs/presentation_outline.md`, `docs/SUBMISSION.md`.
+- [x] NDVI на все 10 районов (148 сцен / 132 real, PC TiTiler; `scripts/fetch_ndvi_district.py`), даты района в `gis_monitor` (дефолт-2024 + сцены района).
+- [x] Жалобы словами вместо справочника: `/guide <текст>` / строка поиска / `GET /guide?q=` (`search_guide` + абиотика засуха/жара/заморозки; +4 записи овёс/рапс/лён).
+- [x] AgroData-валидатор: `src/fetch_agrodata.py` + `GET /agrodata` (drought 8/10, productivity 9/10 районов).
+- [x] Тесты: `pytest.ini` + `conftest` (unit/live-маркер, моки, tmp-изоляция) — `pytest -q` 12 offline, `--run-live` 15; старые скрипты живы (47 проверок).
+- [x] Hardening: gate G1∧G2 в `evaluate.py`, `QAGRO_ENV` local/production (CORS/rate-limit/body-cap), `scripts/verify.py` + `-VerifyOnly`, `check_leak` расширен, Dockerfile non-root+HEALTHCHECK.
+- [x] Доки: README, `data/processed/data_card.md`, `docs/demo_script.md`, `docs/presentation_outline.md`, `docs/SUBMISSION.md` + новые `USER_GUIDE`, `PROJECT_DESCRIPTION`, `HARDENING_PLAN`, `PRESENTATION_PROMPT`, `DEMO_VIDEO_SCRIPT`; колода собирается из кода (`scripts/build_presentation.py`).
 
 ## Сторонние OSS (использованы как образец, код Qagro — оригинальный)
 
@@ -173,9 +190,13 @@ python src/sentinel_ndvi.py
 
 Лицензии соблюдены: указаны авторы/ссылки, чужой код не копировался, заимствованы только подходы.
 
-## Метрики v3 (hold-out 2021–2025, n=50 на культуру; 6 культур, см. metrics/metrics.json)
+## Метрики (hold-out 2021–2025, n=50 на культуру; 6 культур, см. metrics/metrics.json)
 
-Модель v4: бленд LightGBM+Ridge (веса per-crop по train-CV, см. `src/train.py`) на панели v4 (площади stat.gov.kz, ГТК Селянинова, SoilGrids, режимные календарные фичи trend_sq/trend_recent/oilshare_trend). 5/6 strong, 1 experimental (лён).
+Модель v4: бленд LightGBM+Ridge (веса per-crop по train-CV, см. `src/train.py`) на панели v4 (площади stat.gov.kz, ГТК Селянинова, SoilGrids, режимные календарные фичи trend_sq/trend_recent/oilshare_trend). 4/6 strong, 2 experimental (рапс, лён).
+
+Gate «strong» (код в `src/evaluate.py`, пороги принципиальные, не подогнанные):
+G1 — MAE(бленд) < MAE(бейзлайн-5y); G2 — R²(бленд) > 0 (лучше среднего).
+Покрытие интервала — не ворота, а обязательная отчётность (`metrics/intervals.json` + warning в API/UI/PDF при coverage<0.5).
 
 | Культура | Бейзлайн (среднее 5 лет) | Бленд (Qagro) | Статус |
 |---|---|---|---|
@@ -183,10 +204,10 @@ python src/sentinel_ndvi.py
 | Ячмень | MAE **2.78**, RMSE 3.00, R² **-0.26** | MAE **1.27**, RMSE 1.58, R² **0.65** | ✅ strong |
 | Овёс | MAE **3.59**, RMSE 4.00, R² **-0.33** | MAE **1.37**, RMSE 1.79, R² **0.74** | ✅ strong |
 | Подсолнечник | MAE **2.52**, RMSE 3.69, R² **-0.35** | MAE **2.01**, RMSE 2.83, R² **0.21** | ✅ strong (лучше бейзлайна по MAE) |
-| Рапс | MAE **3.70**, RMSE 4.26, R² **-0.85** | MAE **3.31**, RMSE 4.18, R² **-0.79** | ✅ strong (лучше бейзлайна по MAE; R² слабый, покрытие 0.04 — см. оговорку) |
-| Лён | MAE **1.22**, RMSE 1.44, R² **-0.05** | MAE 1.33, RMSE 1.67, R² -0.42 | 🧪 EXPERIMENTAL baseline |
+| Рапс | MAE **3.70**, RMSE 4.26, R² **-0.85** | MAE 3.31, RMSE 4.18, R² -0.79 | 🧪 EXPERIMENTAL baseline (провал G2: R²<0, bias +3.3, покрытие 0.04) |
+| Лён | MAE **1.22**, RMSE 1.44, R² **-0.05** | MAE 1.33, RMSE 1.67, R² -0.42 | 🧪 EXPERIMENTAL baseline (провал G1+G2) |
 
-Источники: `metrics/metrics.json` (`below_baseline:true` только у льна), графики `metrics/plots/scatter_*.png`, SHAP `metrics/shap_*.json`.
+Источники: `metrics/metrics.json` (`below_baseline:true` у рапса и льна), графики `metrics/plots/scatter_*.png`, SHAP `metrics/shap_*.json`.
 Честный fallback: для культур с `below_baseline=true` прогноз = baseline mean5 за 5 лет, интервал шире (residual×1.5), флаг `experimental:true` в `src/predict.py` / `src/insurance.py` (без подгонки метрик).
 
 Пример эффекта (нейтральный сценарий MJJA 2016–2025, `reports/risk_example.json`):
@@ -195,7 +216,7 @@ Esil/пшеница — expected payout **51 тг/га** (p_loss 0.02); Zerenda/
 ## Ограничения (честно)
 
 - **Район = даунскейлинг области.** Районных длинных рядов БНС в открытом доступе нет; районная урожайность = областной якорь × агрозональный коэффициент (север 1.02–1.06, юг 0.92–0.98). Центроиды из `config/districts.yaml` — не границы и не поля.
-- **6 культур: 5 strong + 1 experimental baseline.** Пшеница/ячмень/овёс/подсолнечник/рапс — бленд v4 лучше бейзлайна (R² 0.66/0.65/0.74; подсолнечник MAE 2.01<2.52; рапс MAE 3.31<3.70). Только лён 2024–2025 — структурный сдвиг, бленд хуже бейзлайна на hold-out 2021–2025 (`below_baseline:true` только у льна): прогноз = mean5, интервал ×1.5, флаг `experimental:true`. Оговорка по рапсу: MAE-критерий пройден, но R² −0.79 и покрытие интервала 0.04 — модель систематически недопредсказывает (+3.3), интервалы занижены, цифры честно показаны в `metrics/`. APPROX-масштаб от пшеницы — только если модели нет вообще (флаг `approx`).
+- **6 культур: 4 strong + 2 experimental baseline.** Пшеница/ячмень/овёс/подсолнечник — бленд v4 прошёл gate (MAE лучше бейзлайна И R²>0). Рапс (R² −0.79, bias +3.3, покрытие 0.04) и лён (хуже бейзлайна) — честный fallback: прогноз = mean5 за 5 лет, интервал ×1.5, флаг `experimental:true` (`below_baseline:true` у рапса и льна, см. `src/evaluate.py`). APPROX-масштаб от пшеницы — только если модели нет вообще (флаг `approx`).
 - **Поля — 115, честно подписаны.** 109 реальных OSM-полигонов (Overpass, ODbL) + 6 демо-прямоугольников 1×2 км (`demo:true`, НЕ OSM). Официальный источник для пилота — map.iaqmola.kz (Smart GeoHub, нужна авторизация).
 - **Элеваторы — 12, координаты оценочные.** Перечень по карте Qoldau granaries-map (публичного API нет), подлежат уточнению по официальному реестру ХПП.
 - **NDVI: 132 реальных из 148 сцен (все 10 районов).** В `data/ndvi/ndvi_timeseries.json` 132 записи с `ndvi_mean` (июнь–август 2024–2025, PC TiTiler), остальные 16 — None (MISSING, сцены нет — число не выдумываем); модель работает и без NDVI (optional join). Ручной NDVI для пилота — Copernicus Browser / Sentinel Hub (см. блок выше). Добор по району: `python scripts/fetch_ndvi_district.py --district <En>`.
@@ -215,7 +236,13 @@ python src/features_v4.py     # площади + ГТК + SoilGrids -> akmola_pa
 python src/train.py       # -> models/lgbm_*.pkl + models/baseline.json
 python src/evaluate.py    # -> metrics/metrics.json + metrics/plots/*.png + metrics/shap_*.json
 python src/intervals.py   # -> metrics/conformal.json + metrics/intervals.json
-python -c "import pandas as pd; df=pd.read_csv('data/processed/akmola_panel_v4.csv'); print(df.shape, df['yield_c_ha'].isna().sum())"
+```
+
+Безопасная проверка без перезаписи (read-only): `python scripts/verify.py`;
+полный rebuild: `scripts/reproduce.ps1` (или `.sh`), preview — с флагом
+`-VerifyOnly` / `--verify-only`. Тесты: `python tests/test_x.py` по одному;
+приёмочный gate: `pip install -r requirements-test.txt` один раз, затем
+`python -m pytest -q` (offline, 12 тестов) и опционально `pytest -q --run-live`.
 ```
 
 Ожидается: `(1260, 36)`, NaN в yield — 0.
@@ -224,15 +251,18 @@ python -c "import pandas as pd; df=pd.read_csv('data/processed/akmola_panel_v4.c
 
 ```
 Qagro/
-  src/            api/bot/predict/risk/insurance/recommend/train/evaluate/fetch_*/approx_crops/report_pdf/features.py
+  src/            api/bot/predict/risk/insurance/recommend/train/evaluate/fetch_*/approx_crops/report_pdf/guide_data/spray/gis_monitor/sentinel_ndvi/features*.py
   app/            streamlit_app.py (Plotly + Folium + выгрузки)
   config/         districts.yaml (10 районов, 6 культур, пороги)
-  data/           raw/ (nasa_*/openmeteo_*/stat_yield.csv) + processed/akmola_panel.csv + data_card.md + cache.db
+  data/           raw/ (nasa_*/openmeteo_*/stat_yield.csv) + processed/akmola_panel_v4.csv + data_card.md + cache.db
   models/         lgbm_{crop}.pkl + baseline.json
-  metrics/        metrics.json + plots/scatter_*.png + shap_*.json
+  metrics/        metrics.json + intervals.json + plots/scatter_*.png + shap_*.json
   reports/        risk_example.json (Esil/Zerenda демо)
-  docs/           demo_script.md + presentation_outline.md + SUBMISSION.md
-  Dockerfile + docker-compose.yml (api/bot/streamlit) + requirements.txt + .env.example
+  tests/          test_*.py (standalone) + conftest.py + pytest.ini
+  scripts/        verify.py + reproduce.ps1/.sh + build_presentation.py + regen_risk_example.py + fetch_ndvi_district.py
+  docs/           demo_script.md + presentation_outline.md + SUBMISSION.md + USER_GUIDE.md + PROJECT_DESCRIPTION.md
+  .streamlit/     config.toml (светлая тема DESIGN.md)
+  Dockerfile + docker-compose.yml (api/bot/streamlit) + requirements.txt + requirements-test.txt + .env.example
 ```
 
 ## In English (brief)
@@ -240,7 +270,8 @@ Qagro/
 Qagro (Track 2: 2.1/2.2/2.4) — Akmola district-level 2026 yield forecast (LightGBM vs 5y-mean baseline),
 decade drought-risk traffic light (Open-Meteo), index-insurance decision support + sowing advice (RU/KZ/EN)
 via FastAPI, Telegram bot (`TELEGRAM_BOT_TOKEN` from env only, never hardcoded) and Streamlit.
-Wheat: baseline MAE 2.68/R² -0.26 → blend MAE 1.20/R² 0.66; barley: 2.78/-0.26 → 1.27/0.65; oats: 3.59/-0.33 → 1.37/0.74 (5/6 strong).
-Sunflower (MAE 2.01<2.52) / rapeseed (MAE 3.31<3.70): strong; flax only: blend below baseline on hold-out → honest EXPERIMENTAL baseline-5y fallback (flag experimental:true, interval x1.5).
+Security: the dev bot token lived in a local `.env` — treat as compromised, rotate via @BotFather (`/revoke`); secret scan `scripts/check_leak.ps1` before each submission. API modes: `QAGRO_ENV=local` (default, open CORS, no limits — demo) vs `production` (explicit origins required, rate-limit + body cap); see `.env.example`.
+Wheat: baseline MAE 2.68/R² -0.26 → blend MAE 1.20/R² 0.66; barley: 2.78/-0.26 → 1.27/0.65; oats: 3.59/-0.33 → 1.37/0.74; sunflower: 2.52/-0.35 → 2.01/0.21 (4/6 strong).
+Rapeseed (R² -0.79, coverage 0.04) and flax (below baseline): honest EXPERIMENTAL baseline-5y fallback (flag experimental:true, interval x1.5). Strong-gate: MAE win AND R²>0 (see src/evaluate.py).
 Limits: districts = downscaled oblast stats (centroids, not fields); 115 fields (109 OSM + 6 demo), 12 elevators (coords estimated);
 insurance is decision support, not a tariff.

@@ -1,24 +1,41 @@
 """api.py — FastAPI для Qagro.
 
 GET  /health  -> {"status": "ok", ...}
+GET  /metrics /version /districts /fields /granaries /calendar /agrodata
+     /alerts /guide /fertilizer /economy /soil /intervals /gis /compare /season
+     + platform_api: /myfields /journal /spray (см. src/platform_api.py)
 POST /predict {district_en, crop, [lang, weather, year, include_risk]} ->
      {y_pred, lo, hi, factors, p_loss, payout, risk, rec,
-      approx, insurance, meta}
+      approx, experimental, insurance, meta}
      Кэш 5 мин; query ?fresh=true = пересчёт мимо кэша (по умолчанию
      ?fresh=false — брать кэш; заголовок ответа X-Qagro-Cache: HIT/MISS).
 POST /report  {district_en, crop, [lang, weather]} -> application/pdf bytes
      (таблица + риски через reportlab, см. src/report_pdf.py).
 
 Прогноз с weather=None берёт климат-норму района (средний MJJA 2016-2025).
-Культуры: spring_wheat/barley (LGBM) + oats/sunflower/rapeseed/flax (APPROX).
+Культуры: 6 моделей-блендов LightGBM+Ridge (models/lgbm_*.pkl); культуры с
+below_baseline=true в metrics/metrics.json (сейчас: flax, rapeseed) идут
+через честный experimental fallback (baseline mean5, интервал ×1.5,
+флаг experimental:true); APPROX-масштаб от пшеницы — только если .pkl
+модели нет вообще (см. src/approx_crops.py, src/predict.py).
 Риск (Open-Meteo) — best-effort: при недоступности API возвращается
 {"error": ..., "seasonal_risk": None} вместо выдуманных цифр.
+
+Режимы (env, без новых обязательных переменных для локали):
+  QAGRO_ENV=local (дефолт): CORS *, без rate-limit — для демо/CLI/тестов.
+  QAGRO_ENV=production: требует QAGRO_CORS_ORIGINS (список через запятую,
+  "*" запрещён — fail-fast), включает rate-limit и лимит тела запроса.
+  QAGRO_RATE_LIMIT_PER_MIN (дефолт 0=выкл; в prod рекомендуется 60),
+  QAGRO_MAX_BODY_BYTES (дефолт 262144), QAGRO_LOG_LEVEL (дефолт INFO).
 
 Запуск (Windows PowerShell):
   uvicorn src.api:app --host 127.0.0.1 --port 8000
 """
 from __future__ import annotations
 
+import logging
+import os
+import time as _time_mod
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +43,9 @@ from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
+
+log = logging.getLogger("qagro.api")
+logging.basicConfig(level=os.getenv("QAGRO_LOG_LEVEL", "INFO").upper())
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -50,17 +70,57 @@ except ImportError:  # прямое использование из папки s
 
 app = FastAPI(title="Qagro API", version="0.1.0")
 
-# CORS: фронт/бот/Streamlit ходят с других origin — разрешаем без авторизации.
-# БД/авторизацию не добавляем (C2: hardening без усложнения).
+# --- режимы local/production (без новых обязательных переменных для локали) ---
+QAGRO_ENV = os.getenv("QAGRO_ENV", "local").strip().lower()
+_QAGRO_ORIGINS_RAW = os.getenv("QAGRO_CORS_ORIGINS", "*").strip()
+QAGRO_RATE_LIMIT_PER_MIN = int(os.getenv("QAGRO_RATE_LIMIT_PER_MIN", "0") or 0)
+QAGRO_MAX_BODY_BYTES = int(os.getenv("QAGRO_MAX_BODY_BYTES", "262144") or 262144)
+if QAGRO_ENV == "production" and _QAGRO_ORIGINS_RAW == "*":
+    raise RuntimeError(
+        "QAGRO_ENV=production требует явный QAGRO_CORS_ORIGINS "
+        "(список origin через запятую, '*' запрещён).")
+_CORS_ORIGINS = (["*"] if _QAGRO_ORIGINS_RAW == "*"
+                 else [o.strip() for o in _QAGRO_ORIGINS_RAW.split(",") if o.strip()])
+log.info("Qagro API mode=%s cors=%s rate_limit/min=%s max_body=%s",
+         QAGRO_ENV, ("*" if _QAGRO_ORIGINS_RAW == "*" else f"{len(_CORS_ORIGINS)} origins"),
+         QAGRO_RATE_LIMIT_PER_MIN, QAGRO_MAX_BODY_BYTES)
+
+# CORS: локально — открыто для бота/Streamlit/демо; в production — только явные origin.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_CORS_ORIGINS,
     allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"] if _QAGRO_ORIGINS_RAW == "*" else ["GET", "POST", "OPTIONS"],
+    allow_headers=["*"] if _QAGRO_ORIGINS_RAW == "*" else ["Content-Type", "Authorization"],
 )
 
+
+@app.middleware("http")
+async def _budget_middleware(request: Request, call_next):
+    """Request budget: лимит тела + rate-limit (только production)."""
+    if QAGRO_ENV == "production":
+        try:
+            clen = int(request.headers.get("content-length") or 0)
+        except (TypeError, ValueError):
+            clen = 0
+        if clen > QAGRO_MAX_BODY_BYTES:
+            return JSONResponse(status_code=413, content={
+                "detail": f"Тело запроса > {QAGRO_MAX_BODY_BYTES} байт / Body too large."})
+        if (QAGRO_RATE_LIMIT_PER_MIN > 0
+                and request.url.path in ("/predict", "/report")):
+            ip = (request.client.host if request.client else "?")
+            now = _time_mod.time()
+            bucket = _RATE_BUCKET.setdefault(ip, [])
+            bucket[:] = [t for t in bucket if now - t < 60.0]
+            if len(bucket) >= QAGRO_RATE_LIMIT_PER_MIN:
+                return JSONResponse(status_code=429, content={
+                    "detail": "Слишком много запросов / Too many requests. Подождите минуту."})
+            bucket.append(now)
+    return await call_next(request)
+
+
 # Кэш predict в памяти 5 мин: dict + time, без БД/Redis.
+_RATE_BUCKET: dict[str, list[float]] = {}
 _PREDICT_CACHE: dict[str, tuple[float, dict]] = {}
 CACHE_TTL = 300  # секунд
 
@@ -87,7 +147,8 @@ class PredictRequest(BaseModel):
         default=None,
         description="MJJA-агроклимат 2026 или None = климат-норма района",
     )
-    year: int = Field(default=2026, description="Год для декадного риска")
+    year: int = Field(default=2026, ge=2005, le=2030,
+                      description="Год для декадного риска")
     include_risk: bool = Field(default=True)
 
 
@@ -112,7 +173,7 @@ def _known_districts() -> list[str]:
         if names:
             return names
     except Exception:
-        pass
+        log.warning("districts.yaml unreadable, using hardcoded fallback", exc_info=True)
     return ["Atbasar", "Bulandy", "Burabay", "Esil", "Kokshetau",
             "Sandyktau", "Shortandy", "Tselinograd", "Zerenda", "Zhaksy"]
 
@@ -164,10 +225,65 @@ def _safe_risk(district_en: str, year: int = 2026) -> dict:
             from risk import decade_risk  # type: ignore
         return decade_risk(district_en, year)
     except Exception as e:  # RuntimeError сети / ValueError района
+        log.warning("decade_risk failed for %s/%s: %s", district_en, year, e)
         return {"district_en": district_en, "year": year,
                 "seasonal_risk": None, "seasonal_light": None,
                 "decades": [], "stages": {},
                 "error": f"{type(e).__name__}: {e}"}
+
+
+_INTERVALS_CACHE: dict | None = None
+
+
+def _interval_coverage(crop: str) -> float | None:
+    """Фактическое покрытие conformal-интервала на hold-out (n=50).
+
+    metrics/intervals.json; нет файла — None (не выдумываем).
+    Номинал «80%» НИКОГДА не заявляется без этого числа.
+    """
+    global _INTERVALS_CACHE
+    if _INTERVALS_CACHE is None:
+        try:
+            import json as _json
+
+            p = ROOT / "metrics" / "intervals.json"
+            _INTERVALS_CACHE = _json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+        except Exception as e:
+            log.warning("intervals.json unreadable: %s", e)
+            _INTERVALS_CACHE = {}
+    try:
+        return float(_INTERVALS_CACHE.get(crop, {}).get("conformal_coverage"))
+    except (TypeError, ValueError):
+        return None
+
+
+def _calibration_notes(lang: str, coverage: float | None) -> dict[str, str]:
+    """Честные строки про интервал/даунскейлинг/страховку на языке ответа."""
+    cov = "—" if coverage is None else f"{coverage:.2f}"
+    warn = ""
+    if coverage is not None and coverage < 0.5:
+        warn = {
+            "ru": " Внимание: интервал занижен — ориентируйтесь на среднее.",
+            "kz": " Назар аударыңыз: аралық тарылған — орташа мәнге сүйеніңіз.",
+            "en": " Warning: interval is too narrow — rely on the average.",
+        }.get(lang, "")
+    return {
+        "coverage_note": {
+            "ru": f"Интервал «80%» — номинал; факт. покрытие {cov} (n=50, metrics/intervals.json).{warn}",
+            "kz": f"«80%» аралық — номинал; іс жүзінде жабу {cov} (n=50).{warn}",
+            "en": f"“80%” interval is nominal; actual coverage {cov} (n=50).{warn}",
+        }.get(lang, ""),
+        "downscaling": {
+            "ru": "Район — даунскейлинг областной статистики на центроиды (config/districts.yaml), не замеры полей.",
+            "kz": "Аудан — облыстық статистиканың центроидтарға даунскейлингі, егістік өлшемі емес.",
+            "en": "District downscales oblast stats onto centroids (config/districts.yaml), not field measurements.",
+        }.get(lang, ""),
+        "insurance_note": {
+            "ru": "Страховка — decision support (ориентир), не тариф.",
+            "kz": "Сақтандыру — decision support (бағдар), тариф емес.",
+            "en": "Insurance is decision support (estimate), not a tariff.",
+        }.get(lang, ""),
+    }
 
 
 def _full_result(district_en: str, crop: str, lang: str = "ru",
@@ -190,6 +306,7 @@ def _full_result(district_en: str, crop: str, lang: str = "ru",
               "mean5_c_ha": ins["mean5_c_ha"],
               "strike_c_ha": ins["strike_c_ha"],
               "price_kzt_per_t": ins["price_kzt_per_t"]}
+    cov = _interval_coverage(crop)
     return {
         "district_en": district_en, "crop": crop, "lang": lang,
         "approx": bool(pred.get("approx") or ins.get("approx")),
@@ -200,7 +317,11 @@ def _full_result(district_en: str, crop: str, lang: str = "ru",
         "risk": risk, "rec": rec,
         "insurance": ins, "pred": pred,
         "meta": {"weather_source": (pred.get("meta") or {}).get("weather_source"),
-                 "year": year},
+                 "year": year,
+                 "mode": QAGRO_ENV,
+                 "interval_nominal": "80%",
+                 "interval_coverage": cov,
+                 **_calibration_notes(lang, cov)},
     }
 
 
@@ -274,8 +395,13 @@ def version() -> dict:
 def districts() -> dict:
     import yaml
 
-    with open(ROOT / "config" / "districts.yaml", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    try:
+        with open(ROOT / "config" / "districts.yaml", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        log.warning("districts.yaml unreadable: %s", e)
+        raise HTTPException(status_code=500, detail=(
+            "config/districts.yaml не читается.")) from e
 
 
 @app.get("/fields")
@@ -284,6 +410,7 @@ def fields(district_en: str | None = None) -> dict:
 
     Query ?district_en=Esil — фильтр по району. Без моков: если файла нет —
     500 с честной ошибкой (сначала python src/fields_osm.py).
+    Полигоны с demo:true — примерные 1×2 км (не OSM); настоящие — ODbL.
     """
     import json
 
@@ -354,7 +481,8 @@ def agrodata(district_en: str = "Esil", crop: str = "spring_wheat",
 
 
 @app.get("/alerts")
-def alerts(district_en: str = "Esil", days: int = 7) -> dict:
+def alerts(district_en: str = "Esil",
+           days: int = Query(default=7, ge=1, le=16)) -> dict:
     """C8: агроалерты по прогнозу Open-Meteo (best-effort, без моков).
 
     При недоступности сети — 200 с {"alerts": [], "error": ...}, а не выдумка.
@@ -418,12 +546,14 @@ def report(req: ReportRequest) -> Response:
     # C8 best-effort: календарь/элеватор офлайн, алерты онлайн (без моков).
     try:
         cal = sowing_calendar(req.crop, req.lang)
-    except Exception:
+    except Exception as e:
+        log.warning("/report calendar failed for %s: %s", req.crop, e)
         cal = None
     try:
         alerts_items = check_alerts(req.district_en)
         alerts_err = None
     except Exception as e:
+        log.warning("/report alerts failed for %s: %s", req.district_en, e)
         alerts_items, alerts_err = None, f"{type(e).__name__}: {e}"
     try:
         try:
@@ -431,7 +561,8 @@ def report(req: ReportRequest) -> Response:
         except ImportError:
             from logistics import nearest_elevator  # type: ignore
         elev = nearest_elevator(req.district_en)
-    except Exception:
+    except Exception as e:
+        log.warning("/report elevator failed for %s: %s", req.district_en, e)
         elev = None
     pdf = build_report_pdf(req.district_en, req.crop, req.lang,
                            pred=full["pred"], ins=full["insurance"],
@@ -593,11 +724,13 @@ def api_compare(district_en: str = "Esil", crops: str = "spring_wheat,barley",
                 sub = float(ins.get("subsidy_rate", 0.8))
                 exp_short = float(ins.get("expected_shortfall_c_ha", 0.0))
                 point_short = float(ins.get("shortfall_c_ha", 0.0))
+                if not (0 < float(price_kzt_t) <= 1_000_000):
+                    raise ValueError(f"price_kzt_t={price_kzt_t!r} вне (0, 1000000].")
                 ins = dict(ins, price_kzt_per_t=float(price_kzt_t),
                            expected_payout_ha=round(exp_short / 10.0 * float(price_kzt_t) * sub, 0),
                            payout_at_pred_ha=round(point_short / 10.0 * float(price_kzt_t) * sub, 0))
-            except (TypeError, ValueError):
-                pass
+            except (TypeError, ValueError) as e:
+                log.warning("/compare price recalc failed for %s: %s", c, e)
         p_loss = float(ins["p_loss"])
         risk_word = ("high" if p_loss > 0.4 else ("medium" if p_loss > 0.2 else "low"))
         items.append({"crop": c, "y_pred": round(float(pred["y_pred"]), 1),
@@ -627,11 +760,13 @@ def api_season(district_en: str = "Esil", crop: str = "spring_wheat",
     try:
         rec = recommend_sowing(district_en, crop, lang)
         fact = float((rec.get("gdd_context") or {}).get("district_gdd5_mean") or 0.0)
-    except Exception:
-        fact, rec = 0.0, None
+        gdd_warn = None
+    except Exception as e:
+        log.warning("/season gdd failed for %s/%s: %s", district_en, crop, e)
+        fact, rec, gdd_warn = None, None, f"{type(e).__name__}: {e}"
     norm = cal.get("gdd_norm") or [0, 1]
     hi = float(norm[1]) if len(norm) > 1 else float(norm[0])
-    progress = min(max(fact / hi if hi > 0 else 0.0, 0.0), 1.0)
+    progress = None if fact is None else min(max(fact / hi if hi > 0 else 0.0, 0.0), 1.0)
     try:
         try:
             from src.spray import check_spray_window
@@ -643,6 +778,7 @@ def api_season(district_en: str = "Esil", crop: str = "spring_wheat",
                  "next_good_hours": [], "good_count": 0,
                  "error": f"{type(e).__name__}: {e}"}
     return {"district_en": district_en, "crop": crop, "lang": lang,
-            "calendar": cal, "gdd_fact": round(fact, 1),
-            "gdd_progress": round(progress, 3), "spray": spray,
+            "calendar": cal, "gdd_fact": None if fact is None else round(fact, 1),
+            "gdd_progress": progress if progress is None else round(progress, 3),
+            "gdd_warning": gdd_warn, "spray": spray,
             "sowing_window": (rec or {}).get("window")}

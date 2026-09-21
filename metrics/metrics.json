@@ -197,7 +197,16 @@
       2021,
       2025
     ],
-    "scatter": "metrics/plots/scatter_rapeseed.png"
+    "scatter": "metrics/plots/scatter_rapeseed.png",
+    "below_baseline": true,
+    "gate": {
+      "G1_MAE_win": true,
+      "G2_R2_pos": false,
+      "failed": [
+        "G2 R2 -0.787<=0 (хуже среднего)"
+      ]
+    },
+    "note": "Gate failed on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; see fetch_stat.py / data_card). Metrics are honest, no tuning."
   },
   "flax": {
     "model": "blend_lgbm_ridge_70_30",
@@ -239,6 +248,14 @@
     ],
     "scatter": "metrics/plots/scatter_flax.png",
     "below_baseline": true,
-    "note": "Blend worse than 5y-mean baseline on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; see fetch_stat.py / data_card). Metrics are honest, no tuning."
+    "gate": {
+      "G1_MAE_win": false,
+      "G2_R2_pos": false,
+      "failed": [
+        "G1 MAE 1.325>=baseline 1.218",
+        "G2 R2 -0.418<=0 (хуже среднего)"
+      ]
+    },
+    "note": "Gate failed on 2021-2025 hold-out (rapeseed 2024-2025 structural break: hybrids/area; see fetch_stat.py / data_card). Metrics are honest, no tuning."
   }
 }

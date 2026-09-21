@@ -2,6 +2,9 @@
 # Без ломки логики: только последовательный прогон зафиксированных шагов.
 # Шаги: deps -> fetch_all -> features_extra -> train -> evaluate -> metrics-check -> py_compile -> predict smoke -> tests.
 # Запуск из корня репо:  powershell -ExecutionPolicy Bypass -File scripts/reproduce.ps1
+# Безопасный режим (НИЧЕГО не перезаписывает):  powershell -ExecutionPolicy Bypass -File scripts/reproduce.ps1 -VerifyOnly
+#   VerifyOnly = scripts/verify.py (read-only сверка артефактов) + pytest -q.
+param([switch]$VerifyOnly)
 
 $ErrorActionPreference = "Stop"
 # UTF-8 для вывода кириллицы
@@ -12,6 +15,19 @@ $ROOT = Split-Path -Parent $PSScriptRoot
 if (-not $ROOT -or $ROOT -eq "") { $ROOT = (Get-Location).Path }
 Set-Location -LiteralPath $ROOT
 Write-Host "ROOT=$ROOT"
+
+if ($VerifyOnly) {
+  Write-Host "=== VERIFY-ONLY (read-only, дерево не меняется) ==="
+  Write-Host "--- python scripts/verify.py ---"
+  python scripts/verify.py
+  if ($LASTEXITCODE -ne 0) { exit 1 }
+  Write-Host "--- python -m pytest -q ---"
+  python -m pytest -q
+  if ($LASTEXITCODE -ne 0) { exit 1 }
+  Write-Host "REPRODUCE VERIFY OK"
+  exit 0
+}
+Write-Host "ВНИМАНИЕ: полный режим ПЕРЕЗАПИСЫВАЕТ data/processed, models/, metrics/."
 
 Write-Host "=== 1/9 pip install -r requirements.txt ==="
 pip install -r requirements.txt

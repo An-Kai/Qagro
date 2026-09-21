@@ -2,7 +2,9 @@
 # Проверяет фрагмент BOTID (первые цифры bot id, сам токен нигде не печатаем):
 #  1) git ls-files не должен содержать ".env" (только ".env.example")
 #  2) git grep по трекаемым файлам должен быть пуст
-#  3) grep по рабочей копии *.py/*.md (без .git/__pycache__/.venv) должен быть пуст
+#  3) grep по рабочей копии *.{py,md,bat,yml,yaml,json,ps1,sh,toml} (без .git/__pycache__/.venv)
+#     должен быть пуст. Сам .env из контент-поиска ИСКЛЮЧЁН намеренно, чтобы
+#     значение секрета не попадало в логи CI — его покрывают gates 1/4.
 #  4) история git (git log -S) не должна содержать фрагмент
 # Успех: "CHECK_LEAK OK", exit 0. Утечка: сообщение + exit 1.
 # Запуск:  powershell -ExecutionPolicy Bypass -File scripts/check_leak.ps1
@@ -41,8 +43,8 @@ if ($gitGrepOut -and $gitGrepOut.Trim() -ne "") {
   Write-Host "OK: git grep empty"
 }
 
-Write-Host "=== 3/4 filesystem grep *.py/*.md (excl. .git/__pycache__/.venv) ==="
-$fsHits = Get-ChildItem -Recurse -Include *.py,*.md -Force -File |
+Write-Host "=== 3/4 filesystem grep (excl. .git/__pycache__/.venv) ==="
+$fsHits = Get-ChildItem -Recurse -Include *.py,*.md,*.bat,*.yml,*.yaml,*.json,*.ps1,*.sh,*.toml -Force -File |
   Where-Object { $_.FullName -notmatch "\\\.git\\" -and $_.FullName -notmatch "__pycache__" -and $_.FullName -notmatch "\\\.venv\\" } |
   Select-String -Pattern $FRAG -SimpleMatch |
   Select-Object Path, LineNumber

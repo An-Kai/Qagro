@@ -1,12 +1,12 @@
 """platform_api.py — роутер платформы фермера (Qagro v4).
 
-FastAPI APIRouter (НЕ подключён к src/api.py — интеграцию делает другой
-разработчик):
-    GET  /myfields              -> список полей
-    POST /myfields              -> создать поле
-    GET  /journal?field_id=..   -> заметки поля
-    POST /journal               -> добавить заметку
-    GET  /spray?district_en=..  -> окно опрыскивания (живой Open-Meteo)
+FastAPI APIRouter, подключён в src/api.py через app.include_router:
+    GET    /myfields              -> список полей
+    POST   /myfields              -> создать поле
+    DELETE /myfields/{field_id}   -> удалить поле
+    GET    /journal?field_id=..   -> заметки поля
+    POST   /journal               -> добавить заметку
+    GET    /spray?district_en=..  -> окно опрыскивания (живой Open-Meteo)
 
 Чистые функции лежат в src/myfields.py, src/journal.py, src/spray.py —
 здесь только тонкие HTTP-обёртки.
@@ -47,7 +47,8 @@ class NoteCreate(BaseModel):
 # ---------------------------------------------------------------- routes
 @router.get("/myfields")
 def api_list_fields() -> dict:
-    return {"fields": list_fields(), "count": len(list_fields())}
+    fields = list_fields()
+    return {"fields": fields, "count": len(fields)}
 
 
 @router.post("/myfields", status_code=201)

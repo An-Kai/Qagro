@@ -81,6 +81,16 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "formula": "Формула",
            "formula_txt": "max(0, 80% среднего − прогноз) / 10 × цена × 0.8 (субсидия)",
            "literal": "Выплата дословно по ТЗ (без /10)",
+           "coverage": "Факт. покрытие интервала (hold-out, n=50)",
+           "cov_warn": "Внимание: интервал занижен — ориентируйтесь на среднее.",
+           "risk_seasonal": "Сезонный риск", "risk_stages": "Этапы",
+           "risk_formula": "Формула", "risk_light": "Светофор",
+           "col_decade": "Декада", "col_precip": "Осадки аном.%",
+           "col_dryheat": "Сухость/жара", "col_risk": "Риск",
+           "al_date": "Дата", "al_type": "Тип/уровень", "al_msg": "Сообщение",
+           "coords_note": "оценочные (Qoldau granaries-map, уточнить)",
+           "offline_risk": "Риск офлайн",
+           "offline_alerts": "Алерты офлайн",
            "window": "Окно", "message": "Совет", "actions": "Действия", "reason": "Почему",
            "sow": "Окно сева", "harvest": "Окно уборки", "gdd": "Норма тепла (GDD)",
            "note": "Заметка", "source": "Источник",
@@ -100,6 +110,16 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "formula": "Формула",
            "formula_txt": "max(0, орташаның 80% − болжам) / 10 × баға × 0.8 (субсидия)",
            "literal": "ТЗ бойынша тура төлем (/10-сыз)",
+           "coverage": "Аралықтың іс жүзінде жабуы (hold-out, n=50)",
+           "cov_warn": "Назар аударыңыз: аралық тарылған — орташа мәнге сүйеніңіз.",
+           "risk_seasonal": "Маусымдық қауіп", "risk_stages": "Кезеңдер",
+           "risk_formula": "Формула", "risk_light": "Бағдаршам",
+           "col_decade": "Декада", "col_precip": "Жауын ауз.%",
+           "col_dryheat": "Құрғақ/ыстық", "col_risk": "Қауіп",
+           "al_date": "Күні", "al_type": "Түрі/деңгейі", "al_msg": "Хабарлама",
+           "coords_note": "шамамен (Qoldau granaries-map, нақтылау керек)",
+           "offline_risk": "Қауіп офлайн",
+           "offline_alerts": "Дабылдар офлайн",
            "window": "Терезе", "message": "Кеңес", "actions": "Әрекеттер", "reason": "Неге",
            "sow": "Себу терезесі", "harvest": "Жинау терезесі", "gdd": "Жылу нормасы (GDD)",
            "note": "Ескертпе", "source": "Дереккөз",
@@ -119,6 +139,16 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "formula": "Formula",
            "formula_txt": "max(0, 80% of average − forecast) / 10 × price × 0.8 (subsidy)",
            "literal": "Literal payout per ToR (no /10)",
+           "coverage": "Actual interval coverage (hold-out, n=50)",
+           "cov_warn": "Warning: interval is too narrow — rely on the average.",
+           "risk_seasonal": "Seasonal risk", "risk_stages": "Stages",
+           "risk_formula": "Formula", "risk_light": "Traffic light",
+           "col_decade": "Decade", "col_precip": "Precip anom.%",
+           "col_dryheat": "Dry/heat", "col_risk": "Risk",
+           "al_date": "Date", "al_type": "Type/level", "al_msg": "Message",
+           "coords_note": "approximate (Qoldau granaries-map, verify)",
+           "offline_risk": "Risk offline",
+           "offline_alerts": "Alerts offline",
            "window": "Window", "message": "Advice", "actions": "Actions", "reason": "Why",
            "sow": "Sowing window", "harvest": "Harvest window", "gdd": "Heat norm (GDD)",
            "note": "Note", "source": "Source",
@@ -192,6 +222,18 @@ def _method_str(pred: dict | None, lang: str) -> str:
     return {"ru": "бленд LightGBM+Ridge (веса по train-CV)",
             "kz": "LightGBM+Ridge бленд (салмақ train-CV)",
             "en": "LightGBM+Ridge blend (train-CV weights)"}.get(lang, "")
+
+
+def _coverage(crop: str) -> float | None:
+    """Фактическое покрытие conformal-интервала (metrics/intervals.json, n=50)."""
+    try:
+        import json as _json
+
+        p = Path(__file__).resolve().parents[1] / "metrics" / "intervals.json"
+        data = _json.loads(p.read_text(encoding="utf-8"))
+        return float(data.get(crop, {}).get("conformal_coverage"))
+    except Exception:
+        return None
 
 
 def _names(district_en: str, crop: str, lang: str) -> tuple[str, str]:
@@ -324,14 +366,20 @@ def build_report_pdf(
     if pred:
         _ws = (pred.get("meta") or {}).get("weather_source", "provided")
         _ws_txt = PDF_WS.get(str(_ws), {}).get(lang, str(_ws))
+        _cov = _coverage(crop)
+        _cov_txt = "—" if _cov is None else f"{_cov:.2f} (n=50)"
         story.append(_kv_table([
             (B["y"], pred.get("y_pred")),
             (B["interval"], f"{pred.get('lo10')} .. {pred.get('hi90')}"),
+            (B["coverage"], _cov_txt),
             (B["lag"], (pred.get("meta") or {}).get("yield_lag1")),
             (B["spread"], (pred.get("meta") or {}).get("residual_std")),
             (B["weather"], _ws_txt),
             (B["method"], _method_str(pred, lang)),
         ]))
+        if _cov is not None and _cov < 0.5:
+            story.append(Spacer(1, 4))
+            story.append(Paragraph(_esc(B["cov_warn"]), styles["Normal"]))
         story.append(Spacer(1, 6))
         factors = pred.get("factors") or []
         if factors:
@@ -375,25 +423,25 @@ def build_report_pdf(
         story.append(Spacer(1, 4))
         story.append(Paragraph(_esc(str(ins.get("disclaimer", ""))), styles["Normal"]))
     else:
-        story.append(Paragraph("No insurance data.", styles["Normal"]))
+        story.append(Paragraph(_esc(L["no_data"]), styles["Normal"]))
     story.append(Spacer(1, 8))
 
     # 3) Риски
     story.append(Paragraph(_esc(L["risk"]), styles["Heading2"]))
     if risk and risk.get("seasonal_risk") is not None:
         story.append(_kv_table([
-            ("seasonal risk", f"{risk.get('seasonal_risk')} {risk.get('seasonal_light', '')}"),
-            ("stages", str(risk.get("stages"))),
-            ("formula", str(risk.get("formula", ""))[:200]),
-            ("traffic light", str(risk.get("traffic_light", "green<35 yellow35-60 red>60"))),
+            (B["risk_seasonal"], f"{risk.get('seasonal_risk')} {risk.get('seasonal_light', '')}"),
+            (B["risk_stages"], str(risk.get("stages"))),
+            (B["risk_formula"], str(risk.get("formula", ""))[:200]),
+            (B["risk_light"], str(risk.get("traffic_light", "green<35 yellow35-60 red>60"))),
         ]))
         story.append(Spacer(1, 6))
         decades = risk.get("decades") or []
         if decades:
-            rdata = [[Paragraph("<b>decade</b>", styles["Normal"]),
-                      Paragraph("<b>precip anom%</b>", styles["Normal"]),
-                      Paragraph("<b>dry/heat</b>", styles["Normal"]),
-                      Paragraph("<b>risk</b>", styles["Normal"])]]
+            rdata = [[Paragraph(f"<b>{_esc(B['col_decade'])}</b>", styles["Normal"]),
+                      Paragraph(f"<b>{_esc(B['col_precip'])}</b>", styles["Normal"]),
+                      Paragraph(f"<b>{_esc(B['col_dryheat'])}</b>", styles["Normal"]),
+                      Paragraph(f"<b>{_esc(B['col_risk'])}</b>", styles["Normal"])]]
             for d in decades:
                 rdata.append([
                     Paragraph(_esc(str(d.get("label", d.get("decade")))), styles["Normal"]),
@@ -407,7 +455,7 @@ def build_report_pdf(
             story.append(rt)
     else:
         err = (risk or {}).get("error", "risk offline (Open-Meteo unavailable)")
-        story.append(Paragraph(_esc(f"Risk offline: {err}. Светофор см. в боте/API по p_loss."),
+        story.append(Paragraph(_esc(f"{B['offline_risk']}: {err}."),
                                styles["Normal"]))
     story.append(Spacer(1, 8))
 
@@ -422,7 +470,7 @@ def build_report_pdf(
             ("lang/branch", f"{rec.get('lang')}/{rec.get('branch')}"),
         ]))
     else:
-        story.append(Paragraph("No recommendation data.", styles["Normal"]))
+        story.append(Paragraph(_esc(L["no_data"]), styles["Normal"]))
     story.append(Spacer(1, 8))
 
     # 5) C8: календарь + алерты + ближайший элеватор
@@ -448,12 +496,12 @@ def build_report_pdf(
             (B["source"], cal.get("source", "agro-practice")),
         ]))
     else:
-        story.append(Paragraph("No calendar data.", styles["Normal"]))
+        story.append(Paragraph(_esc(L["no_data"]), styles["Normal"]))
     story.append(Spacer(1, 4))
     if alerts:
-        adata = [[Paragraph("<b>date</b>", styles["Normal"]),
-                  Paragraph("<b>type/level</b>", styles["Normal"]),
-                  Paragraph("<b>message</b>", styles["Normal"])]]
+        adata = [[Paragraph(f"<b>{_esc(B['al_date'])}</b>", styles["Normal"]),
+                  Paragraph(f"<b>{_esc(B['al_type'])}</b>", styles["Normal"]),
+                  Paragraph(f"<b>{_esc(B['al_msg'])}</b>", styles["Normal"])]]
         key = {"ru": "msg_ru", "kz": "msg_kz", "en": "msg_en"}.get(lang, "msg_ru")
         for a in alerts[:10]:
             adata.append([
@@ -466,10 +514,9 @@ def build_report_pdf(
                                 ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8e8e8"))]))
         story.append(at)
     else:
-        _a_err = alerts_error or (
-            "нет свежих алертов (прогноз Open-Meteo недоступен или угроз нет)")
+        _a_err = alerts_error or L["no_data"]
         story.append(Paragraph(
-            _esc("Alerts offline: " + str(_a_err) + " — проверьте /alerts при сети."),
+            _esc(f"{B['offline_alerts']}: {str(_a_err)}"),
             styles["Normal"]))
     story.append(Spacer(1, 4))
     elev = elevator
@@ -486,10 +533,10 @@ def build_report_pdf(
         story.append(_kv_table([
             (B["elev"], f"{elev.get('name_ru')} ({elev.get('name')})"),
             (B["dist"], f"{elev.get('dist_km')} km"),
-            (B["coords"], "оценочные (Qoldau granaries-map, уточнить)"),
+            (B["coords"], B["coords_note"]),
         ]))
     else:
-        story.append(Paragraph("No elevator data.", styles["Normal"]))
+        story.append(Paragraph(_esc(L["no_data"]), styles["Normal"]))
     story.append(Spacer(1, 8))
 
     # 6) C7: хозяйство и деньги — NPK + экономика + spray-вердикт из alerts.
@@ -574,11 +621,28 @@ def build_report_pdf(
         story.append(Paragraph(_esc("Spray: " + L["no_data"]), styles["Normal"]))
     story.append(Spacer(1, 10))
 
+    try:  # живые счётчики provenance (фолбэк — статичные числа)
+        import json as _json
+
+        _fc = _json.loads((Path(__file__).resolve().parents[1] / "data" / "fields"
+                           / "akmola_osm_fields.geojson").read_text(encoding="utf-8"))
+        _feats = _fc.get("features", [])
+        _demo_n = sum(1 for f in _feats if (f.get("properties") or {}).get("demo"))
+        _nd = _json.loads((Path(__file__).resolve().parents[1] / "data" / "ndvi"
+                           / "ndvi_timeseries.json").read_text(encoding="utf-8"))
+        _nd_items = _nd if isinstance(_nd, list) else _nd.get("items", _nd)
+        _miss_n = sum(1 for x in _nd_items
+                      if not isinstance((x or {}).get("ndvi_mean"), (int, float)))
+        _gis_note = (f"OSM demo:true {_demo_n}/{len(_feats)}, "
+                     f"NDVI MISSING {_miss_n}/{len(_nd_items)}")
+    except Exception:
+        _gis_note = "OSM demo:true 6/115, NDVI MISSING 16/148"
     story.append(Paragraph(
         "Disclaimer: APPROX-культуры (oats/sunflower/rapeseed/flax) — линейное "
         "масштабирование от пшеницы, без обучающих данных. Районы — даунскейлинг "
         "областной статистики на центроиды (см. config/districts.yaml). "
-        "Decision support, не тариф / шешімді қолдау, тариф емес / decision support, not a tariff.",
+        "Decision support, не тариф / шешімді қолдау, тариф емес / decision support, not a tariff. "
+        f"Поля/NDVI в PDF не входят — см. веб «Карты» ({_gis_note}).",
         styles["Normal"]))
     doc.build(story)
     return buf.getvalue()

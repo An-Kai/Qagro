@@ -10,13 +10,20 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-except Exception:  # pragma: no cover
-    pass
+
+def _fix_console() -> None:
+    """UTF-8 для кириллицы в cp1251-консоли. Только прямой запуск (no-op под pytest)."""
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return
+    try:
+        if getattr(sys.stdout, "encoding", "utf-8").lower() != "utf-8":
+            sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
+    except Exception:  # pragma: no cover
+        pass
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -118,6 +125,7 @@ def t_zhaksy_scenes_offline():
 
 
 if __name__ == "__main__":
+    _fix_console()
     check("classify healthy->cultivated", t_healthy_cultivated)
     check("classify amplitude-low->likely_fallow", t_amplitude_low_fallow)
     check("classify max-low->sparse", t_max_low_sparse)

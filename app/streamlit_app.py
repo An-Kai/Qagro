@@ -58,7 +58,7 @@ try:
     from src.alerts import check_alerts
     from src.sowing_calendar import sowing_calendar
     from src.insurance import insurance_quote
-    from src.predict import predict_yield
+    from src.predict import is_experimental, predict_yield
     from src.recommend import recommend_sowing
     from src.report_pdf import build_report_pdf
 except ImportError:  # запуск с другой cwd
@@ -67,7 +67,7 @@ except ImportError:  # запуск с другой cwd
     from approx_crops import predict_approx  # type: ignore
     from sowing_calendar import sowing_calendar  # type: ignore
     from insurance import insurance_quote  # type: ignore
-    from predict import predict_yield  # type: ignore
+    from predict import is_experimental, predict_yield  # type: ignore
     from recommend import recommend_sowing  # type: ignore
     from report_pdf import build_report_pdf  # type: ignore
 
@@ -115,7 +115,7 @@ UI = {
            "tut_btn": "▶ Показать пример (Есильский + пшеница)",
            "about_how": "⚙️ Как это работает",
            "about_steps": "1) Собираем погоду мая–августа (NASA POWER, Open-Meteo ERA5) и историю урожаев. 2) Модель LightGBM+Ridge считает прогноз-2026 с интервалом; декадный индекс — риск засухи; формулы — страховку и сев. 3) Ответ — простыми словами, цифры модели — только во вкладке «Для агронома».",
-           "about_limits": "Честные ограничения: районы — даунскейлинг областной статистики; лён — пробный прогноз; интервал «80%» покрывает 0.48–0.66 фактически; страховка — ориентир, не тариф.",
+           "about_limits": "Честные ограничения: районы — даунскейлинг областной статистики; лён и рапс — пробные прогнозы; интервал «80%» покрывает 0.04–0.66 фактически (пшеница 0.66, рапс 0.04, лён 0.24); страховка — ориентир, не тариф.",
            "price_help": "Влияет только на расчёт страховки и прибыли, прогноз урожая не меняет.",
            "farm": "🚜 Моё хозяйство", "plus": "🔬 Справочник и деньги",
            "risk_tab": "Риски", "fields_tab": "Поля и элеваторы",
@@ -182,7 +182,9 @@ UI = {
             "season_gdd_text": "Накоплено ~{fact} из нормы {lo}–{hi} (база {base}°C).",
             "season_spray": "Окна опрыскивания (48 ч)",
             "season_spray_none": "Хороших часов нет — опрыскивание отложить.",
-           "det_sum": "Прогноз {y} ц/га (80%: {lo}–{hi}), среднее за 5 лет {mean5}, риск недобора {ploss}.",
+           "det_sum": "Прогноз {y} ц/га (80% номинал, факт {cov}; {lo}–{hi}), среднее за 5 лет {mean5}, риск недобора {ploss}.",
+           "cov_cap": "Интервал «80%» — номинал; факт. покрытие {cov} (n=50, hold-out 2021–2025).",
+           "elev_est": " (координаты примерные, Qoldau)",
            "det_factors": "Главные факторы (SHAP)",
            "det_col_f": "Фактор", "det_col_v": "Значение", "det_col_e": "Влияние",
             "alias_src": "Источник", "ms": "м/с",
@@ -216,7 +218,7 @@ UI = {
            "tut_btn": "▶ Мысалды көрсету (Есіл + бидай)",
            "about_how": "⚙️ Бұл қалай жұмыс істейді",
            "about_steps": "1) Мамыр–тамыз ауа райын (NASA POWER, Open-Meteo ERA5) және өнім тарихын жинаймыз. 2) LightGBM+Ridge моделі 2026 болжамын аралықпен есептейді; декадалық индекс — құрғақшылық қаупі; формулалар — сақтандыру мен себу. 3) Жауап — қарапайым тілде, модель сандары — тек «Агрономға» қойындысында.",
-           "about_limits": "Адал шектеулер: аудандар — облыстық статистиканың даунскейлингі; зығыр — сынақ болжам; «80%» аралық іс жүзінде 0.48–0.66 жабады; сақтандыру — бағдар, тариф емес.",
+           "about_limits": "Адал шектеулер: аудандар — облыстық статистиканың даунскейлингі; зығыр мен рапс — сынақ болжам; «80%» аралық іс жүзінде 0.04–0.66 жабады (бидай 0.66, рапс 0.04, зығыр 0.24); сақтандыру — бағдар, тариф емес.",
            "price_help": "Тек сақтандыру мен пайдаға әсер етеді, өнім болжамын өзгертпейді.",
            "farm": "🚜 Менің шаруашылығым", "plus": "🔬 Анықтама және ақша",
            "risk_tab": "Қауіптер", "fields_tab": "Егістік және элеваторлар",
@@ -283,7 +285,9 @@ UI = {
             "season_gdd_text": "Жинақталды ~{fact}, норма {lo}–{hi} (база {base}°C).",
             "season_spray": "Бүрку терезелері (48 сағ)",
             "season_spray_none": "Жақсы сағаттар жоқ — бүркуді кейінге қалдырыңыз.",
-           "det_sum": "Болжам {y} ц/га (80%: {lo}–{hi}), 5 жылдық орташа {mean5}, жетпеу қаупі {ploss}.",
+           "det_sum": "Болжам {y} ц/га (80% номинал, іс жүзінде {cov}; {lo}–{hi}), 5 жылдық орташа {mean5}, жетпеу қаупі {ploss}.",
+           "cov_cap": "«80%» аралық — номинал; іс жүзінде жабу {cov} (n=50).",
+           "elev_est": " (координаттар шамамен, Qoldau)",
            "det_factors": "Негізгі факторлар (SHAP)",
            "det_col_f": "Фактор", "det_col_v": "Мәні", "det_col_e": "Әсері",
             "alias_src": "Дереккөз", "ms": "м/с",
@@ -317,7 +321,7 @@ UI = {
            "tut_btn": "▶ Show an example (Esil + wheat)",
            "about_how": "⚙️ How it works",
            "about_steps": "1) We collect May–August weather (NASA POWER, Open-Meteo ERA5) and yield history. 2) A LightGBM+Ridge model computes the 2026 forecast with an interval; a decade index gives drought risk; formulas give insurance and sowing. 3) The answer is in plain words; model numbers live only in the agronomist tab.",
-           "about_limits": "Honest limits: districts downscale oblast stats; flax is a trial forecast; the “80%” interval covers 0.48–0.66 in fact; insurance is an estimate, not a tariff.",
+           "about_limits": "Honest limits: districts downscale oblast stats; flax and rapeseed are trial forecasts; the “80%” interval covers 0.04–0.66 in fact (wheat 0.66, rapeseed 0.04, flax 0.24); insurance is an estimate, not a tariff.",
            "price_help": "Affects only insurance and profit, not the yield forecast.",
            "farm": "🚜 My farm", "plus": "🔬 Guide & money",
            "risk_tab": "Risks", "fields_tab": "Fields & elevators",
@@ -384,7 +388,9 @@ UI = {
             "season_gdd_text": "Accumulated ~{fact} of norm {lo}–{hi} (base {base}°C).",
             "season_spray": "Spray windows (48 h)",
             "season_spray_none": "No good hours — postpone spraying.",
-           "det_sum": "Forecast {y} c/ha (80%: {lo}–{hi}), 5-year average {mean5}, shortfall risk {ploss}.",
+           "det_sum": "Forecast {y} c/ha (80% nominal, actual {cov}; {lo}–{hi}), 5-year average {mean5}, shortfall risk {ploss}.",
+           "cov_cap": "“80%” interval is nominal; actual coverage {cov} (n=50 hold-out).",
+           "elev_est": " (coords approximate, Qoldau)",
            "det_factors": "Top factors (SHAP)",
            "det_col_f": "Factor", "det_col_v": "Value", "det_col_e": "Effect",
             "alias_src": "Source", "ms": "m/s",
@@ -583,6 +589,17 @@ def load_metrics() -> dict:
 
 
 @st.cache_data(ttl=3600)
+def load_intervals() -> dict:
+    p = ROOT / "metrics" / "intervals.json"
+    if p.exists():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            return {}
+    return {}
+
+
+@st.cache_data(ttl=3600)
 def load_risks() -> dict:
     if RISK_EXAMPLE.exists():
         return json.loads(RISK_EXAMPLE.read_text(encoding="utf-8"))
@@ -753,6 +770,7 @@ button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent)
 
     dlabel = {d["name_en"]: f"{d.get(f'name_{lang}', d['name_ru'])}" for d in districts}
     clabel = {c["id"]: f"{CROP_ICON.get(c['id'], '🌱')} {c.get(f'name_{lang}', c['id'])}"
+                       f"{' 🧪' if is_experimental(c['id']) else ''}"
               for c in crops}
     cname = {c["id"]: str(c.get(f"name_{lang}", c["id"])) for c in crops}
 
@@ -803,10 +821,16 @@ button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent)
     ins = recalc_payout_live(ins_raw, wheat_price) if crop in ("spring_wheat", "barley") else ins_raw
     panel = load_panel()
     metrics = load_metrics()
+    intervals = load_intervals()
     risks = load_risks()
     fdata = load_fields()
     gdata = load_granaries()
     ndvi_pts = load_ndvi()
+    try:
+        cov = round(float(intervals[crop]["conformal_coverage"]), 2)
+    except (KeyError, TypeError, ValueError):
+        cov = None
+    cov_txt = "—" if cov is None else f"{cov:.2f}"
 
     risk = (risks.get(f"{district_en}_risk") or {})
     seasonal, light = risk.get("seasonal_risk"), risk.get("seasonal_light", "")
@@ -844,6 +868,7 @@ button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent)
               T["payout_hint"].format(pct=round(p_loss * 100)))
     with c4:
         _card("qagro-todo", f"✅ {T['todo']}", rec['window'], rec['message'])
+    st.caption(T["cov_cap"].format(cov=cov_txt))
     if experimental:
         st.warning(T["exp"])
     if offline:
@@ -880,7 +905,7 @@ button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent)
 
     with st.expander(f"🔧 {T['detail']}"):
         st.write(T["det_sum"].format(y=pred["y_pred"], lo=pred["lo10"],
-                                     hi=pred["hi90"],
+                                     hi=pred["hi90"], cov=cov_txt,
                                      mean5=ins["mean5_c_ha"],
                                      ploss=round(float(ins["p_loss"]), 3)))
         if pred.get("factors"):
@@ -1029,7 +1054,7 @@ button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent)
         components.html(m2._repr_html_(), height=480)
         if _elev:
             _ename = _elev.get(f"name_{lang}", _elev.get("name_ru"))
-            st.write(f"🚚 {_ename} — {_elev.get('dist_km')} {T['km']}.")
+            st.write(f"🚚 {_ename} — {_elev.get('dist_km')} {T['km']}.{T['elev_est']}")
 
     with tab_gis:
         # Трек 1: NDVI-мониторинг (1.1), залежи (1.3), гибель (1.4). Границы (1.2) — OSM.
