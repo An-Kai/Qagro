@@ -678,20 +678,33 @@ def create_dispatcher():
             nn = "—" if n is None else round(float(n), 2)
             return (fl.get("field_id"), fl.get("area_ha"), s, nn, v, mark)
         dname = _district_name(district_en, lang)
+        _no = {"ru": "Нет данных NDVI (все запросы неуспешны).",
+               "kz": "NDVI дерегі жоқ (барлық сұрау сәтсіз).",
+               "en": "No NDVI data (all requests failed)."}.get(lang, "")
+        _fld = {"ru": "Поле", "kz": "Егістік", "en": "Field"}.get(lang, "Поле")
+
+        def _line(num, i, a, s, n, v, dm, unit):
+            if n == "—":
+                return f"• {_fld} {num} ({i}{dm}, {a} {unit}): {_no}"
+            return f"• {_fld} {num} ({i}{dm}, {a} {unit}): {s}, NDVI {n} — {v}"
+
         if lang == "kz":
             head = f"🛰 {dname}: {g.get('checked', 0)} егістік тексерілді."
-            worst = [f"• {i}{dm} ({a} га): {s}, NDVI {n} — {v}"
-                     for i, a, s, n, v, dm in (_nm(fl) for fl in fields[:top_n])]
+            worst = [_line(num, i, a, s, n, v, dm, "га")
+                     for num, (i, a, s, n, v, dm) in
+                     enumerate((_nm(fl) for fl in fields[:top_n]), start=1)]
             tail = "Толығырақ — қосымшада «Карталар»."
         elif lang == "en":
             head = f"🛰 {dname}: {g.get('checked', 0)} fields checked."
-            worst = [f"• {i}{dm} ({a} ha): {s}, NDVI {n} — {v}"
-                     for i, a, s, n, v, dm in (_nm(fl) for fl in fields[:top_n])]
+            worst = [_line(num, i, a, s, n, v, dm, "ha")
+                     for num, (i, a, s, n, v, dm) in
+                     enumerate((_nm(fl) for fl in fields[:top_n]), start=1)]
             tail = "More — in the app Maps tab."
         else:
             head = f"🛰 {dname}: проверено полей — {g.get('checked', 0)}."
-            worst = [f"• {i}{dm} ({a} га): {s}, NDVI {n} — {v}"
-                     for i, a, s, n, v, dm in (_nm(fl) for fl in fields[:top_n])]
+            worst = [_line(num, i, a, s, n, v, dm, "га")
+                     for num, (i, a, s, n, v, dm) in
+                     enumerate((_nm(fl) for fl in fields[:top_n]), start=1)]
             tail = "Подробнее — во вкладке «Карты» приложения."
         return "\n".join([head, "", *worst, "", tail])
 
@@ -1023,15 +1036,17 @@ def create_dispatcher():
         crop = data.get("crop", "spring_wheat")
         try:
             try:
-                from src.guide_data import lookup
+                from src.guide_data import lookup, text_of
             except ImportError:
-                from guide_data import lookup  # type: ignore
+                from guide_data import lookup, text_of  # type: ignore
             items = lookup(crop)[:4]
-            nk, sk, ak = {"ru": ("name_ru", "signs_ru", "action_ru"),
-                          "kz": ("name_kz", "signs_kz", "action_kz"),
-                          "en": ("name_en", "signs_en", "action_en")}[lang]
-            txt = "\n\n".join(f"🔬 {it.get(nk)}: {'; '.join(it.get(sk, [])[:2])}. → {it.get(ak)}"
-                              for it in items)
+            parts = []
+            for it in items:
+                nm = text_of(it, "names", lang) or "—"
+                sg = text_of(it, "signs", lang) or []
+                ac = text_of(it, "action", lang) or "—"
+                parts.append(f"🔬 {nm}: {'; '.join(sg[:2])}. → {ac}")
+            txt = "\n\n".join(parts)
             await m.answer(txt or T["err_generic"][lang])
         except Exception:
             log.exception("on_guide failed")

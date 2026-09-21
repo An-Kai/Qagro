@@ -24,6 +24,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.bot import HELP_TEXT, MORE_TEXT, T, create_dispatcher  # noqa: E402
+from src.guide_data import lookup as _guide_lookup  # noqa: E402
+from src.guide_data import text_of as _guide_text  # noqa: E402
 from src.spray import _fmt_window  # noqa: E402
 
 LANGS = ("ru", "kz", "en")
@@ -80,6 +82,20 @@ def t_dispatcher_builds():
     assert n >= 20, f"мало хендлеров: {n}"
 
 
+def t_guide_no_none():
+    # Регрессия скриншота: "None: . → None" — рендеры обязаны идти через
+    # text_of (вложенная схема names/signs/action), плоских ключей в данных нет.
+    for crop in ("spring_wheat", "barley", "oats",
+                 "sunflower", "rapeseed", "flax"):
+        items = _guide_lookup(crop)[:4]
+        assert items, f"{crop}: пустой справочник"
+        for lang in LANGS:
+            for it in items:
+                assert _guide_text(it, "names", lang), (crop, lang, it.get("id"))
+                assert _guide_text(it, "signs", lang), (crop, lang, it.get("id"))
+                assert _guide_text(it, "action", lang), (crop, lang, it.get("id"))
+
+
 if __name__ == "__main__":
     check("T ru/kz/en parity", t_t_parity)
     check("HELP short + MORE full", t_help_more_parity)
@@ -87,4 +103,5 @@ if __name__ == "__main__":
     check("buttons localized", t_no_tech_in_buttons)
     check("spray single-hour window", t_fmt_window_single_hour)
     check("dispatcher builds", t_dispatcher_builds)
+    check("guide no None (nested schema)", t_guide_no_none)
     print(f"OK: {len(passed)}/{len(passed)} — {', '.join(passed)}")

@@ -79,6 +79,8 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "ploss": "Риск недобора P(Y<порог)", "payout": "Ожидаемая выплата/га (тенге)",
            "payout_at": "Выплата при прогнозе/га (тенге)", "price": "Цена (тенге/т)",
            "formula": "Формула",
+           "formula_txt": "max(0, 80% среднего − прогноз) / 10 × цена × 0.8 (субсидия)",
+           "literal": "Выплата дословно по ТЗ (без /10)",
            "window": "Окно", "message": "Совет", "actions": "Действия", "reason": "Почему",
            "sow": "Окно сева", "harvest": "Окно уборки", "gdd": "Норма тепла (GDD)",
            "note": "Заметка", "source": "Источник",
@@ -96,6 +98,8 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "ploss": "Жетпеу қаупі P(Y<шег)", "payout": "Күтілетін төлем/га (теңге)",
            "payout_at": "Болжамдағы төлем/га (теңге)", "price": "Баға (теңге/т)",
            "formula": "Формула",
+           "formula_txt": "max(0, орташаның 80% − болжам) / 10 × баға × 0.8 (субсидия)",
+           "literal": "ТЗ бойынша тура төлем (/10-сыз)",
            "window": "Терезе", "message": "Кеңес", "actions": "Әрекеттер", "reason": "Неге",
            "sow": "Себу терезесі", "harvest": "Жинау терезесі", "gdd": "Жылу нормасы (GDD)",
            "note": "Ескертпе", "source": "Дереккөз",
@@ -113,6 +117,8 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "ploss": "Shortfall risk P(Y<trigger)", "payout": "Expected payout/ha (tenge)",
            "payout_at": "Payout at forecast/ha (tenge)", "price": "Price (tenge/t)",
            "formula": "Formula",
+           "formula_txt": "max(0, 80% of average − forecast) / 10 × price × 0.8 (subsidy)",
+           "literal": "Literal payout per ToR (no /10)",
            "window": "Window", "message": "Advice", "actions": "Actions", "reason": "Why",
            "sow": "Sowing window", "harvest": "Harvest window", "gdd": "Heat norm (GDD)",
            "note": "Note", "source": "Source",
@@ -123,6 +129,69 @@ PDF_LBL: dict[str, dict[str, str]] = {
            "eco_rev": "Revenue (tenge/ha)", "eco_profit": "Profit (tenge/ha)",
            "eco_pct": "Profitability %", "eco_cost": "About costs"},
 }
+
+
+# Человеческие названия фич для SHAP-таблицы (id -> слова; нет в мапе — как есть).
+PDF_FEAT: dict[str, dict[str, str]] = {
+    "ru": {"year_trend": "Тренд года", "yield_lag1": "Урожай прошлого года",
+           "yield_roll3": "Среднее за 3 года", "tmean_mjja": "Температура MJJA",
+           "precip_mjja": "Осадки MJJA", "gdd5": "Теплосумма GDD5",
+           "heat30": "Жара 30°+ (дней)", "dry_max": "Сухая серия (дней)",
+           "et0": "Испаряемость ET0", "p30_anom": "Аномалия осадков",
+           "precip_spring": "Осадки весны", "tmax_july": "Макс. июля",
+           "dtr": "Суточный ход (DTR)", "vpd_proxy": "Дефицит влаги (VPD)",
+           "spei_proxy": "Индекс засухи (SPEI)", "htc_mjja": "ГТК Селянинова",
+           "oilseeds_share": "Доля масличных", "trend_sq": "Ускорение тренда",
+           "trend_recent": "Тренд после 2015", "oilshare_trend": "Масличные × время",
+           "lat": "Широта", "lon": "Долгота"},
+    "kz": {"year_trend": "Жыл тренді", "yield_lag1": "Өткен жылғы өнім",
+           "yield_roll3": "3 жылдық орташа", "tmean_mjja": "MJJA температурасы",
+           "precip_mjja": "MJJA жауын-шашын", "gdd5": "GDD5 жылу қосындысы",
+           "heat30": "30°+ ыстық (күн)", "dry_max": "Құрғақ кезең (күн)",
+           "et0": "Булану ET0", "p30_anom": "Жауын ауытқуы",
+           "precip_spring": "Көктем жауыны", "tmax_july": "Шілде максимумы",
+           "dtr": "Тәуліктік жүріс (DTR)", "vpd_proxy": "Ылғал тапшылығы (VPD)",
+           "spei_proxy": "Құрғақшылық индексі (SPEI)", "htc_mjja": "Селянинов ГТК",
+           "oilseeds_share": "Майды дақыл үлесі", "trend_sq": "Тренд үдеуі",
+           "trend_recent": "2015 жылдан кейінгі тренд", "oilshare_trend": "Майды × уақыт",
+           "lat": "Ендік", "lon": "Бойлық"},
+    "en": {"year_trend": "Year trend", "yield_lag1": "Last year yield",
+           "yield_roll3": "3-year average", "tmean_mjja": "MJJA temperature",
+           "precip_mjja": "MJJA precipitation", "gdd5": "GDD5 heat sum",
+           "heat30": "Heat 30°+ (days)", "dry_max": "Dry spell (days)",
+           "et0": "Evapotranspiration ET0", "p30_anom": "Precipitation anomaly",
+           "precip_spring": "Spring precipitation", "tmax_july": "July maximum",
+           "dtr": "Diurnal range (DTR)", "vpd_proxy": "Moisture deficit (VPD)",
+           "spei_proxy": "Drought index (SPEI)", "htc_mjja": "Selyaninov HTC",
+           "oilseeds_share": "Oilseeds share", "trend_sq": "Trend acceleration",
+           "trend_recent": "Post-2015 trend", "oilshare_trend": "Oilseeds × time",
+           "lat": "Latitude", "lon": "Longitude"},
+}
+
+# Погода и метод — словами, а не tech-строками ("False", английский source).
+PDF_WS: dict[str, dict[str, str]] = {
+    "provided": {"ru": "заданная пользователем", "kz": "пайдаланушы берген",
+                 "en": "user-provided"},
+    "neutral district MJJA mean 2016-2025 (climate norm)":
+        {"ru": "климат-норма района (средний MJJA 2016–2025)",
+         "kz": "ауданның климат-нормасы (орташа MJJA 2016–2025)",
+         "en": "district climate norm (mean MJJA 2016–2025)"},
+}
+
+
+def _method_str(pred: dict | None, lang: str) -> str:
+    p = pred or {}
+    if p.get("approx"):
+        return {"ru": "APPROX: масштаб от пшеницы (модели нет)",
+                "kz": "APPROX: бидайдан масштаб (модель жоқ)",
+                "en": "APPROX: scaled from wheat (no model)"}.get(lang, "")
+    if p.get("experimental"):
+        return {"ru": "среднее за 5 лет (пробный: модель хуже бейзлайна)",
+                "kz": "5 жылдық орташа (сынақ: модель бейзлайннан нашар)",
+                "en": "5-year mean (trial: model below baseline)"}.get(lang, "")
+    return {"ru": "бленд LightGBM+Ridge (веса по train-CV)",
+            "kz": "LightGBM+Ridge бленд (салмақ train-CV)",
+            "en": "LightGBM+Ridge blend (train-CV weights)"}.get(lang, "")
 
 
 def _names(district_en: str, crop: str, lang: str) -> tuple[str, str]:
@@ -253,24 +322,35 @@ def build_report_pdf(
     # 1) Прогноз
     story.append(Paragraph(_esc(L["yield"]), styles["Heading2"]))
     if pred:
+        _ws = (pred.get("meta") or {}).get("weather_source", "provided")
+        _ws_txt = PDF_WS.get(str(_ws), {}).get(lang, str(_ws))
         story.append(_kv_table([
             (B["y"], pred.get("y_pred")),
             (B["interval"], f"{pred.get('lo10')} .. {pred.get('hi90')}"),
             (B["lag"], (pred.get("meta") or {}).get("yield_lag1")),
             (B["spread"], (pred.get("meta") or {}).get("residual_std")),
-            (B["weather"], (pred.get("meta") or {}).get("weather_source", "provided")),
-            (B["method"], (pred.get("meta") or {}).get("method", pred.get("approx", False))),
+            (B["weather"], _ws_txt),
+            (B["method"], _method_str(pred, lang)),
         ]))
         story.append(Spacer(1, 6))
         factors = pred.get("factors") or []
         if factors:
+            _fm = PDF_FEAT.get(lang, PDF_FEAT["ru"])
             fdata = [[Paragraph(f"<b>{_esc(B['f_factor'])}</b>", styles["Normal"]),
                       Paragraph(f"<b>{_esc(B['f_value'])}</b>", styles["Normal"]),
                       Paragraph(f"<b>{_esc(B['f_effect'])}</b>", styles["Normal"])]]
+
+            def _r3(v) -> str:
+                try:
+                    return str(round(float(v), 3))
+                except (TypeError, ValueError):
+                    return str(v)
+
             for f in factors[:3]:
-                fdata.append([Paragraph(_esc(str(f.get("feature"))), styles["Normal"]),
-                              Paragraph(_esc(str(f.get("value"))), styles["Normal"]),
-                              Paragraph(_esc(str(f.get("shap_value"))), styles["Normal"])])
+                fdata.append([Paragraph(_esc(str(_fm.get(f.get("feature"), f.get("feature")))),
+                                        styles["Normal"]),
+                              Paragraph(_esc(_r3(f.get("value"))), styles["Normal"]),
+                              Paragraph(_esc(_r3(f.get("shap_value"))), styles["Normal"])])
             ft = Table(fdata, colWidths=(160, 160, 160))
             ft.setStyle(TableStyle([("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
                                     ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e8e8e8"))]))
@@ -289,7 +369,8 @@ def build_report_pdf(
             (B["payout"], ins.get("expected_payout_ha")),
             (B["payout_at"], ins.get("payout_at_pred_ha")),
             (B["price"], ins.get("price_kzt_per_t")),
-            (B["formula"], ins.get("payout_formula", "")),
+            (B["formula"], B["formula_txt"]),
+            (B["literal"], ins.get("payout_literal_no_div10")),
         ]))
         story.append(Spacer(1, 4))
         story.append(Paragraph(_esc(str(ins.get("disclaimer", ""))), styles["Normal"]))

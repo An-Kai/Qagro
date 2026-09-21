@@ -337,4 +337,19 @@ def lookup(crop: str) -> list[dict]:
     return list(GUIDE.get("common", []))
 
 
-__all__ = ["GUIDE", "SOURCE", "lookup"]
+def text_of(item: dict, field: str, lang: str):
+    """Вложенное поле names/signs/action записи на языке lang (фолбэк ru).
+
+    Схема записей: names:{ru,kz,en} (str), signs:{ru,kz,en} (list),
+    action:{ru,kz/en} (str). Плоских ключей name_ru/... в данных нет —
+    рендеры (бот, веб) обязаны идти через этот хелпер, иначе None наружу.
+    """
+    if lang not in ("ru", "kz", "en"):
+        lang = "ru"
+    v = (item or {}).get(field)
+    if isinstance(v, dict):
+        return v.get(lang) or v.get("ru")
+    return v
+
+
+__all__ = ["GUIDE", "SOURCE", "lookup", "text_of"]

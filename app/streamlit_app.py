@@ -108,6 +108,14 @@ UI = {
            "ndvi_good": "хорошо — проверять не надо", "ndvi_mid": "средне — посмотрите при случае",
            "ndvi_low": "слабо — стоит съездить",
            "crop_help": "Выберите культуру. Страховка считается для пшеницы и ячменя.",
+           "tut_title": "🎓 Обучение за 1 минуту",
+           "tut_1": "1. Выберите район (шаг 1) и культуру (шаг 2) — ответ появится в шаге 3.",
+           "tut_2": "2. Зелёный — спокойно, жёлтый — следите, красный — готовьтесь. Значок 🧪 — пробный прогноз.",
+           "tut_3": "3. Кнопка PDF сохраняет отчёт; вкладки ниже — карты, календарь и цифры для агронома.",
+           "tut_btn": "▶ Показать пример (Есильский + пшеница)",
+           "about_how": "⚙️ Как это работает",
+           "about_steps": "1) Собираем погоду мая–августа (NASA POWER, Open-Meteo ERA5) и историю урожаев. 2) Модель LightGBM+Ridge считает прогноз-2026 с интервалом; декадный индекс — риск засухи; формулы — страховку и сев. 3) Ответ — простыми словами, цифры модели — только во вкладке «Для агронома».",
+           "about_limits": "Честные ограничения: районы — даунскейлинг областной статистики; лён — пробный прогноз; интервал «80%» покрывает 0.48–0.66 фактически; страховка — ориентир, не тариф.",
            "price_help": "Влияет только на расчёт страховки и прибыли, прогноз урожая не меняет.",
            "farm": "🚜 Моё хозяйство", "plus": "🔬 Справочник и деньги",
            "risk_tab": "Риски", "fields_tab": "Поля и элеваторы",
@@ -143,6 +151,8 @@ UI = {
             "gis_checked": "Проверено {done} из {total}.",
             "gis_borders": "Границы и площади — OSM (экспорт GeoJSON во вкладке прогноза).",
             "gis_offline": "🛰 Спутник офлайн: {err}",
+           "gis_no_data": "Нет данных NDVI (все запросы неуспешны).",
+           "gis_field": "Поле {n}",
             "gis_dead": "погибших дат",
             "axis_year": "год", "axis_yield": "ц/га",
             "trace_fact": "факт", "trace_forecast": "прогноз 2026",
@@ -169,6 +179,9 @@ UI = {
             "season_gdd_text": "Накоплено ~{fact} из нормы {lo}–{hi} (база {base}°C).",
             "season_spray": "Окна опрыскивания (48 ч)",
             "season_spray_none": "Хороших часов нет — опрыскивание отложить.",
+           "det_sum": "Прогноз {y} ц/га (80%: {lo}–{hi}), среднее за 5 лет {mean5}, риск недобора {ploss}.",
+           "det_factors": "Главные факторы (SHAP)",
+           "det_col_f": "Фактор", "det_col_v": "Значение", "det_col_e": "Влияние",
             "alias_src": "Источник", "ms": "м/с",
             "lang_label": "🌍 Язык / Тіл / Language"},
     "kz": {"title": "🌾 Qagro — фермер көмекшісі",
@@ -193,6 +206,14 @@ UI = {
            "ndvi_good": "жақсы — тексеру қажет емес", "ndvi_mid": "орташа — мүмкіндік болса қараңыз",
            "ndvi_low": "нашар — барған жөн",
            "crop_help": "Дақылды таңдаңыз. Сақтандыру бидай мен арпаға есептеледі.",
+           "tut_title": "🎓 1 минутта үйрену",
+           "tut_1": "1. Ауданды (1-қадам) және дақылды (2-қадам) таңдаңыз — жауап 3-қадамда шығады.",
+           "tut_2": "2. Жасыл — тыныш, сары — бақылаңыз, қызыл — дайындалыңыз. 🧪 белгісі — сынақ болжам.",
+           "tut_3": "3. PDF батырмасы есепті сақтайды; төменгі қойындылар — карталар, күнтізбе және агрономға сандар.",
+           "tut_btn": "▶ Мысалды көрсету (Есіл + бидай)",
+           "about_how": "⚙️ Бұл қалай жұмыс істейді",
+           "about_steps": "1) Мамыр–тамыз ауа райын (NASA POWER, Open-Meteo ERA5) және өнім тарихын жинаймыз. 2) LightGBM+Ridge моделі 2026 болжамын аралықпен есептейді; декадалық индекс — құрғақшылық қаупі; формулалар — сақтандыру мен себу. 3) Жауап — қарапайым тілде, модель сандары — тек «Агрономға» қойындысында.",
+           "about_limits": "Адал шектеулер: аудандар — облыстық статистиканың даунскейлингі; зығыр — сынақ болжам; «80%» аралық іс жүзінде 0.48–0.66 жабады; сақтандыру — бағдар, тариф емес.",
            "price_help": "Тек сақтандыру мен пайдаға әсер етеді, өнім болжамын өзгертпейді.",
            "farm": "🚜 Менің шаруашылығым", "plus": "🔬 Анықтама және ақша",
            "risk_tab": "Қауіптер", "fields_tab": "Егістік және элеваторлар",
@@ -228,6 +249,8 @@ UI = {
             "gis_checked": "Тексерілді {done} / {total}.",
             "gis_borders": "Шекаралар мен аудандар — OSM (болжам қойындысында GeoJSON экспорт).",
             "gis_offline": "🛰 Серік офлайн: {err}",
+           "gis_no_data": "NDVI дерегі жоқ (барлық сұрау сәтсіз).",
+           "gis_field": "{n}-егістік",
             "gis_dead": "өлген күндер",
             "axis_year": "жыл", "axis_yield": "ц/га",
             "trace_fact": "факт", "trace_forecast": "болжам 2026",
@@ -254,6 +277,9 @@ UI = {
             "season_gdd_text": "Жинақталды ~{fact}, норма {lo}–{hi} (база {base}°C).",
             "season_spray": "Бүрку терезелері (48 сағ)",
             "season_spray_none": "Жақсы сағаттар жоқ — бүркуді кейінге қалдырыңыз.",
+           "det_sum": "Болжам {y} ц/га (80%: {lo}–{hi}), 5 жылдық орташа {mean5}, жетпеу қаупі {ploss}.",
+           "det_factors": "Негізгі факторлар (SHAP)",
+           "det_col_f": "Фактор", "det_col_v": "Мәні", "det_col_e": "Әсері",
             "alias_src": "Дереккөз", "ms": "м/с",
             "lang_label": "🌍 Язык / Тіл / Language"},
     "en": {"title": "🌾 Qagro — farmer helper",
@@ -278,6 +304,14 @@ UI = {
            "ndvi_good": "good — no need to check", "ndvi_mid": "average — check if passing by",
            "ndvi_low": "poor — worth a visit",
            "crop_help": "Pick a crop. Insurance is calculated for wheat and barley.",
+           "tut_title": "🎓 1-minute tutorial",
+           "tut_1": "1. Pick a district (step 1) and a crop (step 2) — the answer appears in step 3.",
+           "tut_2": "2. Green means calm, yellow means watch, red means prepare. 🧪 means trial forecast.",
+           "tut_3": "3. The PDF button saves the report; tabs below hold maps, calendar and agronomist numbers.",
+           "tut_btn": "▶ Show an example (Esil + wheat)",
+           "about_how": "⚙️ How it works",
+           "about_steps": "1) We collect May–August weather (NASA POWER, Open-Meteo ERA5) and yield history. 2) A LightGBM+Ridge model computes the 2026 forecast with an interval; a decade index gives drought risk; formulas give insurance and sowing. 3) The answer is in plain words; model numbers live only in the agronomist tab.",
+           "about_limits": "Honest limits: districts downscale oblast stats; flax is a trial forecast; the “80%” interval covers 0.48–0.66 in fact; insurance is an estimate, not a tariff.",
            "price_help": "Affects only insurance and profit, not the yield forecast.",
            "farm": "🚜 My farm", "plus": "🔬 Guide & money",
            "risk_tab": "Risks", "fields_tab": "Fields & elevators",
@@ -313,6 +347,8 @@ UI = {
             "gis_checked": "Checked {done} of {total}.",
             "gis_borders": "Borders and areas — OSM (GeoJSON export in forecast tab).",
             "gis_offline": "🛰 Satellite offline: {err}",
+           "gis_no_data": "No NDVI data (all requests failed).",
+           "gis_field": "Field {n}",
             "gis_dead": "dead dates",
             "axis_year": "year", "axis_yield": "c/ha",
             "trace_fact": "actual", "trace_forecast": "2026 forecast",
@@ -339,6 +375,9 @@ UI = {
             "season_gdd_text": "Accumulated ~{fact} of norm {lo}–{hi} (base {base}°C).",
             "season_spray": "Spray windows (48 h)",
             "season_spray_none": "No good hours — postpone spraying.",
+           "det_sum": "Forecast {y} c/ha (80%: {lo}–{hi}), 5-year average {mean5}, shortfall risk {ploss}.",
+           "det_factors": "Top factors (SHAP)",
+           "det_col_f": "Factor", "det_col_v": "Value", "det_col_e": "Effect",
             "alias_src": "Source", "ms": "m/s",
             "lang_label": "🌍 Язык / Тіл / Language"},
 }
@@ -394,6 +433,17 @@ def _color(r):
     if r <= 60:
         return "orange"
     return "red"
+
+
+def _hm_time(t: str | None) -> str:
+    """2026-09-21T20:00 -> 21.09 20:00 (сырой ISO наружу нельзя)."""
+    if not t:
+        return "—"
+    try:
+        from datetime import datetime as _dt
+        return _dt.strptime(str(t), "%Y-%m-%dT%H:%M").strftime("%d.%m %H:%M")
+    except (TypeError, ValueError):
+        return str(t)
 
 
 def _field_style(feat):
@@ -644,6 +694,26 @@ section[data-testid="stSidebar"] { background: var(--qagro-wash); }
 }
 div[data-testid="stDownloadButton"] > button { width: 100%; }
 div[data-testid="stFormSubmitButton"] > button { width: 100%; }
+/* Доступность (принципы Vercel Web Interface Guidelines, без React-стека):
+   видимый фокус + уважение к reduced-motion + акцент активного таба. */
+:focus-visible { outline: 3px solid var(--qagro-accent) !important; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent) !important; }
+/* Карточки ответа: рендерятся через st.markdown (unsafe_allow_html), т.к.
+   st.success/info/warning экранируют HTML и сырые <div> текли наружу. */
+.qagro-card {
+  background: var(--qagro-wash); border-radius: var(--qagro-radius);
+  padding: 16px 24px; margin: 16px 0; border-left: 8px solid var(--qagro-accent);
+}
+.qagro-risk { border-left-color: var(--qagro-risk-amber); }
+.qagro-risk-low { border-left-color: var(--qagro-accent); }
+.qagro-risk-high { border-left-color: var(--qagro-risk-red); }
+.qagro-ins { border-left-color: var(--qagro-risk-amber); }
+.qagro-kicker { font-size: 20px; font-weight: 800; color: var(--qagro-ink); }
+.qagro-sub { font-size: 20px; line-height: 1.55; color: var(--qagro-ink); margin-top: 8px; }
+.qagro-techid { font-size: 15px; color: var(--qagro-muted); }
 </style>""",
         unsafe_allow_html=True,
     )
@@ -659,29 +729,45 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     st.title(T["title"])
     st.write(T["sub"])
 
+    if "district" not in st.session_state:
+        st.session_state.district = "—"
+    if "crop" not in st.session_state:
+        st.session_state.crop = "spring_wheat"
+    with st.expander(T["tut_title"]):
+        st.write(T["tut_1"])
+        st.write(T["tut_2"])
+        st.write(T["tut_3"])
+        if st.button(T["tut_btn"], use_container_width=True):
+            st.session_state.district = "Esil"
+            st.session_state.crop = "spring_wheat"
+            st.rerun()
+
     dlabel = {d["name_en"]: f"{d.get(f'name_{lang}', d['name_ru'])}" for d in districts}
     clabel = {c["id"]: f"{CROP_ICON.get(c['id'], '🌱')} {c.get(f'name_{lang}', c['id'])}"
               for c in crops}
+    cname = {c["id"]: str(c.get(f"name_{lang}", c["id"])) for c in crops}
 
     st.header(T["step1"])
     st.caption(T["step1_hint"])
-    _NONE = "—"
-    district_en = st.selectbox("📍", options=[_NONE, *dlabel.keys()],
-                               format_func=lambda k: T["pick_district"] if k == _NONE else dlabel[k],
-                               index=0,
-                               label_visibility="collapsed",
-                               help=T["district_help"])
-    if district_en == _NONE:
+    st.selectbox("📍", options=["—", *dlabel.keys()],
+                 format_func=lambda k: T["pick_district"] if k == "—" else dlabel[k],
+                 key="district",
+                 label_visibility="collapsed",
+                 help=T["district_help"])
+    district_en = st.session_state.district
+    if district_en == "—":
         st.info(T["pick_district"])
         st.stop()
     st.markdown(f"<div class='district-code'><small>{T['dcode']}: <b>{district_en}</b></small></div>",
                 unsafe_allow_html=True)
     st.header(T["step2"])
     st.caption(T["step2_hint"])
-    crop = st.selectbox("🌱", options=list(clabel.keys()),
-                        format_func=lambda k: clabel[k],
-                        label_visibility="collapsed",
-                        help=T["crop_help"])
+    st.selectbox("🌱", options=list(clabel.keys()),
+                 format_func=lambda k: clabel[k],
+                 key="crop",
+                 label_visibility="collapsed",
+                 help=T["crop_help"])
+    crop = st.session_state.crop
     # Цена — после выбора культуры: для не-пшеницы/ячменя слайдер молча не работал.
     price_on = crop in ("spring_wheat", "barley")
     wheat_price = st.sidebar.slider(T["price"], min_value=WHEAT_PRICE_MIN,
@@ -727,22 +813,28 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     mean5 = round(float(ins.get("mean5_c_ha") or y), 1)
     p_loss, payout = float(ins["p_loss"]), int(round(float(ins.get("expected_payout_ha") or 0)))
 
+    def _card(cls: str, kicker: str, big: str, sub: str) -> None:
+        st.markdown(
+            f"<div class='qagro-card {cls}'><div class='qagro-kicker'>{kicker}</div>"
+            f"<div class='big-answer'>{big}</div>"
+            f"<div class='qagro-sub'>{sub}</div></div>",
+            unsafe_allow_html=True,
+        )
+
+    risk_cls = ("qagro-risk-high" if light == "🔴"
+                else ("qagro-risk" if light == "🟡" else "qagro-risk-low"))
     c1, c2 = st.columns(2)
     with c1:
-        st.success(f"<div class='big-answer'>{T['yield']}: ~{y} {T['axis_yield']}</div>\n\n"
-                   + T["usual"].format(lo=lo, hi=hi, mean5=mean5),
-                   icon="🌾")
+        _card("qagro-yield", f"🌾 {T['yield']}", f"~{y} {T['axis_yield']}",
+              T["usual"].format(lo=lo, hi=hi, mean5=mean5))
     with c2:
-        st.info(f"<div class='big-answer'>{light} {T['risk']}: {_w(p_loss, lang)}</div>\n\n"
-                + T["risk_hint"], icon="ℹ️")
+        _card(risk_cls, f"{light} {T['risk']}", _w(p_loss, lang), T["risk_hint"])
     c3, c4 = st.columns(2)
     with c3:
-        st.warning(f"<div class='big-answer'>{T['ins']}: ~{payout} ₸/{T['ha']}</div>\n\n"
-                   + T["payout_hint"].format(pct=round(p_loss * 100)),
-                   icon="🛡️")
+        _card("qagro-ins", f"🛡️ {T['ins']}", f"~{payout} ₸/{T['ha']}",
+              T["payout_hint"].format(pct=round(p_loss * 100)))
     with c4:
-        st.success(f"<div class='big-answer'>{T['todo']}: {rec['window']}</div>\n\n{rec['message']}",
-                   icon="✅")
+        _card("qagro-todo", f"✅ {T['todo']}", rec['window'], rec['message'])
     if experimental:
         st.warning(T["exp"])
     if offline:
@@ -778,11 +870,32 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                        use_container_width=True)
 
     with st.expander(f"🔧 {T['detail']}"):
-        st.write(f"y_pred={pred['y_pred']}, 80% [{pred['lo10']}, {pred['hi90']}], "
-                 f"mean5={ins['mean5_c_ha']}, p_loss={ins['p_loss']}")
+        st.write(T["det_sum"].format(y=pred["y_pred"], lo=pred["lo10"],
+                                     hi=pred["hi90"],
+                                     mean5=ins["mean5_c_ha"],
+                                     ploss=round(float(ins["p_loss"]), 3)))
         if pred.get("factors"):
-            st.write("Top factors:", [(f.get("feature"), round(float(f.get("shap_value", 0)), 3))
-                                      for f in pred["factors"][:3]])
+            try:
+                try:
+                    from src.report_pdf import PDF_FEAT as _FEAT
+                except ImportError:
+                    from report_pdf import PDF_FEAT as _FEAT  # type: ignore
+                _fm = _FEAT.get(lang, _FEAT["ru"])
+            except Exception:
+                _fm = {}
+            _frow = []
+            for f in pred["factors"][:3]:
+                try:
+                    _sv = round(float(f.get("shap_value", 0)), 3)
+                except (TypeError, ValueError):
+                    _sv = f.get("shap_value")
+                _frow.append({T["det_col_f"]: _fm.get(f.get("feature"),
+                                                     f.get("feature")),
+                              T["det_col_v"]: f.get("value"),
+                              T["det_col_e"]: _sv})
+            st.write(T["det_factors"])
+            st.dataframe(pd.DataFrame(_frow), use_container_width=True,
+                         hide_index=True)
         if crop in metrics:
             lm = metrics[crop]["lgbm"]
             st.write(f"{crop}: MAE={lm['mae']:.2f}, RMSE={lm['rmse']:.2f}, R²={lm['r2']:.2f}")
@@ -928,7 +1041,7 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                 from src.gis_monitor import run_district as _gis_run
                 with st.spinner("🛰 Sentinel-2..."):
                     g = _gis_run(district_en, max_fields=4)
-            for fl in g.get("fields", []):
+            for _fi, fl in enumerate(g.get("fields", []), start=1):
                 c = fl.get("classification") or {}
                 _nv = c.get("ndvi_max")
                 try:
@@ -936,17 +1049,26 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                 except (TypeError, ValueError):
                     _nvf = None
                 if _nvf is None:
-                    _verdict, _nvs = "—", "—"
+                    _nvs = "—"
                 else:
                     _nvs = round(_nvf, 2)
-                    _verdict = (T["ndvi_good"] if _nvf >= 0.5
-                                else (T["ndvi_mid"] if _nvf >= 0.35 else T["ndvi_low"]))
+                _verdict = ("—" if _nvf is None
+                            else (T["ndvi_good"] if _nvf >= 0.5
+                                  else (T["ndvi_mid"] if _nvf >= 0.35 else T["ndvi_low"])))
                 _demo = {"ru": " (пример)", "kz": " (үлгі)",
                          "en": " (sample)"}[lang] if fl.get("demo") else ""
-                st.write(f"**{fl.get('field_id')}**{_demo} ({fl.get('area_ha')} {T['ha']}): "
-                         f"{c.get(skey, c.get('status_ru', c.get('status')))} — NDVI max {_nvs} "
-                         f"({_verdict}), "
-                         f"{T['gis_dead']} {round(float(c.get('dead_share') or 0) * 100)}%.")
+                _head = (f"**{T['gis_field'].format(n=_fi)}**{_demo} "
+                         f"({fl.get('area_ha')} {T['ha']})"
+                         f" <span class='qagro-techid'>{fl.get('field_id')}</span>")
+                if _nvf is None:
+                    st.markdown(_head + f": {T['gis_no_data']}",
+                                unsafe_allow_html=True)
+                    continue
+                st.markdown(_head +
+                            f": {c.get(skey, c.get('status_ru', c.get('status')))} — "
+                            f"NDVI max {_nvs} ({_verdict}), "
+                            f"{T['gis_dead']} {round(float(c.get('dead_share') or 0) * 100)}%.",
+                            unsafe_allow_html=True)
                 series = [(p.get("date"), p.get("ndvi_mean")) for p in fl.get("series", [])
                           if p.get("ndvi_mean") is not None]
                 if series:
@@ -1026,7 +1148,8 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
                         st.error(str(e))
             for f in fields:
                 c1, c2 = st.columns([4, 1])
-                c1.write(f"#{f['id']} {f['name']} — {f['area_ha']} {T['ha']}, {f['crop']}")
+                _fcrop = cname.get(f["crop"], f["crop"])
+                c1.write(f"#{f['id']} {f['name']} — {f['area_ha']} {T['ha']}, {_fcrop}")
                 if c2.button("✖", key=f"del_{f['id']}", help=T["del_help"],
                              use_container_width=True):
                     delete_field(int(f["id"]))
@@ -1059,17 +1182,22 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     with tab_plus:
         # v4: справочник + NPK + экономика.
         try:
-            from src.guide_data import lookup as _lookup
+            try:
+                from src.guide_data import lookup as _lookup
+                from src.guide_data import text_of as _text_of
+            except ImportError:
+                from guide_data import lookup as _lookup  # type: ignore
+                from guide_data import text_of as _text_of  # type: ignore
             from src.fertilizer import calc_npk as _npk
             from src.economics import profit_ha as _profit
             items = _lookup(crop)[:4]
             if not items:
                 st.info(T["guide_empty"])
-            nk, sk, ak = {"ru": ("name_ru", "signs_ru", "action_ru"),
-                          "kz": ("name_kz", "signs_kz", "action_kz"),
-                          "en": ("name_en", "signs_en", "action_en")}[lang]
             for it in items:
-                st.write(f"🔬 **{it.get(nk)}**: {'; '.join(it.get(sk, [])[:2])}. → {it.get(ak)}")
+                _nm = _text_of(it, "names", lang) or "—"
+                _sg = _text_of(it, "signs", lang) or []
+                _ac = _text_of(it, "action", lang) or "—"
+                st.write(f"🔬 **{_nm}**: {'; '.join(_sg[:2])}. → {_ac}")
             goal = st.slider(T["goal"], 5.0, 30.0, 15.0, help=T["goal_help"])
             npk = _npk(crop, float(goal), "medium")
             st.write(f"🧪 NPK: N {npk['N_kg_ha']} · P {npk['P_kg_ha']} · K {npk['K_kg_ha']} кг/{T['ha']}")
@@ -1163,20 +1291,26 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
         try:
             try:
                 from src.spray import check_spray_window as _spray2
+                from src.spray import _fmt_window as _fmtw2
             except ImportError:
                 from spray import check_spray_window as _spray2  # type: ignore
+                from spray import _fmt_window as _fmtw2  # type: ignore
             _sp = _spray2(district_en, 48)
             _vk = {"ru": "verdict_ru", "kz": "verdict_kz", "en": "verdict_en"}[lang]
             st.info(f"🧴 {_sp.get(_vk)}")
             _wins = _sp.get("windows") or []
             if _wins:
                 for _wn in _wins[:4]:
-                    st.write(f"✅ {_wn.get('start')} → {_wn.get('end')}")
+                    try:
+                        _wtxt = _fmtw2(_wn.get("start"), _wn.get("end"), lang)
+                    except (TypeError, ValueError):
+                        _wtxt = f"{_wn.get('start')} → {_wn.get('end')}"
+                    st.write(f"✅ {_wtxt}")
             elif not _sp.get("next_good_hours"):
                 st.caption(T["season_spray_none"])
             else:
                 for _gh in (_sp.get("next_good_hours") or [])[:6]:
-                    st.write(f"✅ {_gh.get('time')} — {_gh.get('temp_c')}°C, "
+                    st.write(f"✅ {_hm_time(_gh.get('time'))} — {_gh.get('temp_c')}°C, "
                              f"{_gh.get('wind_ms')} {T['ms']}")
         except Exception as e:
             st.caption(f"{T['spray_offline']}: {e}")
@@ -1192,6 +1326,9 @@ div[data-testid="stFormSubmitButton"] > button { width: 100%; }
     with tab_about:
         st.write(T["about1"])
         st.write(T["about2"])
+        st.subheader(T["about_how"])
+        st.write(T["about_steps"])
+        st.caption(T["about_limits"])
 
 
 if _ST_RUN:
