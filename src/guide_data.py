@@ -284,6 +284,144 @@ GUIDE: dict[str, list[dict]] = {
             "source": SOURCE,
         },
     ],
+    "oats": [
+        {
+            "id": "oats_crown_rust",
+            "crops": ["oats"],
+            "names": {
+                "ru": "Корончатая ржавчина овса",
+                "kz": "Сұлының тәж таты",
+                "en": "Oats crown rust",
+            },
+            "signs": {
+                "ru": [
+                    "Оранжево-жёлтые порошащие пустулы на листьях и влагалищах",
+                    "Развивается в тёплую влажную погоду во второй половине лета",
+                    "Сильное поражение — щуплое зерно, поле рыжеет",
+                ],
+                "kz": [
+                    "Жапырақ пен қынапта сарғыш ұнтақты пустулалар",
+                    "Жаздың екінші жартысында жылы ылғалды ауа райында дамиды",
+                    "Қатты зақымданса дән толықсымайды, егістік сарғаяды",
+                ],
+                "en": [
+                    "Orange-yellow powdery pustules on leaves and sheaths",
+                    "Develops in warm humid weather in late summer",
+                    "Severe attack shrivels grain, field turns rusty",
+                ],
+            },
+            "action": {
+                "ru": "Триазольный фунгицид по регламенту при первых пустулах; устойчивые сорта, ранний сев",
+                "kz": "Алғашқы пустулаларда регламент бойынша триазолды фунгицид; төзімді сорттар, ерте себу",
+                "en": "Triazole fungicide per label at first pustules; resistant varieties, early sowing",
+            },
+            "danger": 2,
+            "source": SOURCE,
+        },
+    ],
+    "rapeseed": [
+        {
+            "id": "rapeseed_flea",
+            "crops": ["rapeseed"],
+            "names": {
+                "ru": "Крестоцветные блошки на рапсе",
+                "kz": "Рапстағы айқышгүлді бүргелер",
+                "en": "Flea beetles on rapeseed",
+            },
+            "signs": {
+                "ru": [
+                    "Мелкие дырочки-выгрызы на семядолях и первых листьях",
+                    "Всходы гибнут в сухую жаркую весну",
+                    "Мелкие блестящие чёрные жучки прыгают, если тронуть",
+                ],
+                "kz": [
+                    "Тұқым жарнағы мен алғашқы жапырақтарда ұсақ тесіктер",
+                    "Құрғақ ыстық көктемде көк құрып кетеді",
+                    "Ұстаса секіретін ұсақ жылтыр қара қоңыздар",
+                ],
+                "en": [
+                    "Tiny shot-holes in cotyledons and first leaves",
+                    "Seedlings die in dry hot spring",
+                    "Tiny shiny black beetles jump when touched",
+                ],
+            },
+            "action": {
+                "ru": "Протравленные семена; в сухую весну — краевая инсектицидная обработка всходов по регламенту, контроль всходов",
+                "kz": "Дәріленген тұқым; құрғақ көктемде регламент бойынша көкке жиектік инсектицид, көкті бақылау",
+                "en": "Treated seeds; in dry spring — border insecticide on seedlings per label, monitor emergence",
+            },
+            "danger": 2,
+            "source": SOURCE,
+        },
+        {
+            "id": "rapeseed_sclerotinia",
+            "crops": ["rapeseed"],
+            "names": {
+                "ru": "Склеротиниоз (белая гниль) рапса",
+                "kz": "Рапстың склеротиниозы (ақ шірік)",
+                "en": "Rapeseed sclerotinia (white mold)",
+            },
+            "signs": {
+                "ru": [
+                    "Выбеленные стебли с белым налётом в сырое цветение",
+                    "Внутри стебля чёрные склероции, стебель полегает",
+                    "Очаги полегания после дождей",
+                ],
+                "kz": [
+                    "Ылғал гүлденуде ақ өңезді ағарған сабақтар",
+                    "Сабақ ішінде қара склероцийлер, сабақ жатады",
+                    "Жаңбырдан кейін жату ошақтары",
+                ],
+                "en": [
+                    "Bleached stems with white mycelium in wet flowering",
+                    "Black sclerotia inside stem, lodging",
+                    "Lodging patches after rains",
+                ],
+            },
+            "action": {
+                "ru": "Фунгицид в цветение по регламенту во влажные годы; севооборот от 4 лет, не сеять после подсолнечника",
+                "kz": "Ылғал жылдары гүлденуде регламент бойынша фунгицид; 4 жылдан кем емес ауыспалы егіс, күнбағыстан кейін сеппеу",
+                "en": "Fungicide at flowering per label in wet years; rotation of 4+ years, avoid sunflower as predecessor",
+            },
+            "danger": 2,
+            "source": SOURCE,
+        },
+    ],
+    "flax": [
+        {
+            "id": "flax_wilt",
+            "crops": ["flax"],
+            "names": {
+                "ru": "Фузариозное увядание льна",
+                "kz": "Зығырдың фузариозды солуы",
+                "en": "Flax fusarium wilt",
+            },
+            "signs": {
+                "ru": [
+                    "Пожелтение и поникание верхушек в жаркую сухую погоду",
+                    "На срезе стебля бурое кольцо сосудов",
+                    "Очаги погибших растений на поле",
+                ],
+                "kz": [
+                    "Ыстық құрғақ ауа райында төбелердің сарғаюы мен салбырауы",
+                    "Сабақ кесіндісінде қоңыр түтік сақинасы",
+                    "Егістікте өлген өсімдік ошақтары",
+                ],
+                "en": [
+                    "Yellowing and drooping tops in hot dry weather",
+                    "Brown vascular ring on stem cross-section",
+                    "Patches of dead plants in the field",
+                ],
+            },
+            "action": {
+                "ru": "В сезон не лечится: устойчивые сорта и севооборот на будущее; решение о пересеве — с агрономом после осмотра",
+                "kz": "Маусымда емделмейді: болашаққа төзімді сорт пен ауыспалы егіс; қайта себу туралы шешім — тексеруден соң агрономмен",
+                "en": "No in-season cure: resistant varieties and rotation for the future; replant decision with an agronomist after scouting",
+            },
+            "danger": 3,
+            "source": SOURCE,
+        },
+    ],
 }
 
 # Алиасы культур (ru/kz/en -> ключ GUIDE)
@@ -323,13 +461,13 @@ _CROP_ALIASES: dict[str, str] = {
 def lookup(crop: str) -> list[dict]:
     """Вернуть записи справочника для культуры + общие вредители.
 
-    crop: 'wheat' | 'barley' | 'sunflower' (или ru/kz алиас).
+    crop: 'wheat'/'barley'/'sunflower'/'oats'/'rapeseed'/'flax' (или ru/kz алиас).
     Для профильных культур добавляются записи раздела 'common',
     для остальных возвращается раздел 'common'.
     """
     key = (crop or "").strip().lower()
     key = _CROP_ALIASES.get(key, key)
-    if key in ("wheat", "barley", "sunflower"):
+    if key in ("wheat", "barley", "sunflower", "oats", "rapeseed", "flax"):
         return list(GUIDE.get(key, [])) + list(GUIDE.get("common", []))
     if key == "common":
         return list(GUIDE.get("common", []))
@@ -352,4 +490,172 @@ def text_of(item: dict, field: str, lang: str):
     return v
 
 
-__all__ = ["GUIDE", "SOURCE", "lookup", "text_of"]
+# Абиотика (засуха/жара/заморозки): не болезнь и не вредитель, но самая частая
+# жалоба. Формат — как записи GUIDE, чтобы рендеры (бот/веб/API) не ветвились.
+ABIOTIC: dict[str, dict] = {
+    "drought": {
+        "id": "abio_drought",
+        "crops": ["wheat", "barley", "oats", "sunflower", "rapeseed", "flax"],
+        "names": {
+            "ru": "Засуха и суховей",
+            "kz": "Құрғақшылық және қуаң жел",
+            "en": "Drought and dry wind",
+        },
+        "signs": {
+            "ru": [
+                "Почва сухая на глубину ладони, всходы вялые к полудню",
+                "Дождей нет 2+ недель, жара днём, суховей",
+                "Нижние листья скручиваются и подсыхают",
+            ],
+            "kz": [
+                "Топырақ алақан тереңдігінде құрғақ, көк түсте солады",
+                "2+ апта жауын жоқ, күндіз ыстық, қуаң жел",
+                "Төменгі жапырақтар ширатылып кебеді",
+            ],
+            "en": [
+                "Soil dry to palm depth, seedlings wilt by noon",
+                "No rain for 2+ weeks, daytime heat, dry wind",
+                "Lower leaves curl and dry out",
+            ],
+        },
+        "action": {
+            "ru": "Срочно проверь риск в /alerts и окно в /spray; влагосбережение: сократи обработки почвы, мульчируй; полив — если есть; решение о пересеве — с агрономом",
+            "kz": "Шұғыл /alerts қаупін және /spray терезесін тексер; ылғал үнемдеу: топырақ өңдеуді азайт; суару — болса; қайта себу — агрономмен",
+            "en": "Urgently check risk in /alerts and window in /spray; save moisture: cut tillage, mulch; irrigate if available; replant decision with an agronomist",
+        },
+        "danger": 3,
+        "source": SOURCE,
+    },
+    "heat": {
+        "id": "abio_heat",
+        "crops": ["wheat", "barley", "oats", "sunflower", "rapeseed", "flax"],
+        "names": {
+            "ru": "Жара выше нормы",
+            "kz": "Нормадан жоғары ыстық",
+            "en": "Above-normal heat",
+        },
+        "signs": {
+            "ru": [
+                "Днём 30°+, ночью не остывает",
+                "Цветение/налив совпали с жарой",
+                "Растения вялые даже утром",
+            ],
+            "kz": [
+                "Күндіз 30°+, түнде салқындамайды",
+                "Гүлдену/толысу ыстыққа сәйкес келді",
+                "Өсімдік таңертең де солғын",
+            ],
+            "en": [
+                "Daytime 30°C+, no cooling at night",
+                "Flowering/grain filling coincided with heat",
+                "Plants wilted even in the morning",
+            ],
+        },
+        "action": {
+            "ru": "Работы — рано утром/вечером; опрыскивания только в окно /spray (ветер<5, без дождя, 10–25°C); сохрани влагу, не трогай почву в зной",
+            "kz": "Жұмыстар — таңертең/кешке; бүрку тек /spray терезесінде (жел<5, жауынсыз, 10–25°C); ылғалды сақта, ыстықта топырақты қозғама",
+            "en": "Work early morning/evening; spray only in the /spray window (wind<5, no rain, 10–25°C); keep moisture, skip tillage in heat",
+        },
+        "danger": 2,
+        "source": SOURCE,
+    },
+    "frost": {
+        "id": "abio_frost",
+        "crops": ["wheat", "barley", "oats", "sunflower", "rapeseed", "flax"],
+        "names": {
+            "ru": "Заморозки",
+            "kz": "Үсік",
+            "en": "Frost",
+        },
+        "signs": {
+            "ru": [
+                "Ночью около 0° и ниже, иней на всходах",
+                "Листья стекловидные, потом белеют",
+                "Пострадали низины и края поля",
+            ],
+            "kz": [
+                "Түнде 0° маңы және төмен, көкте қырау",
+                "Жапырақ шыныдай, соңыра ағарады",
+                "Ойпат пен егіс шеті зардап шекті",
+            ],
+            "en": [
+                "Night near/below 0°C, rime on seedlings",
+                "Leaves glassy, then whiten",
+                "Low spots and field edges hit",
+            ],
+        },
+        "action": {
+            "ru": "Подожди 2–3 дня: точка роста жива — отойдёт; проверь /alerts на повтор; погибшие очаги — подсев после осмотра с агрономом",
+            "kz": "2–3 күн күт: өсу нүктесі тірі болса — қалпына келеді; қайталануын /alerts-тен қара; өлген ошақтар — тексеруден соң агрономмен үстеп себу",
+            "en": "Wait 2–3 days: if the growing point is alive it recovers; re-check /alerts; dead patches — overseed after scouting with an agronomist",
+        },
+        "danger": 2,
+        "source": SOURCE,
+    },
+}
+
+# Жалоба -> ключ ABIOTIC (все языки сразу — пользователь пишет как удобно).
+_ABIO_ALIASES: dict[str, list[str]] = {
+    "drought": ["засух", "сушь", "суховей", "сухо", "нет дожд", "без дожд",
+                "құрғақ", "қуаң", "жауын жоқ", "drought", "dry spell", "no rain"],
+    "heat": ["жар", "пекло", "зной", "ыстық", "аптап", "heat", "hot"],
+    "frost": ["замороз", "мороз", "холод", "үсік", "аяз", "суық", "frost", "freeze"],
+    "pests": ["вредит", "насеком", "жук", "гусениц", "тля", "зиянкес",
+              "жәндік", "қоңыз", "pest", "insect", "bug", "aphid"],
+}
+
+
+def _all_entries() -> list[dict]:
+    seen: dict[str, dict] = {}
+    for section in GUIDE.values():
+        for e in section:
+            if isinstance(e, dict) and e.get("id") not in seen:
+                seen[e["id"]] = e
+    return list(seen.values())
+
+
+def search_guide(query: str, lang: str = "ru", top: int = 3) -> list[dict]:
+    """Жалоба словами -> релевантные записи (вместо первых N справочника).
+
+    1) Прямое попадание в абиотику (засуха/жара/заморозки/вредители вообще).
+    2) Иначе скоринг по всем записям: совпадение в names (+3) / id (+2) /
+       signs+action (+1) — тексты всех 3 языков сразу, язык жалобы не важен.
+    Пустой запрос или нулевой скор -> [] (вызывающий показывает подсказку).
+    """
+    if lang not in ("ru", "kz", "en"):
+        lang = "ru"
+    q = (query or "").strip().lower()
+    if not q:
+        return []
+    for pid, aliases in _ABIO_ALIASES.items():
+        if any(a in q for a in aliases):
+            if pid == "pests":
+                return [e for e in _all_entries()
+                        if str(e.get("id") or "").startswith("pest_")][:max(1, top)]
+            return [ABIOTIC[pid]]
+    scored: list[tuple[int, dict]] = []
+    for e in _all_entries():
+        score = 0
+        texts_names: list[str] = []
+        texts_body: list[str] = []
+        for lg in ("ru", "kz", "en"):
+            nm = (e.get("names") or {}).get(lg) or ""
+            texts_names.append(str(nm).lower())
+            for f in ("signs", "action"):
+                v = (e.get(f) or {}).get(lg)
+                if isinstance(v, list):
+                    texts_body.extend(str(x).lower() for x in v)
+                elif v:
+                    texts_body.append(str(v).lower())
+        if any(q in t for t in texts_names if t):
+            score += 3
+        if q and q in str(e.get("id", "")).lower():
+            score += 2
+        score += sum(1 for t in texts_body if q and t and q in t)
+        if score > 0:
+            scored.append((score, e))
+    scored.sort(key=lambda r: -r[0])
+    return [e for _, e in scored[:max(1, top)]]
+
+
+__all__ = ["GUIDE", "SOURCE", "lookup", "text_of", "ABIOTIC", "search_guide"]

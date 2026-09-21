@@ -107,9 +107,11 @@ edges becoming zeros after reprojection.
 - Pipeline: `src/sentinel_ndvi.py` (PC STAC scene search, no key, best-effort,
   Esil/Zerenda demo fields, Jun–Aug 2024–2025, cloud<20%) →
   `data/ndvi/ndvi_timeseries.json` (`{district, date, ndvi_mean|None, scene_id,
-  status}`). Honest states: `ndvi_mean` number in [-1,1] (currently 41 real via
-  PC TiTiler, Jun+Jul) or `None` + `status: "MISSING"` / `"listed ..."` /
-  `"error: ..."` (40 missing — NEVER invent numbers to fill gaps).
+  status}`). Honest states: `ndvi_mean` number in [-1,1] (currently 132 real of 148,
+  all 10 districts, Jun–Aug 2024–2025, via PC TiTiler) or `None` +
+  `status: "MISSING"` / `"listed ..."` / `"error: ..."` (16 missing — NEVER invent
+  numbers to fill gaps). New districts: `python scripts/fetch_ndvi_district.py
+  --district <En>` (largest OSM field bbox, STAC cloud<20%, TiTiler per date).
 - Model contract: `src/features_ndvi.py` does an OPTIONAL join — `ndvi_max`
   enters only with full real-NDVI coverage and zero NaN, else skipped. The yield
   model must always work without NDVI (see `agro-analytics` skill).

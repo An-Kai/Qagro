@@ -47,11 +47,14 @@
    hourly soil_moisture_3_9cm; timezone Asia/Almaty. Сырое: `data/raw/openmeteo_*_daily.json`;
    агрегаты: `data/raw/openmeteo_summary.csv`.
 7. **Координаты районов** — `config/districts.yaml` (центроиды WGS84).
-8. **NDVI Sentinel-2 (июнь–август, 41 реальный из 62)**:
+8. **NDVI Sentinel-2 (июнь–август, 132 реальных из 148, все 10 районов)**:
    `data/ndvi/ndvi_timeseries.json` (Esil/Zerenda, июнь–август 2024–2025,
    cloud<20%, collection sentinel-2-l2a, Planetary Computer STAC без ключа;
-   `python src/sentinel_ndvi.py`); 41 запись с реальным `ndvi_mean`
-   (PC TiTiler), остальная 21 — None (MISSING, сцены нет).
+   `python src/sentinel_ndvi.py`); 132 записи с реальным `ndvi_mean`
+   (PC TiTiler: Esil 26, Zerenda 20, Zhaksy 18, Atbasar 12, Sandyktau 12,
+   Shortandy/Tselinograd/Kokshetau по 10, Burabay 8, Bulandy 6 — добор
+   по району через `scripts/fetch_ndvi_district.py --district <En>`,
+   Kokshetau помечен [demo-bbox]), остальные 16 — None (MISSING, сцены нет).
    Ручной источник: Copernicus Browser https://browser.dataspace.copernicus.eu/
    + Sentinel Hub https://www.sentinel-hub.com/. Модель работает и без NDVI
    (optional join `src/features_ndvi.py`: `ndvi_max` только при настоящих NDVI).

@@ -4,433 +4,1035 @@
     "date": "2024-08-12",
     "ndvi_mean": 0.2635,
     "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UUC_20240812T115053",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2635 median=0.2601 std=0.116 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2635 median=0.2601 std=0.116 valid_pixels=27060 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-08-12",
     "ndvi_mean": 0.2635,
     "scene_id": "S2A_MSIL2A_20240812T063631_R120_T41UQT_20240812T115053",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2635 median=0.2604 std=0.1156 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2635 median=0.2604 std=0.1156 valid_pixels=29241 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-07-31",
     "ndvi_mean": 0.2325,
     "scene_id": "S2B_MSIL2A_20240731T064629_R020_T41UQT_20240731T091612",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2325 median=0.2266 std=0.1196 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2325 median=0.2266 std=0.1196 valid_pixels=29241 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-18",
     "ndvi_mean": 0.2368,
     "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UUC_20240618T111713",
-    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2368 median=0.1959 std=0.1465 valid_pixels=1048551 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2368 median=0.1959 std=0.1465 valid_pixels=1048551 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-18",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2527,
     "scene_id": "S2B_MSIL2A_20240618T063629_R120_T41UQT_20240618T111720",
-    "status": "listed via requests (cloud=11.747792): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-13",
     "ndvi_mean": 0.2106,
     "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UUC_20240613T121317",
-    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2106 median=0.155 std=0.143 valid_pixels=1048567 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2106 median=0.155 std=0.143 valid_pixels=1048567 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-13",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2793,
     "scene_id": "S2A_MSIL2A_20240613T063631_R120_T41UQT_20240613T121316",
-    "status": "listed via requests (cloud=12.562108): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-03",
     "ndvi_mean": 0.2111,
     "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332",
-    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2111 median=0.1505 std=0.1434 valid_pixels=1048565 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2111 median=0.1505 std=0.1434 valid_pixels=1048565 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-03",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2823,
     "scene_id": "S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
-    "status": "listed via requests (cloud=3.518136): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2024-06-01",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20240601T064629_R020_T42UUC_20240601T102334",
-    "status": "listed via requests (cloud=2.01013): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=2.01013): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Esil",
     "date": "2024-06-01",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20240601T064629_R020_T41UQT_20240601T102620",
-    "status": "listed via requests (cloud=3.999672): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=3.999672): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Esil",
     "date": "2025-08-29",
     "ndvi_mean": 0.2601,
     "scene_id": "S2A_MSIL2A_20250829T064321_R120_T42UUC_20250829T092116",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2601 median=0.2614 std=0.1129 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2601 median=0.2614 std=0.1129 valid_pixels=27060 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-29",
     "ndvi_mean": 0.2521,
     "scene_id": "S2A_MSIL2A_20250829T064321_R120_T41UQT_20250829T092116",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2521 median=0.2532 std=0.1059 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2521 median=0.2532 std=0.1059 valid_pixels=29241 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-27",
     "ndvi_mean": 0.25,
     "scene_id": "S2C_MSIL2A_20250827T063641_R120_T42UUC_20250827T101257",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.25 median=0.2532 std=0.1118 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.25 median=0.2532 std=0.1118 valid_pixels=27060 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-27",
     "ndvi_mean": 0.2489,
     "scene_id": "S2C_MSIL2A_20250827T063641_R120_T41UQT_20250827T101257",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2489 median=0.2525 std=0.1117 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2489 median=0.2525 std=0.1117 valid_pixels=29241 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-25",
     "ndvi_mean": 0.2547,
     "scene_id": "S2B_MSIL2A_20250825T064629_R020_T42UUC_20250825T090844",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2547 median=0.2604 std=0.1057 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2547 median=0.2604 std=0.1057 valid_pixels=27060 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-25",
     "ndvi_mean": 0.2545,
     "scene_id": "S2B_MSIL2A_20250825T064629_R020_T41UQT_20250825T090844",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2545 median=0.2609 std=0.1062 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2545 median=0.2609 std=0.1062 valid_pixels=29241 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-10",
     "ndvi_mean": 0.2029,
     "scene_id": "S2C_MSIL2A_20250810T064641_R020_T42UUC_20250810T102215",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2029 median=0.1811 std=0.137 valid_pixels=27059 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2029 median=0.1811 std=0.137 valid_pixels=27059 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-10",
     "ndvi_mean": 0.2027,
     "scene_id": "S2C_MSIL2A_20250810T064641_R020_T41UQT_20250810T102215",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2027 median=0.1815 std=0.137 valid_pixels=29240 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2027 median=0.1815 std=0.137 valid_pixels=29240 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-09",
     "ndvi_mean": 0.2342,
     "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UUC_20250809T092714",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2342 median=0.2231 std=0.1201 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2342 median=0.2231 std=0.1201 valid_pixels=27060 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-08-09",
     "ndvi_mean": 0.2342,
     "scene_id": "S2A_MSIL2A_20250809T064321_R120_T41UQT_20250809T092714",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2342 median=0.2229 std=0.1203 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2342 median=0.2229 std=0.1203 valid_pixels=29241 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-07-21",
     "ndvi_mean": 0.2639,
     "scene_id": "S2C_MSIL2A_20250721T064651_R020_T42UUC_20250721T100116",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2639 median=0.2497 std=0.1265 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2639 median=0.2497 std=0.1265 valid_pixels=27060 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-07-21",
     "ndvi_mean": 0.2636,
     "scene_id": "S2C_MSIL2A_20250721T064651_R020_T41UQT_20250721T100116",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2636 median=0.2492 std=0.1267 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2636 median=0.2492 std=0.1267 valid_pixels=29241 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-07-20",
     "ndvi_mean": 0.2685,
     "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UUC_20250720T103615",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2685 median=0.2538 std=0.1299 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2685 median=0.2538 std=0.1299 valid_pixels=27060 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-07-20",
     "ndvi_mean": 0.2685,
     "scene_id": "S2A_MSIL2A_20250720T064321_R120_T41UQT_20250720T103615",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2685 median=0.2545 std=0.1301 valid_pixels=29241 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2685 median=0.2545 std=0.1301 valid_pixels=29241 (100%) | restored after C9 fix | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-07-06",
     "ndvi_mean": 0.2676,
     "scene_id": "S2B_MSIL2A_20250706T064629_R020_T42UUC_20250706T092816",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2676 median=0.2552 std=0.1272 valid_pixels=27060 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=66.39,51.94,66.41,51.96; mean=0.2676 median=0.2552 std=0.1272 valid_pixels=27060 (100%) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-06-16",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20250616T064619_R020_T42UUC_20250616T090449",
-    "status": "listed via requests (cloud=0.028212): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=0.028212): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Esil",
     "date": "2025-06-16",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20250616T064619_R020_T41UQT_20250616T090449",
-    "status": "listed via requests (cloud=0.029395): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=0.029395): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Esil",
     "date": "2025-06-08",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2957,
     "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UUC_20250608T102014",
-    "status": "listed via requests (cloud=0.055016): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-06-08",
-    "ndvi_mean": null,
+    "ndvi_mean": 0.2981,
     "scene_id": "S2C_MSIL2A_20250608T063651_R120_T41UQT_20250608T102014",
-    "status": "listed via requests (cloud=0.027548): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept on rerun"
   },
   {
     "district": "Esil",
     "date": "2025-06-06",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20250606T064629_R020_T42UUC_20250606T090705",
-    "status": "listed via requests (cloud=11.151563): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=11.151563): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Esil",
     "date": "2025-06-06",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20250606T064629_R020_T41UQT_20250606T090705",
-    "status": "listed via requests (cloud=10.085195): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=10.085195): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2024-07-23",
     "ndvi_mean": 0.3191,
     "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UWD_20240723T124800",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3191 median=0.3252 std=0.0687 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3191 median=0.3252 std=0.0687 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2024-07-23",
     "ndvi_mean": 0.3454,
     "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UVD_20240723T124800",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3454 median=0.3461 std=0.0582 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3454 median=0.3461 std=0.0582 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-20",
     "ndvi_mean": null,
     "scene_id": "S2A_MSIL2A_20240620T062631_R077_T42UVD_20240620T125055",
-    "status": "listed via requests (cloud=16.130312): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=16.130312): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-18",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWD_20240618T101647",
-    "status": "listed via requests (cloud=13.218546): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=13.218546): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-18",
     "ndvi_mean": null,
     "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UVD_20240618T101653",
-    "status": "listed via requests (cloud=6.88678): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=6.88678): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-13",
     "ndvi_mean": null,
     "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWD_20240613T121307",
-    "status": "listed via requests (cloud=3.042777): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=3.042777): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-13",
     "ndvi_mean": 0.2959,
     "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UVD_20240613T121314",
-    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2959 median=0.2782 std=0.185 valid_pixels=1048574 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2959 median=0.2782 std=0.185 valid_pixels=1048574 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-03",
     "ndvi_mean": null,
     "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWD_20240603T121554",
-    "status": "listed via requests (cloud=10.030427): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=10.030427): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2024-06-03",
     "ndvi_mean": 0.2601,
     "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UVD_20240603T121604",
-    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2601 median=0.2176 std=0.1814 valid_pixels=1048572 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-18: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2601 median=0.2176 std=0.1814 valid_pixels=1048572 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-29",
     "ndvi_mean": 0.3392,
     "scene_id": "S2B_MSIL2A_20250829T062629_R077_T42UWD_20250829T083857",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3392 median=0.3403 std=0.0733 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3392 median=0.3403 std=0.0733 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-26",
     "ndvi_mean": 0.3547,
     "scene_id": "S2A_MSIL2A_20250826T063321_R077_T42UVD_20250826T080215",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3547 median=0.3542 std=0.0817 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3547 median=0.3542 std=0.0817 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-24",
     "ndvi_mean": 0.3427,
     "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UWD_20250824T100321",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3427 median=0.3402 std=0.0797 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3427 median=0.3402 std=0.0797 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-24",
     "ndvi_mean": 0.3619,
     "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UVD_20250824T100321",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3619 median=0.3616 std=0.0859 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3619 median=0.3616 std=0.0859 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-22",
     "ndvi_mean": 0.3483,
     "scene_id": "S2B_MSIL2A_20250822T063629_R120_T42UVD_20250822T085323",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3483 median=0.3499 std=0.0927 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3483 median=0.3499 std=0.0927 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-19",
     "ndvi_mean": 0.3329,
     "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UWD_20250819T083232",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3329 median=0.328 std=0.0794 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.3329 median=0.328 std=0.0794 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-19",
     "ndvi_mean": 0.343,
     "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UVD_20250819T083232",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.343 median=0.3402 std=0.0831 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.343 median=0.3402 std=0.0831 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-09",
     "ndvi_mean": 0.1496,
     "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UVD_20250809T092714",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.1496 median=0.1204 std=0.0896 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.1496 median=0.1204 std=0.0896 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-08-09",
     "ndvi_mean": 0.2946,
     "scene_id": "S2B_MSIL2A_20250809T062629_R077_T42UVD_20250809T083435",
-    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2946 median=0.2973 std=0.0874 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-20: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2946 median=0.2973 std=0.0874 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-28",
     "ndvi_mean": 0.2752,
     "scene_id": "S2C_MSIL2A_20250728T063651_R120_T42UWD_20250728T102014",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2752 median=0.2753 std=0.0561 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2752 median=0.2753 std=0.0561 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-28",
     "ndvi_mean": 0.2843,
     "scene_id": "S2C_MSIL2A_20250728T063651_R120_T42UVD_20250728T102014",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2843 median=0.2827 std=0.053 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2843 median=0.2827 std=0.053 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-20",
     "ndvi_mean": 0.2616,
     "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UWD_20250720T103615",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2616 median=0.2628 std=0.0552 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2616 median=0.2628 std=0.0552 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-20",
     "ndvi_mean": 0.2705,
     "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UVD_20250720T103615",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2705 median=0.2704 std=0.0522 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2705 median=0.2704 std=0.0522 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-20",
     "ndvi_mean": 0.2639,
     "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UWD_20250720T074607",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2639 median=0.265 std=0.0553 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2639 median=0.265 std=0.0553 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-20",
     "ndvi_mean": 0.2717,
     "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UVD_20250720T074607",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2717 median=0.2721 std=0.0529 valid_pixels=7544 (28.05%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2717 median=0.2721 std=0.0529 valid_pixels=7544 (28.05%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-07-17",
     "ndvi_mean": 0.2418,
     "scene_id": "S2A_MSIL2A_20250717T063331_R077_T42UWD_20250717T091809",
-    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2418 median=0.2422 std=0.0502 valid_pixels=27225 (100%)"
+    "status": "real via PC TiTiler /item/statistics 2026-09-19: per-pixel (B08-B04)/(B08+B04) from real B04/B08 COGs, server-side (no rasterio, no full-GeoTIFF download); bbox=69.14,53.04,69.16,53.06; mean=0.2418 median=0.2422 std=0.0502 valid_pixels=27225 (100%) | kept on rerun"
   },
   {
     "district": "Zerenda",
     "date": "2025-06-10",
     "ndvi_mean": null,
     "scene_id": "S2A_MSIL2A_20250610T064321_R120_T42UWD_20250610T092820",
-    "status": "listed via requests (cloud=3.227781): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=3.227781): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2025-06-10",
     "ndvi_mean": null,
     "scene_id": "S2A_MSIL2A_20250610T064321_R120_T42UVD_20250610T092820",
-    "status": "listed via requests (cloud=2.362859): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=2.362859): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2025-06-08",
     "ndvi_mean": null,
     "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UWD_20250608T102014",
-    "status": "listed via requests (cloud=4.184321): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=4.184321): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2025-06-08",
     "ndvi_mean": null,
     "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UVD_20250608T102014",
-    "status": "listed via requests (cloud=0.569786): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=0.569786): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
   },
   {
     "district": "Zerenda",
     "date": "2025-06-05",
     "ndvi_mean": null,
     "scene_id": "S2C_MSIL2A_20250605T062651_R077_T42UWD_20250605T100315",
-    "status": "listed via requests (cloud=12.632954): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+    "status": "listed via pystac-client (cloud=12.632954): ndvi_mean=MISSING — требуется ручное скачивание B04/B08 (Copernicus Browser / Sentinel Hub, см. README)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-08-12",
+    "ndvi_mean": 0.3662,
+    "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UUC_20240812T115053",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-08-12",
+    "ndvi_mean": 0.3661,
+    "scene_id": "S2A_MSIL2A_20240812T063631_R120_T41UQT_20240812T115053",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-06-18",
+    "ndvi_mean": 0.1387,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UUC_20240618T111713",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-06-13",
+    "ndvi_mean": 0.1113,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UUC_20240613T121317",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-06-03",
+    "ndvi_mean": 0.1027,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UUC_20240603T121332",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-08-29",
+    "ndvi_mean": 0.1709,
+    "scene_id": "S2A_MSIL2A_20250829T064321_R120_T42UUC_20250829T092116",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-08-29",
+    "ndvi_mean": 0.1677,
+    "scene_id": "S2A_MSIL2A_20250829T064321_R120_T41UQT_20250829T092116",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-08-27",
+    "ndvi_mean": 0.1735,
+    "scene_id": "S2C_MSIL2A_20250827T063641_R120_T42UUC_20250827T101257",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-08-27",
+    "ndvi_mean": 0.1731,
+    "scene_id": "S2C_MSIL2A_20250827T063641_R120_T41UQT_20250827T101257",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-08-09",
+    "ndvi_mean": 0.4116,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UUC_20250809T092714",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-08-09",
+    "ndvi_mean": 0.4119,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T41UQT_20250809T092714",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.4591,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UUC_20250720T103615",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.4595,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T41UQT_20250720T103615",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-06-03",
+    "ndvi_mean": 0.1028,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T41UQT_20240603T121558",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-06-13",
+    "ndvi_mean": 0.1112,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T41UQT_20240613T121316",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2024-06-18",
+    "ndvi_mean": 0.1387,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T41UQT_20240618T111720",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-06-08",
+    "ndvi_mean": 0.1503,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T41UQT_20250608T102014",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Zhaksy",
+    "date": "2025-06-08",
+    "ndvi_mean": 0.1491,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UUC_20250608T102014",
+    "status": "real via PC TiTiler over own district bbox (C9 repair; was Zhaksy-bbox value) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2024-06-03",
+    "ndvi_mean": 0.0732,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UVC_20240603T121559",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=9.475151, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2024-06-18",
+    "ndvi_mean": 0.1112,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UVC_20240618T111716",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=0.90827, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2024-07-15",
+    "ndvi_mean": 0.1273,
+    "scene_id": "S2B_MSIL2A_20240715T062629_R077_T42UVC_20240715T093133",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=5.066907, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2024-08-12",
+    "ndvi_mean": 0.0799,
+    "scene_id": "S2A_MSIL2A_20240812T063631_R120_T42UVC_20240812T115053",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=11.111114, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-06-08",
+    "ndvi_mean": 0.0432,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UVC_20250608T102014",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=6.080414, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-06-15",
+    "ndvi_mean": 0.0636,
+    "scene_id": "S2C_MSIL2A_20250615T062651_R077_T42UVC_20250615T091818",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=0.837787, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.0168,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UVC_20250720T103615",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=0.000149, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.0176,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UVC_20250720T074607",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=0.0, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-08-09",
+    "ndvi_mean": 0.0391,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UVC_20250809T092714",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=5.207076, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-08-09",
+    "ndvi_mean": 0.0384,
+    "scene_id": "S2B_MSIL2A_20250809T062629_R077_T42UVC_20250809T083435",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=5.595276, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-08-22",
+    "ndvi_mean": 0.0176,
+    "scene_id": "S2B_MSIL2A_20250822T063629_R120_T42UVC_20250822T085323",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=18.539338, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Atbasar",
+    "date": "2025-08-26",
+    "ndvi_mean": 0.053,
+    "scene_id": "S2A_MSIL2A_20250826T063321_R077_T42UVC_20250826T080215",
+    "status": "real via PC TiTiler for rep-field Atbasar_206543108 (cloud=1.018272, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Bulandy",
+    "date": "2025-06-05",
+    "ndvi_mean": 0.1757,
+    "scene_id": "S2C_MSIL2A_20250605T062651_R077_T42UWD_20250605T100315",
+    "status": "real via PC TiTiler for rep-field Bulandy_464219320 (cloud=12.632954, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Bulandy",
+    "date": "2025-07-17",
+    "ndvi_mean": 0.541,
+    "scene_id": "S2A_MSIL2A_20250717T063331_R077_T42UWD_20250717T091809",
+    "status": "real via PC TiTiler for rep-field Bulandy_464219320 (cloud=11.010783, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Bulandy",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.5395,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UWD_20250720T074607",
+    "status": "real via PC TiTiler for rep-field Bulandy_464219320 (cloud=0.002183, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Bulandy",
+    "date": "2025-08-19",
+    "ndvi_mean": 0.1133,
+    "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UWD_20250819T083232",
+    "status": "real via PC TiTiler for rep-field Bulandy_464219320 (cloud=12.253881, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Bulandy",
+    "date": "2025-08-24",
+    "ndvi_mean": 0.1695,
+    "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UWD_20250824T100321",
+    "status": "real via PC TiTiler for rep-field Bulandy_464219320 (cloud=0.758717, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Bulandy",
+    "date": "2025-08-29",
+    "ndvi_mean": 0.1594,
+    "scene_id": "S2B_MSIL2A_20250829T062629_R077_T42UWD_20250829T083857",
+    "status": "real via PC TiTiler for rep-field Bulandy_464219320 (cloud=17.51741, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2024-07-23",
+    "ndvi_mean": 0.3851,
+    "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UWD_20240723T124800",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=10.256317, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-06-05",
+    "ndvi_mean": 0.067,
+    "scene_id": "S2C_MSIL2A_20250605T062651_R077_T42UWD_20250605T100315",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=12.632954, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-06-10",
+    "ndvi_mean": 0.1288,
+    "scene_id": "S2A_MSIL2A_20250610T064321_R120_T42UWD_20250610T092820",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=3.227781, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-07-17",
+    "ndvi_mean": 0.2977,
+    "scene_id": "S2A_MSIL2A_20250717T063331_R077_T42UWD_20250717T091809",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=11.010783, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.3056,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UWD_20250720T074607",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=0.002183, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-08-19",
+    "ndvi_mean": 0.1896,
+    "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UWD_20250819T083232",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=12.253881, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-08-24",
+    "ndvi_mean": 0.3011,
+    "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UWD_20250824T100321",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=0.758717, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Burabay",
+    "date": "2025-08-29",
+    "ndvi_mean": 0.3113,
+    "scene_id": "S2B_MSIL2A_20250829T062629_R077_T42UWD_20250829T083857",
+    "status": "real via PC TiTiler for rep-field Burabay_337047587 (cloud=17.51741, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2024-06-03",
+    "ndvi_mean": 0.0914,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UVD_20240603T121604",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=1.679981, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2024-06-13",
+    "ndvi_mean": 0.1064,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UVD_20240613T121314",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=0.035945, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2024-06-18",
+    "ndvi_mean": 0.1478,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UVD_20240618T101653",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=6.88678, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2024-07-23",
+    "ndvi_mean": 0.5146,
+    "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UVD_20240723T124800",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=3.603163, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-06-08",
+    "ndvi_mean": 0.1645,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UVD_20250608T102014",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=0.569786, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.4731,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UVD_20250720T074607",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=5e-05, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.4762,
+    "scene_id": "S2A_MSIL2A_20250720T064321_R120_T42UVD_20250720T103615",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=0.000182, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-07-28",
+    "ndvi_mean": 0.4651,
+    "scene_id": "S2C_MSIL2A_20250728T063651_R120_T42UVD_20250728T102014",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=1.735293, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-08-09",
+    "ndvi_mean": 0.4025,
+    "scene_id": "S2A_MSIL2A_20250809T064321_R120_T42UVD_20250809T092714",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=16.870061, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-08-09",
+    "ndvi_mean": 0.3373,
+    "scene_id": "S2B_MSIL2A_20250809T062629_R077_T42UVD_20250809T083435",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=19.157377, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-08-22",
+    "ndvi_mean": 0.2436,
+    "scene_id": "S2B_MSIL2A_20250822T063629_R120_T42UVD_20250822T085323",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=14.614768, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Sandyktau",
+    "date": "2025-08-24",
+    "ndvi_mean": 0.2629,
+    "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UVD_20250824T100321",
+    "status": "real via PC TiTiler for rep-field Sandyktau_360539224 (cloud=1.693989, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2024-06-05",
+    "ndvi_mean": 0.4598,
+    "scene_id": "S2B_MSIL2A_20240605T062629_R077_T42UXC_20240605T091355",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=2.140029, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2024-06-17",
+    "ndvi_mean": 0.5345,
+    "scene_id": "S2A_MSIL2A_20240617T061641_R034_T42UXC_20240617T120947",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=2.896251, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2024-07-30",
+    "ndvi_mean": 0.4505,
+    "scene_id": "S2A_MSIL2A_20240730T062631_R077_T42UXC_20240730T102547",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=10.595681, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2024-08-14",
+    "ndvi_mean": 0.3511,
+    "scene_id": "S2B_MSIL2A_20240814T062629_R077_T42UXC_20240814T100632",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=19.94625, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2025-06-05",
+    "ndvi_mean": 0.4368,
+    "scene_id": "S2C_MSIL2A_20250605T062651_R077_T42UXC_20250605T100315",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=9.195411, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2025-06-17",
+    "ndvi_mean": 0.4429,
+    "scene_id": "S2B_MSIL2A_20250617T061629_R034_T42UXC_20250617T082352",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=2.72599, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2025-07-02",
+    "ndvi_mean": 0.4174,
+    "scene_id": "S2C_MSIL2A_20250702T061651_R034_T42UXC_20250702T095816",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=17.063805, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.3339,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UXC_20250720T074607",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=0.000107, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2025-07-27",
+    "ndvi_mean": 0.3062,
+    "scene_id": "S2B_MSIL2A_20250727T061629_R034_T42UXC_20250727T073759",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=10.099475, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Shortandy",
+    "date": "2025-08-21",
+    "ndvi_mean": 0.2734,
+    "scene_id": "S2C_MSIL2A_20250821T061651_R034_T42UXC_20250821T095515",
+    "status": "real via PC TiTiler for rep-field Shortandy_298205408 (cloud=10.243065, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2024-06-05",
+    "ndvi_mean": 0.3132,
+    "scene_id": "S2B_MSIL2A_20240605T062629_R077_T42UXB_20240605T091357",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=0.869833, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2024-06-22",
+    "ndvi_mean": 0.3229,
+    "scene_id": "S2B_MSIL2A_20240622T061629_R034_T42UXB_20240622T100501",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=19.989584, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2024-07-12",
+    "ndvi_mean": 0.2827,
+    "scene_id": "S2B_MSIL2A_20240712T061629_R034_T42UXB_20240712T112533",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=1.800415, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2024-08-01",
+    "ndvi_mean": 0.2477,
+    "scene_id": "S2B_MSIL2A_20240801T061629_R034_T42UXB_20240801T080612",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=0.28834, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2024-08-14",
+    "ndvi_mean": 0.2207,
+    "scene_id": "S2B_MSIL2A_20240814T062629_R077_T42UXB_20240814T100632",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=15.031561, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2025-06-05",
+    "ndvi_mean": 0.4269,
+    "scene_id": "S2C_MSIL2A_20250605T062651_R077_T42UXB_20250605T100315",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=0.392453, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2025-06-22",
+    "ndvi_mean": 0.3579,
+    "scene_id": "S2C_MSIL2A_20250622T061651_R034_T42UXB_20250622T090517",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=12.385291, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2025-07-20",
+    "ndvi_mean": 0.2616,
+    "scene_id": "S2B_MSIL2A_20250720T062629_R077_T42UXB_20250720T074607",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=0.000136, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2025-07-27",
+    "ndvi_mean": 0.2449,
+    "scene_id": "S2B_MSIL2A_20250727T061629_R034_T42UXB_20250727T073759",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=12.40827, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Tselinograd",
+    "date": "2025-08-21",
+    "ndvi_mean": 0.2007,
+    "scene_id": "S2C_MSIL2A_20250821T061651_R034_T42UXB_20250821T095515",
+    "status": "real via PC TiTiler for rep-field Tselinograd_590439762 (cloud=10.456073, scripts/fetch_ndvi_district.py) | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2024-06-03",
+    "ndvi_mean": 0.3765,
+    "scene_id": "S2A_MSIL2A_20240603T063631_R120_T42UWE_20240603T121559",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=12.809306, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2024-06-13",
+    "ndvi_mean": 0.4141,
+    "scene_id": "S2A_MSIL2A_20240613T063631_R120_T42UWE_20240613T121327",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=0.791281, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2024-06-18",
+    "ndvi_mean": 0.4463,
+    "scene_id": "S2B_MSIL2A_20240618T063629_R120_T42UWE_20240618T101658",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=19.187762, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2024-06-20",
+    "ndvi_mean": 0.2957,
+    "scene_id": "S2A_MSIL2A_20240620T062631_R077_T42UWE_20240620T125141",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=15.666837, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2024-07-23",
+    "ndvi_mean": 0.4083,
+    "scene_id": "S2A_MSIL2A_20240723T063631_R120_T42UWE_20240723T124800",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=9.013607, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2025-06-08",
+    "ndvi_mean": 0.3617,
+    "scene_id": "S2C_MSIL2A_20250608T063651_R120_T42UWE_20250608T102014",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=8.681795, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2025-06-10",
+    "ndvi_mean": 0.3494,
+    "scene_id": "S2A_MSIL2A_20250610T064321_R120_T42UWE_20250610T092820",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=3.360036, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2025-07-28",
+    "ndvi_mean": 0.2966,
+    "scene_id": "S2C_MSIL2A_20250728T063651_R120_T42UWE_20250728T102014",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=3.079029, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2025-08-19",
+    "ndvi_mean": 0.2918,
+    "scene_id": "S2B_MSIL2A_20250819T062629_R077_T42UWE_20250819T083232",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=5.793007, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
+  },
+  {
+    "district": "Kokshetau",
+    "date": "2025-08-24",
+    "ndvi_mean": 0.3077,
+    "scene_id": "S2C_MSIL2A_20250824T062651_R077_T42UWE_20250824T100321",
+    "status": "real via PC TiTiler for rep-field Kokshetau_? (cloud=10.124465, scripts/fetch_ndvi_district.py) [demo-bbox: граница примерная] | kept (district not in DEMO_FIELDS)"
   }
 ]

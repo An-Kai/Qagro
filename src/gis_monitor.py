@@ -76,6 +76,7 @@ COLLECTION = "sentinel-2-l2a"
 EXPRESSION = "(B08-B04)/(B08+B04)"
 
 DEFAULT_DATES = ["2024-06-03", "2024-06-13", "2024-06-18", "2024-07-23", "2024-07-31", "2024-08-12"]
+MAX_EXTRA_DATES = 4  # доп. дат района сверх DEFAULT (равномерно по сезону)
 MAX_FIELDS_HARD = 6
 TIMEOUT_S = 25
 MAX_DEG = 0.02  # сжатие bbox для скорости
@@ -216,10 +217,27 @@ def _titiler_ndvi(scene_id: str, bbox: list[float]) -> tuple[float | None, str]:
 
 
 # ------------------------------------------------------------ серия поля
+def _district_dates(district_en: str) -> list[str]:
+    """Даты проверки района: DEFAULT (2024) + даты его сцен из JSON.
+
+    Без этого районы со сценами только 2025 (все, кроме Esil/Zerenda/Zhaksy)
+    получали бы вечный no_data: scene reuse идёт по (район, дата).
+    Доп. дат не более MAX_EXTRA_DATES, равномерно по сезону (скорость).
+    """
+    idx = _load_scenes_index()
+    extra = sorted({d for (dis, d) in idx
+                    if dis == district_en and d not in DEFAULT_DATES})
+    if len(extra) > MAX_EXTRA_DATES:
+        step = len(extra) / MAX_EXTRA_DATES
+        extra = [extra[int(i * step)] for i in range(MAX_EXTRA_DATES)]
+    return list(DEFAULT_DATES) + extra
+
+
 def field_ndvi(field: dict, dates: list[str] | None = None) -> list[dict]:
     """NDVI-серия поля: [{date, ndvi_mean|None, scene_id|None, note}]."""
     if dates is None:
-        dates = DEFAULT_DATES
+        props0 = (field or {}).get("properties") or {}
+        dates = _district_dates(str(props0.get("district_en") or ""))
     props = (field or {}).get("properties") or {}
     district = str(props.get("district_en") or "")
     bbox, _ = field_bbox(field)
@@ -314,13 +332,14 @@ def run_district(district_en: str, max_fields: int = 6) -> dict:
                   if (f.get("properties") or {}).get("district_en") == district_en]
     total_fields = len(all_fields)
     todo = all_fields[:max_fields]
+    dates = _district_dates(district_en)
     out_fields: list[dict] = []
     counts = {"cultivated": 0, "sparse": 0, "likely_fallow": 0, "no_data": 0}
     max_vals: list[float] = []
     for i, field in enumerate(todo):
         props = field.get("properties") or {}
         bbox, squeezed = field_bbox(field)
-        series = field_ndvi(field, DEFAULT_DATES)
+        series = field_ndvi(field, dates)
         cls = classify_field(series)
         st = cls.get("status")
         if st in counts:
@@ -340,7 +359,7 @@ def run_district(district_en: str, max_fields: int = 6) -> dict:
     GIS_DIR.mkdir(parents=True, exist_ok=True)
     detail = {
         "district": district_en,
-        "dates": DEFAULT_DATES,
+        "dates": dates,
         "method": "OSM-поля (bbox<=0.02deg) + Sentinel-2 L2A NDVI=(B08-B04)/(B08+B04) "
                   "через PC STAC (scene reuse) + PC TiTiler POST /item/statistics; "
                   "пороги — эвристики агро-практики, не ГОСТ",

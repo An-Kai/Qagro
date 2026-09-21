@@ -237,6 +237,21 @@ def t_report_pdf():
     assert len(r.content) > 10000, len(r.content)
 
 
+def t_guide_search():
+    # Жалоба словами: релевантный совет, а не первые N справочника.
+    r = client.get("/guide", params={"q": "саранча", "lang": "ru"})
+    assert r.status_code == 200, r.text
+    items = r.json().get("items", [])
+    assert items and items[0].get("id") == "pest_locust", items
+    r = client.get("/guide", params={"q": "засуха", "lang": "ru"})
+    assert r.status_code == 200, r.text
+    items = r.json().get("items", [])
+    assert items and items[0].get("id") == "abio_drought", items
+    r = client.get("/guide", params={"q": "абракадабра"})
+    assert r.status_code == 200, r.text
+    assert r.json().get("items") == [], r.text
+
+
 def t_agrodata():    # NEW_DATA #2: сверка с Казгидрометом. Офлайн-safe: либо рубрики
     # с данными, либо честные error-строки — в обоих случаях 200.
     r = client.get("/agrodata", params={"district_en": "Esil"})
@@ -263,6 +278,7 @@ if __name__ == "__main__":
     check("metrics trimmed", t_metrics_trimmed)
     check("version git sha", t_version)
     check("guide spring_wheat 200 + names", t_guide)
+    check("guide search locust/drought/gibberish", t_guide_search)
     check("fertilizer spring_wheat 200 + N>0", t_fertilizer)
     check("economy 200 + profit", t_economy)
     check("spray Esil 200/offline-error", t_spray)

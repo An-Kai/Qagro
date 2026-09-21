@@ -463,13 +463,17 @@ if _platform_router is not None:
 
 
 @app.get("/guide")
-def api_guide(crop: str = "spring_wheat", lang: str = "ru"):
+def api_guide(crop: str = "spring_wheat", lang: str = "ru", q: str | None = None):
     try:
-        from src.guide_data import lookup
+        from src.guide_data import lookup, search_guide
     except ImportError:
-        from guide_data import lookup  # type: ignore
+        from guide_data import lookup, search_guide  # type: ignore
     if lang not in ("ru", "kz", "en"):
         lang = "ru"
+    if (q or "").strip():
+        # Жалоба словами: релевантный совет вместо первых N справочника.
+        return {"crop": crop, "lang": lang, "q": q.strip(),
+                "items": search_guide(q, lang)[:3]}
     return {"crop": crop, "lang": lang, "items": lookup(crop)}
 
 

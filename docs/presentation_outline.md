@@ -1,9 +1,9 @@
 # Qagro — outline презентации v4 (10 слайдов, 20.09.2026)
 
 Источник правды: `metrics/metrics.json` (hold-out 2021–2025, n=50), `metrics/METRICS.md`,
-`data/processed/akmola_panel_v4.csv` (1260×33), `data/fields/akmola_osm_fields.geojson` (115),
-`data/ndvi/ndvi_timeseries.json` (41 real: June+July+Aug), `src/platform_api.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py`.
-PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирается в этом цикле (заморожен, отдельный цикл шрифтов).
+`data/processed/akmola_panel_v4.csv` (1260×36), `data/fields/akmola_osm_fields.geojson` (115),
+`data/ndvi/ndvi_timeseries.json` (132 real, все 10 районов), `src/platform_api.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py`.
+PDF `docs/Qagro_presentation.pdf` собирается из кода: `python scripts/build_presentation.py` (числа тянутся из metrics/ и risk_example.json).
 
 ## Слайд 1. Проблема
 - Акмола — житница KZ: засухи 2010/2012/2019/2021 роняли урожай вдвое; решения — постфактум.
@@ -29,7 +29,7 @@ PDF-бинарь `docs/Qagro_presentation_v2.pdf` НЕ пересобирает�
 - Панель v4 `akmola_panel_v4.csv`: **1260 строк** (10 районов × 21 год × 6 культур), **33 колонки** (v3 + площади stat.gov.kz + ГТК + SoilGrids); БНС-якоря + NASA POWER + Open-Meteo ERA5.
 - Фичи MJJA: tmean/precip/GDD5/heat30/dry_max/ET0/p30_anom + lat/lon/yield_lag1 + v3 (dtr/vpd_proxy/spei_proxy/year_trend/yield_roll3) + v4 (oilseeds_share/площади/htc_mjja/soil_N/pH/SOC/clay) + ndvi_max/ndvi_flag (optional join).
 - Поля: **115 полигонов** (`akmola_osm_fields.geojson`): **109 OSM real** (ODbL, Overpass `landuse=farmland`) + 6 demo-fallback `demo:true` (Esil 3, Kokshetau 3).
-- NDVI Sentinel-2: **22 NDVI real (June+July)** + 19 августовских (стало 41/62; PC TiTiler B08/B04) + Landsat cross-check (июль delta +0.004); остальное `ndvi_mean=None` (MISSING, без выдумок).
+- NDVI Sentinel-2: **132 NDVI real** (все 10 районов, июнь–август; PC TiTiler B08/B04, добор `scripts/fetch_ndvi_district.py`) + Landsat cross-check (июль delta +0.004); остальное `ndvi_mean=None` (MISSING, без выдумок).
 - Честно: район = даунскейлинг области на центроиды `config/districts.yaml`.
 - Картинка: схема панели + таблица первых строк из `data/processed/data_card.md` + мини-карта полей.
 

@@ -17,7 +17,7 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 ## Ключевые числа v4 (источник правды)
 - Панель `akmola_panel_v4.csv`: 1260 строк (10×21×6), 36 колонок (v3 + площади stat.gov.kz, ГТК, SoilGrids, режимные trend_sq/trend_recent/oilshare_trend)
 - Поля `akmola_osm_fields.geojson`: 115 полигонов (109 OSM real ODbL + 6 demo-fallback)
-- NDVI Sentinel-2 `ndvi_timeseries.json`: 41 real (Esil+Zerenda, июнь–август) из 62 сцен + Landsat cross-check
+- NDVI Sentinel-2 `ndvi_timeseries.json`: 132 real (все 10 районов) из 148 сцен + Landsat cross-check
 - Метрики hold-out 2021–2025: пшеница 2.68/−0.26 → 1.20/0.66; ячмень 2.78/−0.26 → 1.27/0.65; овёс 3.59/−0.33 → 1.37/0.74; подсолнечник 2.52/−0.35 → 2.01/0.21; рапс 3.70/−0.85 → 3.31/−0.79 (strong по MAE, оговорка R²/покрытие 0.04); 5/6 strong, лён experimental (1.33/−0.42, below_baseline)
 - Демо-якоря: Esil/пшеница 🟡 35.0, payout 51 тг/га; Zerenda 🟢 28.5, 52 тг/га
 - Платформа v4: `src/myfields.py` + `src/journal.py` + `src/spray.py` + `src/fertilizer.py` + `src/economics.py` + `src/platform_api.py` (`/myfields`, `/journal`, `/spray`, `/fertilizer`)
@@ -38,7 +38,7 @@ Qagro — прогноз урожайности и агрориски (Акмо�
 - [x] Что сделано на хакатоне 18–21.09.2026 (панель v4 1260×36 → бленд 5/6 strong → платформа v4)
 - [x] Сторонние OSS с ссылками и лицензиями (UniCrop MIT, gsanaev MIT, WeatherWatch-паттерн, CropBot MIT)
 - [x] Метрики таблицей v4 (пшеница 2.68/−0.26 → 1.20/0.66; ячмень 2.78/−0.26 → 1.27/0.65; овёс 3.59/−0.33 → 1.37/0.74; подсолнечник → 2.01/0.21; рапс → 3.31/−0.79 strong по MAE; 5/6 strong, лён experimental) + `metrics/plots/` + `metrics/METRICS.md`
-- [x] Ограничения честно (даунскейлинг район=область×коэф; лён EXPERIMENTAL below_baseline, структурный сдвиг 2024–2025; рапс strong по MAE с оговоркой R² −0.79/покрытие 0.04/bias +3.3; страховка decision support; SoilGrids 10/10 в фичах v4; конформные интервалы покрытие 0.66 факт vs 0.80 номинал; NDVI 41 real из 62 + Landsat cross-check)
+- [x] Ограничения честно (даунскейлинг район=область×коэф; лён EXPERIMENTAL below_baseline, структурный сдвиг 2024–2025; рапс strong по MAE с оговоркой R² −0.79/покрытие 0.04/bias +3.3; страховка decision support; SoilGrids 10/10 в фичах v4; конформные интервалы покрытие 0.66 факт vs 0.80 номинал; NDVI 132 real из 148 + Landsat cross-check)
 - [x] Воспроизводимость (`src/fetch_all.py → train.py → evaluate.py`; поля `src/fields_osm.py`; NDVI `src/sentinel_ndvi.py`)
 - [x] Структура репо
 - [x] Токена нет в коде/README; только `TELEGRAM_BOT_TOKEN` из env (`.env.example`)

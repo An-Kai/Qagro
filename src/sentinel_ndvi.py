@@ -15,6 +15,9 @@
       {district, date, ndvi_mean|None, scene_id, status}
     status: "listed" (сцена найдена, NDVI=MISSING) или "error: ..." (STAC
     недоступен / библиотек нет / сеть упала).
+  - C8: ранее полученные НАСТОЯЩИЕ ndvi_mean других районов (напр. Zhaksy
+    через scripts/fetch_ndvi_district.py) при перезапуске НЕ затираются —
+    дописываются как есть (см. keep-блок в main()).
   - Модель ОБЯЗАНА работать без NDVI: src/features_ndvi.py делает optional
     join (если все ndvi_mean None или файла нет — фича пропускается),
     train.py / predict.py используют базовые фичи.
@@ -128,26 +131,39 @@ def _search(bbox: list[float], dt: str) -> tuple[list[dict], str]:
     return items, "requests"
 
 
-def _load_real_ndvi() -> dict[str, dict]:
-    """Ранее полученные НАСТОЯЩИЕ ndvi_mean {scene_id: запись}.
+def _load_real_ndvi() -> dict[tuple[str, str], dict]:
+    """Ранее полученные НАСТОЯЩИЕ ndvi_mean {(district, scene_id): запись}.
 
     C7: реальные NDVI берутся через PC TiTiler statistics (см. ndvi_timeseries.json).
     Повторный запуск поиска сцен не должен затирать их в None — сохраняем.
     Возвращает только записи с конечным числом ndvi_mean (не None).
+    Ключ — (district, scene_id), а НЕ голый scene_id: один тайл Sentinel-2
+    покрывает несколько районов, а ndvi_mean посчитан по bbox КОНКРЕТНОГО
+    района — перенос значения в другой район был бы выдумкой (см. C9).
     """
     try:
         raw = json.loads(OUT_JSON.read_text(encoding="utf-8"))
     except Exception:
         return {}
-    out: dict[str, dict] = {}
+    if isinstance(raw, dict):
+        raw = raw.get("items", raw)
+    out: dict[tuple[str, str], dict] = {}
     for r in raw:
         if not isinstance(r, dict):
             continue
         sid = r.get("scene_id")
+        dis = r.get("district")
         m = r.get("ndvi_mean")
-        if sid and isinstance(m, (int, float)) and -1.0 <= m <= 1.0:
-            out[sid] = r
+        if sid and dis and isinstance(m, (int, float)) and -1.0 <= m <= 1.0:
+            out[(str(dis), str(sid))] = r
     return out
+
+
+def _base_status(rec: dict) -> str:
+    """Статус без нарастающих ' | kept...' суффиксов от прошлых реранов."""
+    import re as _re
+
+    return _re.sub(r"( \| kept.*)*$", "", str(rec.get("status", "")))
 
 
 def main() -> None:
@@ -179,14 +195,17 @@ def main() -> None:
                 for it in items:
                     n_listed += 1
                     sid = it.get("scene_id")
-                    if sid in keep:
-                        # Не затираем настоящее значение, полученное через TiTiler (C7)
+                    if (den, sid) in keep:
+                        # Не затираем настоящее значение, полученное через TiTiler (C7).
+                        # Ключ (district, scene_id): C9 — значение чужого bbox
+                        # сюда попасть не может.
+                        k = keep[(den, sid)]
                         records.append({
                             "district": den,
                             "date": it.get("date"),
-                            "ndvi_mean": keep[sid]["ndvi_mean"],
+                            "ndvi_mean": k["ndvi_mean"],
                             "scene_id": sid,
-                            "status": keep[sid].get("status", "") + " | kept on rerun",
+                            "status": _base_status(k) + " | kept on rerun",
                         })
                         continue
                     records.append({
@@ -213,8 +232,18 @@ def main() -> None:
     # из ранее сохранённых настоящих значений (keep), числа не выдумываем
     for r in records:
         m = r.get("ndvi_mean")
-        if m is not None and r.get("scene_id") not in keep:
+        if m is not None and (r.get("district"), r.get("scene_id")) not in keep:
             raise RuntimeError("ndvi_mean должен быть None (MISSING) в v2 — числа не выдумываем")
+    # C8: не теряем настоящие значения других районов (напр. Zhaksy из
+    # scripts/fetch_ndvi_district.py): поиск ниже идёт только по DEMO_FIELDS,
+    # поэтому дописываем keep-записи, которых нет в свежих результатах.
+    seen = {(r.get("district"), r.get("date"), r.get("scene_id")) for r in records}
+    for (dis, sid), rec in keep.items():
+        key = (rec.get("district"), rec.get("date"), sid)
+        if key not in seen:
+            records.append({**rec, "status": _base_status(rec)
+                            + " | kept (district not in DEMO_FIELDS)"})
+            seen.add(key)
     with open(OUT_JSON, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, indent=2)
     print(f"[sentinel_ndvi] сцен найдено: {n_listed}, ошибок: {n_error}, "

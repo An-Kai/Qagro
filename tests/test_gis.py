@@ -92,9 +92,35 @@ def t_run_esil_live_or_skip():
     print(f"LIVE: Esil checked=2 summary={summary}")
 
 
+def t_zhaksy_scenes_offline():
+    """Офлайн: у ВСЕХ 10 районов есть настоящие сцены (регрессия 'No NDVI data').
+
+    Без сети: ndvi_timeseries.json обязан содержать >=5 записей с конечным
+    ndvi_mean в [-1,1] и scene_id на район (настоящие PC TiTiler:
+    scripts/fetch_ndvi_district.py, не выдумка).
+    """
+    p = ROOT / "data" / "ndvi" / "ndvi_timeseries.json"
+    raw = json.loads(p.read_text(encoding="utf-8"))
+    items = raw if isinstance(raw, list) else raw.get("items", raw)
+    by_d: dict[str, list] = {}
+    for r in items:
+        if (isinstance(r, dict) and isinstance(r.get("ndvi_mean"), (int, float))
+                and -1.0 <= float(r["ndvi_mean"]) <= 1.0 and r.get("scene_id")):
+            by_d.setdefault(str(r.get("district")), []).append(r)
+    want = {"Atbasar", "Bulandy", "Burabay", "Esil", "Kokshetau",
+            "Sandyktau", "Shortandy", "Tselinograd", "Zerenda", "Zhaksy"}
+    missing = want - set(by_d)
+    assert not missing, f"нет real-сцен: {sorted(missing)}"
+    thin = {d: len(v) for d, v in by_d.items() if len(v) < 5}
+    assert not thin, f"мало real-записей (<5): {thin}"
+    zh_dates = sorted({r["date"] for r in by_d["Zhaksy"]})
+    assert len(zh_dates) >= 4, f"мало дат Zhaksy: {zh_dates}"
+
+
 if __name__ == "__main__":
     check("classify healthy->cultivated", t_healthy_cultivated)
     check("classify amplitude-low->likely_fallow", t_amplitude_low_fallow)
     check("classify max-low->sparse", t_max_low_sparse)
+    check("scenes offline (10 districts >=5 real)", t_zhaksy_scenes_offline)
     check("run_district Esil max2 (live/skip)", t_run_esil_live_or_skip)
-    print(f"OK: {len(passed)}/4 — {', '.join(passed)}")
+    print(f"OK: {len(passed)}/{len(passed)} — {', '.join(passed)}")

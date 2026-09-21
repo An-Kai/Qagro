@@ -25,6 +25,7 @@ if str(ROOT) not in sys.path:
 
 from src.bot import HELP_TEXT, MORE_TEXT, T, create_dispatcher  # noqa: E402
 from src.guide_data import lookup as _guide_lookup  # noqa: E402
+from src.guide_data import search_guide as _guide_search  # noqa: E402
 from src.guide_data import text_of as _guide_text  # noqa: E402
 from src.spray import _fmt_window  # noqa: E402
 
@@ -82,6 +83,21 @@ def t_dispatcher_builds():
     assert n >= 20, f"мало хендлеров: {n}"
 
 
+def t_guide_search():
+    # Жалоба словами -> релевантная запись (саранча/засуха/ржавчина/блошки).
+    cases = [("саранча", "ru", "pest_locust"),
+             ("шегіртке", "kz", "pest_locust"),
+             ("засуха", "ru", "abio_drought"),
+             ("frost", "en", "abio_frost"),
+             ("ржавчина", "ru", "wheat_leaf_rust"),
+             ("блошки", "ru", "rapeseed_flea")]
+    for q, lang, exp in cases:
+        got = _guide_search(q, lang)
+        assert got and got[0]["id"] == exp, (q, lang, got)
+    assert _guide_search("абракадабра", "ru") == []
+    assert _guide_search("", "ru") == []
+
+
 def t_guide_no_none():
     # Регрессия скриншота: "None: . → None" — рендеры обязаны идти через
     # text_of (вложенная схема names/signs/action), плоских ключей в данных нет.
@@ -104,4 +120,5 @@ if __name__ == "__main__":
     check("spray single-hour window", t_fmt_window_single_hour)
     check("dispatcher builds", t_dispatcher_builds)
     check("guide no None (nested schema)", t_guide_no_none)
+    check("guide search complaints", t_guide_search)
     print(f"OK: {len(passed)}/{len(passed)} — {', '.join(passed)}")

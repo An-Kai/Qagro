@@ -134,7 +134,10 @@ T: dict[str, dict[str, str]] = {
                     "kz": "Жақсы сағаттар: {checked} ішінен {good}.",
                     "en": "Good hours: {good} of {checked}."},
     "btn_sat": {"ru": "🛰 Спутник", "kz": "🛰 Серік",
-                "en": "🛰 Satellite"},
+                 "en": "🛰 Satellite"},
+    "guide_hint": {"ru": "Опиши проблему словами: /guide саранча (можно: засуха, жара, заморозки, ржавчина)",
+                   "kz": "Мәселені сөзбен жаз: /guide шегіртке (болады: құрғақшылық, ыстық, үсік, тат)",
+                   "en": "Describe the issue: /guide locust (try: drought, heat, frost, rust)"},
     "btn_location": {"ru": "📍 Отправить местоположение",
                      "kz": "📍 Геолокацияны жіберу",
                      "en": "📍 Share Location"},
@@ -201,7 +204,7 @@ MORE_TEXT: dict[str, str] = {
     "ru": ("🛠 Ещё команды:\n"
            "• /gis — поля со спутника (NDVI, залежи)\n"
            "• /spray — окно опрыскивания (ветер/дождь, 48ч)\n"
-           "• /guide — болезни и вредители культуры\n"
+           "• /guide — опиши проблему: /guide саранча (засуха, жара, заморозки)\n"
            "• /fields — мои поля, /elevators — элеваторы\n"
            "• /alerts — угрозы 7 дней (заморозки/жара/ливни)\n"
            "• /compare — сравнить 2 культуры в районе\n"
@@ -209,7 +212,7 @@ MORE_TEXT: dict[str, str] = {
     "kz": ("🛠 Қосымша командалар:\n"
            "• /gis — серіктен егістіктер (NDVI, тыңайған жер)\n"
            "• /spray — бүрку терезесі (жел/жаңбыр, 48с)\n"
-           "• /guide — дақыл аурулары мен зиянкестері\n"
+           "• /guide — мәселені жаз: /guide шегіртке (құрғақшылық, ыстық, үсік)\n"
            "• /fields — менің егістіктерім, /elevators — элеваторлар\n"
            "• /alerts — 7 күндік қауіптер (үсік/ыстық/нөсер)\n"
            "• /compare — ауданда 2 дақылды салыстыру\n"
@@ -217,7 +220,7 @@ MORE_TEXT: dict[str, str] = {
     "en": ("🛠 More commands:\n"
            "• /gis — satellite fields (NDVI, fallow)\n"
            "• /spray — spray window (wind/rain, 48h)\n"
-           "• /guide — crop diseases & pests\n"
+           "• /guide — describe the issue: /guide locust (drought, heat, frost)\n"
            "• /fields — my fields, /elevators — elevators\n"
            "• /alerts — 7-day threats (frost/heat/downpour)\n"
            "• /compare — compare 2 crops in the district\n"
@@ -1034,20 +1037,37 @@ def create_dispatcher():
         if lang not in ("ru", "kz", "en"):
             lang = "ru"
         crop = data.get("crop", "spring_wheat")
+        query = " ".join((m.text or "").split()[1:]).strip()
         try:
             try:
-                from src.guide_data import lookup, text_of
+                from src.guide_data import lookup, search_guide, text_of
             except ImportError:
-                from guide_data import lookup, text_of  # type: ignore
-            items = lookup(crop)[:4]
-            parts = []
-            for it in items:
-                nm = text_of(it, "names", lang) or "—"
-                sg = text_of(it, "signs", lang) or []
-                ac = text_of(it, "action", lang) or "—"
-                parts.append(f"🔬 {nm}: {'; '.join(sg[:2])}. → {ac}")
-            txt = "\n\n".join(parts)
-            await m.answer(txt or T["err_generic"][lang])
+                from guide_data import lookup, search_guide, text_of  # type: ignore
+
+            def _fmt(items: list) -> str:
+                parts = []
+                for it in items[:3]:
+                    nm = text_of(it, "names", lang) or "—"
+                    sg = text_of(it, "signs", lang) or []
+                    ac = text_of(it, "action", lang) or "—"
+                    parts.append(f"🔬 {nm}: {'; '.join(sg[:2])}. → {ac}")
+                return "\n\n".join(parts)
+
+            if query:
+                # Жалоба словами: ищем релевантное, а не первые N справочника.
+                found = search_guide(query, lang)
+                if found:
+                    await m.answer(_fmt(found))
+                else:
+                    await m.answer(f"{T['err_generic'][lang]}\n{T['guide_hint'][lang]}")
+            else:
+                items = lookup(crop)[:4]
+                txt = _fmt(items)
+                await m.answer(f"{txt}\n\n{T['guide_hint'][lang]}" if txt
+                               else T["err_generic"][lang])
+        except Exception:
+            log.exception("on_guide failed")
+            await m.answer(f"{T['err_generic'][lang]} (код: E10)")
         except Exception:
             log.exception("on_guide failed")
             await m.answer(f"{T['err_generic'][lang]} (код: E10)")

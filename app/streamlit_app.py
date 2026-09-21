@@ -136,6 +136,9 @@ UI = {
             "osm_empty": "В этом районе OSM-полей нет — показаны элеваторы и маршруты.",
             "hist_empty": "История пуста для этого района/культуры.",
             "guide_empty": "Справочник пуст для этой культуры.",
+           "guide_ask": "Опишите проблему словами (напр. саранча, засуха, ржавчина):",
+           "guide_ask_help": "Ищем по названиям, признакам и мерам на всех 3 языках.",
+           "guide_none": "Не нашёл такого — покажу записи культуры. Попробуйте: саранча, засуха, жара, заморозки, ржавчина.",
             "risk_empty": "Файл рисков не найден — таблица посчитана из прогноза модели (офлайн).",
             "ndvi_empty": "NDVI-замеров с ndvi_mean пока нет.",
             "fields_file_empty": "Файл полей не найден — показаны только элеваторы.",
@@ -234,6 +237,9 @@ UI = {
             "osm_empty": "Бұл ауданда OSM-егістік жоқ — элеваторлар мен бағыттар көрсетілген.",
             "hist_empty": "Бұл аудан/дақыл үшін тарих бос.",
             "guide_empty": "Бұл дақылға анықтама бос.",
+           "guide_ask": "Мәселені сөзбен жазыңыз (мыс. шегіртке, құрғақшылық, тат):",
+           "guide_ask_help": "Атау, белгі және шара бойынша 3 тілде іздейміз.",
+           "guide_none": "Мұндай табылмады — дақыл жазбаларын көрсетемін. Байқаңыз: шегіртке, құрғақшылық, ыстық, үсік, тат.",
             "risk_empty": "Қауіп файлы табылмады — кесте модель болжамынан есептелді (офлайн).",
             "ndvi_empty": "ndvi_mean өлшемдері әзірге жоқ.",
             "fields_file_empty": "Егістік файлы табылмады — тек элеваторлар көрсетілген.",
@@ -332,6 +338,9 @@ UI = {
             "osm_empty": "No OSM fields in this district — elevators and routes shown.",
             "hist_empty": "No history for this district/crop.",
             "guide_empty": "Guide is empty for this crop.",
+           "guide_ask": "Describe the issue in words (e.g. locust, drought, rust):",
+           "guide_ask_help": "Searches names, signs and actions in all 3 languages.",
+           "guide_none": "Not found — showing crop entries. Try: locust, drought, heat, frost, rust.",
             "risk_empty": "Risk file missing — table falls back to model forecast (offline).",
             "ndvi_empty": "No NDVI measurements with ndvi_mean yet.",
             "fields_file_empty": "Fields file missing — elevators only.",
@@ -1188,9 +1197,23 @@ button[data-testid="stTab"][aria-selected="true"] p { color: var(--qagro-accent)
             except ImportError:
                 from guide_data import lookup as _lookup  # type: ignore
                 from guide_data import text_of as _text_of  # type: ignore
+            # Жалоба словами вместо первых N: ищем релевантное.
+            try:
+                try:
+                    from src.guide_data import search_guide as _search
+                except ImportError:
+                    from guide_data import search_guide as _search  # type: ignore
+                _q = st.text_input(T["guide_ask"], "", help=T["guide_ask_help"])
+                items = _search(_q, lang)[:3] if _q.strip() else []
+                if _q.strip() and not items:
+                    st.caption(T["guide_none"])
+                    items = []
+            except Exception:
+                _q, items = "", []
+            if not _q.strip():
+                items = _lookup(crop)[:4]
             from src.fertilizer import calc_npk as _npk
             from src.economics import profit_ha as _profit
-            items = _lookup(crop)[:4]
             if not items:
                 st.info(T["guide_empty"])
             for it in items:

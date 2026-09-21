@@ -38,6 +38,10 @@ def _load_numbers() -> dict:
     ex = json.loads((ROOT / "reports" / "risk_example.json").read_text(encoding="utf-8"))
     ew, zw = ex["Esil_insurance_wheat"], ex["Zerenda_insurance_wheat"]
     w = m["spring_wheat"]
+    ndvi_raw = json.loads((ROOT / "data" / "ndvi" / "ndvi_timeseries.json").read_text(encoding="utf-8"))
+    ndvi_items = ndvi_raw if isinstance(ndvi_raw, list) else ndvi_raw.get("items", ndvi_raw)
+    ndvi_real = sum(1 for x in ndvi_items
+                    if isinstance((x or {}).get("ndvi_mean"), (int, float)))
     return {
         "wheat_bl_mae": round(w["baseline"]["mae"], 2),
         "wheat_bl_r2": round(w["baseline"]["r2"], 2),
@@ -58,6 +62,7 @@ def _load_numbers() -> dict:
         "esil_ypred": round(ew["y_pred_c_ha"], 1),
         "esil_risk": ex["Esil_risk"].get("seasonal_risk"),
         "zer_risk": ex["Zerenda_risk"].get("seasonal_risk"),
+        "ndvi_real": ndvi_real,
     }
 
 
@@ -125,7 +130,8 @@ def main() -> None:
         Paragraph("4. Данные: только реальные", title_st),
         bullet("Панель v4: 1260 строк (10 районов × 21 год × 6 культур), 36 колонок."),
         bullet("БНС + NASA POWER + Open-Meteo ERA5 + площади stat.gov.kz + SoilGrids."),
-        bullet("115 полей OSM (109 real + 6 demo); NDVI Sentinel-2: 41 real + Landsat."),
+        bullet("115 полей OSM (109 real + 6 demo); "
+               f"NDVI Sentinel-2: {n['ndvi_real']} real + Landsat."),
         *footer(4), PageBreak(),
     ])
     slides.append([
